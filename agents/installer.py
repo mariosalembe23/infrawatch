@@ -31,7 +31,7 @@ def request_user_id():
 def main():
     saved_id = get_saved_id()
     if saved_id:
-        print(f"ID já salvo: {saved_id}")
+        print(f"Execução em percurso")
         # Aqui você pode continuar seu programa...
     else:
         request_user_id()
