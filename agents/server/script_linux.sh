@@ -5,6 +5,7 @@
 
 FILE=$1
 ORDER=$2
+SCRIPT="cleaner.sh"
 
 if [ -z "$FILE" -o -z "$ORDER" ]; then
     echo "Usage: $0 <file> <order>"
@@ -13,10 +14,12 @@ fi
 
 if [ "$ORDER" = "create" ]; then
     echo "Creating Infra-Watch agent..."
+    # run a sh file
+    sh $SCRIPT
     pyinstaller --onefile --icon=infra.ico --windowed --name infra-watch "$FILE"
 elif [ "$ORDER" = "remove" ]; then
     echo "Removing Infra-Watch agent..."
-    rm -rf dist
+    sh $SCRIPT
     rm -rf build
     rm -f infra-watch.spec
 else
