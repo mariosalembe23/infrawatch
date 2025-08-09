@@ -12,6 +12,11 @@ from pydantic import BaseModel
 
 app = FastAPI(title="InfraWatch API")
 
+@app.get("/")
+async def root():
+	return {"message": "Bem-vindo à API InfraWatch! Use /services/{id} para verificar o status de serviços."}
+	print()
+	
 class ServiceStatus(BaseModel):
 	id: int
 	name: str
