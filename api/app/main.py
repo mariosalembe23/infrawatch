@@ -40,7 +40,6 @@ async def read_service_status(service_id: int):
 	conn.close()
 	return status
 
-#
 @app.get("/services/", response_model = list[ServiceStatus])
 async def read_all_services():
 	conn = psycopg2.connect("dbname = infrawatch user = akupesa password = 'Anderson26$'")
