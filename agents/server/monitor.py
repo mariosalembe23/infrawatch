@@ -14,7 +14,7 @@ info = {
     "logicalNucleus": "",
     "cpuUsage": "",
     "cpuFrequency": "",
-    "ramTotal": {
+    "ramUsage": {
         "total": "",
         "used": "",
         "available": ""
