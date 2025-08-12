@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import DashboardSlice from "./slices/DashboardSlice";
 import MainHeader from "./components/MainHeader";
 import ServerSlice from "./slices/ServerSlice";
+import NetworkSlice from "./slices/NetworkSlice";
 
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
@@ -26,13 +27,12 @@ export default function Dashboard() {
         setShowSidebar={setShowSidebar}
         setTabs={setTabs}
       />
-      <ScrollArea  className="overflow-y-auto w-full h-full">
+      <ScrollArea className="overflow-y-auto w-full h-full">
         <MainHeader showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
         <section className="ret:py-14 ret:px-14 px-5 py-10">
           {tabs === "dashboard" && <DashboardSlice showSideBar={showSideBar} />}
-          {tabs === "server" && (
-            <ServerSlice showSideBar={showSideBar}  />
-          )}
+          {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
+          {tabs === "network" && <NetworkSlice />}
         </section>
       </ScrollArea>
     </div>
