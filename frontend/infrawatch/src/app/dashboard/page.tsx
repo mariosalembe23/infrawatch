@@ -1,144 +1,78 @@
 import { Button } from "@/components/ui/button";
-import {
-  Bolt,
-  ChartArea,
-  ChevronRight,
-  CircleUser,
-  Info,
-  LayoutDashboard,
-  Link2,
-  Network,
-  OctagonAlert,
-  PanelLeft,
-  Server,
-  Users,
-} from "lucide-react";
+import { Bolt, ClipboardClock, Info } from "lucide-react";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import LateralBar from "./components/LateralBar";
 
-interface IButtonCustom {
-  children: React.ReactNode;
+interface IContainerData {
   title: string;
-  type?: "normal" | "danger";
+  length: number;
 }
 
-const ButtonCustom: React.FC<IButtonCustom> = ({
-  children,
-  title,
-  type = "normal",
+const ContainerData: React.FC<IContainerData> = ({ title, length }) => {
+  return (
+    <div className="px-5 py-3 rounded-lg bg-zinc-950 border border-zinc-900">
+      <div className="flex items-center gap-2">
+        <p className="text-cyan-500 text-2xl font-semibold">{length} </p>
+        <p className="text-white/70">/ {title}</p>
+      </div>
+    </div>
+  );
+};
+
+interface IServerComponent {
+  nameServer: string;
+  status: "online" | "offline";
+}
+
+const ServerComponent: React.FC<IServerComponent> = ({
+  nameServer,
+  status,
 }) => {
-  return type === "normal" ? (
-    <button className="flex items-center flex-nowrap font-[430] justify-between transition-all hover:opacity-80 cursor-pointer">
-      <span className="flex items-center text-start gap-2 text-white">
-        {children}
-        {title}
-      </span>
-      <ChevronRight size={19} className="text-zinc-400" />
-    </button>
-  ) : (
-    <button className="flex items-center font-[430] justify-between transition-all hover:opacity-80 cursor-pointer">
-      <span className="flex items-center gap-2 text-red-400">
-        {children}
-        <p className="flex items-center gap-2">
-          {title}
-          <Badge className="min-w-5 bg-red-500 text-white px-1">6</Badge>
+  return (
+    <div
+      className={` border border-zinc-900 px-5 py-3 bg-zinc-950 rounded-lg items-start flex justify-between`}
+    >
+      <div>
+        <p className="text-white text-lg font-medium">
+          {nameServer}{" "}
+          <span className="text-zinc-500 font-[410] text-[15px]">
+            / há 2 horas
+          </span>
         </p>
-      </span>
-      <ChevronRight size={19} className="text-zinc-400" />
-    </button>
+        <div className=" gap-2 py-[0.19rem] -mt-1 flex items-center  text-white rounded-full">
+          <p className="font-[420]">Status</p>
+          <div
+            className={`w-2 h-2 animate-pulse rounded-full ${
+              status === "online"
+                ? "bg-green-500 ring-2 ring-green-500/50"
+                : "bg-red-500 ring-2 ring-red-500/50"
+            }`}
+          ></div>
+        </div>
+      </div>
+      <div>
+        <div className="flex items-center gap-2">
+          <button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-full">
+            Logs <ClipboardClock size={16} />
+          </button>
+          <button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-full">
+            Detalhes <Info size={17} />
+          </button>
+        </div>
+        <div className="mt-2 flex items-center gap-2 text-zinc-500 justify-end">
+          <p>Processando...</p>
+          <span className="loader !w-4 !h-4 !border-2 !border-b-zinc-600"></span>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default function Dashboard() {
   return (
     <div className="h-dvh w-full bg-[#060607] grid grid-cols-[15%_85%]">
-      <nav className="border-r border-zinc-900 overflow-y-auto">
-        <header className="sticky bg-[#060607] top-0 left-0 w-full h-16">
-          <div className="flex border-b items-center px-5 h-16 border-zinc-900 justify-between">
-            <svg
-              className="text-black size-7"
-              viewBox="0 0 56 56"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect width="56" height="56" rx="7" fill="#fff" />
-              <path
-                d="M10 37C10 31.4772 14.4772 27 20 27V27V56H10V37Z"
-                fill="currentColor"
-              />
-              <path
-                d="M23 24C23 18.4772 27.4772 14 33 14V14V56H23V24Z"
-                fill="currentColor"
-              />
-              <path
-                d="M36 17C36 11.4772 40.4772 7 46 7V7V56H36V17Z"
-                fill="currentColor"
-              />
-            </svg>
-            <Button
-              size={"icon"}
-              className="rounded-full border border-zinc-800"
-            >
-              <PanelLeft size={25} className="text-white size-5" />
-            </Button>
-          </div>
-        </header>
-
-        <div className="mt-1 p-5 text-start">
-          <h2 className="text-zinc-400">Menu</h2>
-          <div className="flex mt-7 flex-col gap-6">
-            <ButtonCustom title="Dashboard">
-              <LayoutDashboard size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom title="Servidores">
-              <Server size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom title="Aparelhos de Rede">
-              <Network size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom title="Endpoints">
-              <Link2 size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom title="Estatí. & Relatórios">
-              <ChartArea size={18} className="text-white" />
-            </ButtonCustom>
-          </div>
-        </div>
-        <div className="mt-5 p-5 border-t border-zinc-900">
-          <div className="flex mt-2 flex-col gap-6">
-            <ButtonCustom title="Perfil">
-              <CircleUser size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom title="Configurações">
-              <Bolt size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom type="danger" title="Alertas">
-              <OctagonAlert size={18} className="text-red-400" />
-            </ButtonCustom>
-            <ButtonCustom title="Aparelhos de Rede">
-              <Network size={18} className="text-white" />
-            </ButtonCustom>
-            <ButtonCustom title="Utilizadores">
-              <Users size={18} className="text-white" />
-            </ButtonCustom>
-          </div>
-        </div>
-        <div className="mt-5 p-5 border-t border-zinc-900">
-          <div className="flex mt-2 flex-col gap-6">
-            <ButtonCustom title="Suporte">
-              <Info size={18} className="text-white" />
-            </ButtonCustom>
-            <div>
-              <p className="text-zinc-300 text-lg">Mário Salembe</p>
-              <p className="text-zinc-500 text-[15px] font-[430]">
-                linomario199010@gmail.com
-              </p>
-              <Button className="w-full mt-3">Terminar Sessão</Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <LateralBar />
       <main>
         <header className="sticky top-0 left-0 w-full h-16 border-b border-zinc-900 flex items-center justify-between px-7">
           <div className="flex items-center gap-3">
@@ -164,6 +98,43 @@ export default function Dashboard() {
             </Button>
           </div>
         </header>
+        <section className="p-14">
+          <section>
+            <header>
+              <div>
+                <h2 className="text-white text-4xl font-semibold">Dashboard</h2>
+                <div className="w-[30rem]">
+                  <p className="text-zinc-500 font-[410]">
+                    Aqui você pode visualizar o estado geral da sua
+                    infraestrutura e acessar informações detalhadas sobre os
+                    seus servidores, serviços e redes.
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-5 mt-10">
+                <ContainerData title="Servidores Conectados" length={12} />
+                <ContainerData title="Aparelhos Registados" length={8} />
+                <ContainerData title="Endpoints Rodando" length={5} />
+                <ContainerData title="Relatórios Prontos" length={3} />
+              </div>
+            </header>
+            <div className="mt-10">
+              <div>
+                <header>
+                  <h3 className="text-zinc-400 font-[410] text-lg">
+                    Dados Recentes
+                  </h3>
+                </header>
+                <div className="grid mt-4 grid-cols-3 gap-3">
+                  <ServerComponent nameServer="SR1" status="online" />
+                  <ServerComponent nameServer="SR2" status="offline" />
+                  <ServerComponent nameServer="SR3" status="online" />
+                  <ServerComponent nameServer="SR4" status="online" />
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
       </main>
     </div>
   );
