@@ -28,8 +28,8 @@ const ButtonCustom: React.FC<IButtonCustom> = ({
   type = "normal",
 }) => {
   return type === "normal" ? (
-    <button className="flex items-center font-[430] justify-between transition-all hover:opacity-80 cursor-pointer">
-      <span className="flex items-center gap-2 text-white">
+    <button className="flex items-center flex-nowrap font-[430] justify-between transition-all hover:opacity-80 cursor-pointer">
+      <span className="flex items-center text-start gap-2 text-white">
         {children}
         {title}
       </span>
@@ -52,8 +52,8 @@ const ButtonCustom: React.FC<IButtonCustom> = ({
 export default function Dashboard() {
   return (
     <div className="h-dvh w-full bg-[#060607] grid grid-cols-[15%_85%]">
-      <nav className="border-r border-zinc-900">
-        <header>
+      <nav className="border-r border-zinc-900 overflow-y-auto">
+        <header className="sticky bg-[#060607] top-0 left-0 w-full h-16">
           <div className="flex border-b items-center px-5 h-16 border-zinc-900 justify-between">
             <svg
               className="text-black size-7"
@@ -84,9 +84,8 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div className="mt-1 p-5">
+        <div className="mt-1 p-5 text-start">
           <h2 className="text-zinc-400">Menu</h2>
-
           <div className="flex mt-7 flex-col gap-6">
             <ButtonCustom title="Dashboard">
               <LayoutDashboard size={18} className="text-white" />
@@ -100,7 +99,7 @@ export default function Dashboard() {
             <ButtonCustom title="Endpoints">
               <Link2 size={18} className="text-white" />
             </ButtonCustom>
-            <ButtonCustom title="Estatísticas & Relatórios">
+            <ButtonCustom title="Estatí. & Relatórios">
               <ChartArea size={18} className="text-white" />
             </ButtonCustom>
           </div>
