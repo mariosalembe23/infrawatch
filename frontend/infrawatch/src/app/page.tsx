@@ -15,8 +15,8 @@ export default function Home() {
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   return (
-    <div className="grid bg-black p-1 h-dvh w-full grid-cols-[40%_60%]">
-      <div className="bg-[url('/app/login_build.jpg')] bg-cover rounded-r-2xl bg-center"></div>
+    <div className="grid bg-black p-1 h-dvh w-full grid-cols-1 pot:grid-cols-[40%_60%]">
+      <div className="bg-[url('/app/login_build.jpg')] bg-cover pot:inline-flex hidden rounded-r-2xl bg-center"></div>
       <div className="flex items-center justify-center">
         <div className="max-w-80 w-full">
           <header className="text-center">
@@ -55,7 +55,7 @@ export default function Home() {
                 // onClick={() =>
                 //   router.push("https://onor-ebon.vercel.app/auth/google")
                 // }
-                className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-indigo-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+                className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
               >
                 <Image
                   src={"/icons/google.svg"}
@@ -70,7 +70,7 @@ export default function Home() {
                 // onClick={() =>
                 //   router.push("https://onor-ebon.vercel.app/auth/google")
                 // }
-                className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-indigo-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+                className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
               >
                 <Image
                   src={"/icons/linkedin.svg"}
@@ -98,7 +98,7 @@ export default function Home() {
                 <Input
                   id={"email"}
                   placeholder="Email"
-                  className="shadow-none !ring-indigo-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-indigo-500/80 "
+                  className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
                   type="email"
                 />
               </div>
@@ -112,7 +112,7 @@ export default function Home() {
                 <div className="relative">
                   <Input
                     id={"password"}
-                    className="shadow-none !ring-indigo-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-indigo-500/80 "
+                    className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
                     placeholder="Password"
                     type={isVisible ? "text" : "password"}
                   />
@@ -133,7 +133,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-center">
-                <Button className="group w-full bg-indigo-500 py-5 hover:bg-indigo-600/90 text-white cursor-pointer shadow-none">
+                <Button className="group text-base w-full bg-cyan-600 py-5 hover:bg-cyan-700/90 text-white cursor-pointer shadow-none">
                   Iniciar Sessão
                   <ArrowRightIcon
                     className="-me-1 opacity-60 transition-transform group-hover:translate-x-0.5"
@@ -142,7 +142,7 @@ export default function Home() {
                   />
                 </Button>
                 <Link
-                  href={"/"}
+                  href={"/dashboard"}
                   className="inline-flex mt-5 transition-all hover:text-white text-zinc-400 underline"
                 >
                   Esqueci a minha palavra-chave

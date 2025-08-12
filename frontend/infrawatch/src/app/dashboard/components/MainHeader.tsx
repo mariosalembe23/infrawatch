@@ -11,7 +11,7 @@ const MainHeader: React.FC<IMainHeader> = ({ showSideBar, setShowSidebar }) => {
   return (
     <header className="sticky bg-[#060607]/10 backdrop-blur-2xl top-0 left-0 w-full h-16 z-20 border-b border-zinc-900 flex items-center justify-between px-5 ret:px-7">
       <div className="flex items-center gap-3">
-        <button className="border transition-all hover:bg-zinc-900 border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center">
+        <button className="border transition-all cursor-pointer hover:bg-zinc-900 border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center">
           <Menu size={20} className="text-white" />
         </button>
         {!showSideBar && (
@@ -61,7 +61,7 @@ const MainHeader: React.FC<IMainHeader> = ({ showSideBar, setShowSidebar }) => {
             Mário Salembe
           </p>
         </div>
-        <Button size={"icon"} className="rounded-full border border-zinc-800">
+        <Button size={"icon"} className="rounded-full cursor-pointer border border-zinc-800">
           <Bolt size={18} className="text-white size-5" />
         </Button>
       </div>
