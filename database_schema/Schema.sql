@@ -44,7 +44,6 @@ memmory_usage {
     "available": ""
 }
 temperature
-
 {
   "description": {
     "model": "Cisco Catalyst 2960X-48FPS-L",
@@ -89,4 +88,21 @@ temperature
       "type": "dynamic"
     }
   ]
+}
+
+
+[ENDPOINTS]
+{
+  "endpoint": "https://example.com",
+  "ping": {
+    "status": "reachable",
+    "latency_avg_ms": 14.12,
+    "packet_loss_percent": 0
+  },
+  "http": {
+    "status": "up",
+    "http_code": 200,
+    "response_time_seconds": 0.234,
+    "response_size_bytes": 1256
+  }
 }
