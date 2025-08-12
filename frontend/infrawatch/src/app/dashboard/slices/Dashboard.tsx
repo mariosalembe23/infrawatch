@@ -1,13 +1,27 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  BoltIcon,
+  ChevronDownIcon,
   ChevronRight,
   ClipboardClock,
+  CopyPlusIcon,
+  FilesIcon,
   Info,
+  Layers2Icon,
+  LayoutDashboard,
+  Link2,
   Network,
+  Server,
   ZapIcon,
 } from "lucide-react";
 import React from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface IContainerData {
   title: string;
@@ -229,15 +243,43 @@ const DashboardSlice = () => {
   return (
     <section>
       <header>
-        <div>
-          <h2 className="text-white text-4xl font-semibold">Dashboard</h2>
-          <div className="w-[30rem]">
-            <p className="text-zinc-500 font-[410]">
-              Aqui você pode visualizar o estado geral da sua infraestrutura e
-              acessar informações detalhadas sobre os seus servidores, serviços
-              e redes.
-            </p>
+        <div className="flex items-start justify-between mb-10">
+          <div>
+            <h2 className="text-white text-4xl font-semibold">Dashboard</h2>
+            <div className="w-[30rem]">
+              <p className="text-zinc-500 font-[410]">
+                Aqui você pode visualizar o estado geral da sua infraestrutura e
+                acessar informações detalhadas sobre os seus servidores,
+                serviços e redes.
+              </p>
+            </div>
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="cursor-pointer">
+                Adicionar
+                <ChevronDownIcon
+                  className="-me-1 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem className="cursor-pointer">
+                <Server size={16} className="opacity-60" aria-hidden="true" />
+                Servidor
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Network size={16} className="opacity-60" aria-hidden="true" />
+                Aparelh. de Rede
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Link2 size={16} className="opacity-60" aria-hidden="true" />
+                Endpoint
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="grid grid-cols-4 gap-5 mt-10">
           <ContainerData title="Servidores Conectados" length={12} />
