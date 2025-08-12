@@ -1,17 +1,25 @@
+"use client";
+
 import React from "react";
 import LateralBar from "./components/LateralBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import DashboardSlice from "./slices/Dashboard";
+import DashboardSlice from "./slices/DashboardSlice";
 import MainHeader from "./components/MainHeader";
 
 export default function Dashboard() {
+  const [showSideBar, setShowSidebar] = React.useState(true);
+
   return (
-    <div className="h-dvh w-full bg-[#060607] grid grid-cols-[15%_85%]">
-      <LateralBar />
+    <div
+      className={`h-dvh w-full bg-[#060607] grid ${
+        showSideBar ? "grid-cols-[15%_85%]" : "grid-cols-1"
+      } `}
+    >
+      <LateralBar showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
       <ScrollArea className="overflow-y-auto h-full">
-        <MainHeader />
+        <MainHeader showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
         <section className="p-14">
-          <DashboardSlice />
+          <DashboardSlice showSideBar={showSideBar} />
         </section>
       </ScrollArea>
     </div>

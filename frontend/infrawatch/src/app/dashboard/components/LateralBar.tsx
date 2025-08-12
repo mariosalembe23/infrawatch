@@ -14,6 +14,7 @@ import {
   Server,
   Users,
 } from "lucide-react";
+import React from "react";
 
 interface IButtonCustom {
   children: React.ReactNode;
@@ -48,13 +49,22 @@ const ButtonCustom: React.FC<IButtonCustom> = ({
   );
 };
 
-const LateralBar = () => {
+interface ILateralBar {
+  showSideBar: boolean;
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LateralBar: React.FC<ILateralBar> = ({ showSideBar, setShowSidebar }) => {
   return (
-    <nav className="border-r border-zinc-900 overflow-y-auto">
+    <nav
+      className={`border-r ${
+        showSideBar ? "block" : "hidden"
+      } border-zinc-900 overflow-y-auto`}
+    >
       <header className="sticky bg-[#060607] top-0 left-0 w-full h-16">
         <div className="flex border-b items-center px-5 h-16 border-zinc-900 justify-between">
           <svg
-            className="text-black size-7"
+            className="text-black size-5"
             viewBox="0 0 56 56"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +83,11 @@ const LateralBar = () => {
               fill="currentColor"
             />
           </svg>
-          <Button size={"icon"} className="rounded-full border border-zinc-800">
+          <Button
+            onClick={() => setShowSidebar((prev) => !prev)}
+            size={"icon"}
+            className="rounded-full border size-8 cursor-pointer border-zinc-800"
+          >
             <PanelLeft size={25} className="text-white size-5" />
           </Button>
         </div>

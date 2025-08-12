@@ -1,15 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  BoltIcon,
   ChevronDownIcon,
   ChevronRight,
   ClipboardClock,
-  CopyPlusIcon,
-  FilesIcon,
   Info,
-  Layers2Icon,
-  LayoutDashboard,
   Link2,
   Network,
   Server,
@@ -30,9 +25,9 @@ interface IContainerData {
 
 const ContainerData: React.FC<IContainerData> = ({ title, length }) => {
   return (
-    <div className="px-5 py-3 rounded-lg bg-zinc-950 border border-zinc-900">
+    <div className="px-5 py-2 rounded-lg bg-zinc-950 border border-zinc-900">
       <div className="flex items-center gap-2">
-        <p className="text-cyan-500 text-2xl font-semibold">{length} </p>
+        <p className="text-cyan-500 text-2xl font-medium">{length} </p>
         <p className="text-white/70">/ {title}</p>
       </div>
     </div>
@@ -239,7 +234,11 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
   );
 };
 
-const DashboardSlice = () => {
+interface IDashboardSlice {
+  showSideBar: boolean;
+}
+
+const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
   return (
     <section>
       <header>
@@ -281,7 +280,7 @@ const DashboardSlice = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="grid grid-cols-4 gap-5 mt-10">
+        <div className="flex items-center  gap-2 mt-10">
           <ContainerData title="Servidores Conectados" length={12} />
           <ContainerData title="Aparelhos Registados" length={8} />
           <ContainerData title="Endpoints Rodando" length={5} />
@@ -306,7 +305,11 @@ const DashboardSlice = () => {
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="grid mt-4 grid-cols-3 gap-3">
+          <div
+            className={`grid mt-4 ${
+              showSideBar ? "grid-cols-3" : "grid-cols-4"
+            }  gap-3`}
+          >
             <ServerComponent nameServer="SR1" status="online" />
             <ServerComponent nameServer="SR2" status="offline" />
             <ServerComponent nameServer="SR3" status="online" />
@@ -411,7 +414,11 @@ const DashboardSlice = () => {
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="grid mt-7 pot:grid-cols-4 gap-1 grid-cols-1 lal:grid-cols-3">
+          <div
+            className={`grid mt-7 pot:grid-cols-4 gap-1 grid-cols-1 ${
+              showSideBar ? "lal:grid-cols-3" : "lal:grid-cols-4"
+            }`}
+          >
             <EndpointComponent
               url="https://api.infrawatch.com/endpoint/1"
               responseTime="0.234"
