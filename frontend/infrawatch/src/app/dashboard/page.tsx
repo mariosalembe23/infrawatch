@@ -7,6 +7,7 @@ import DashboardSlice from "./slices/DashboardSlice";
 import MainHeader from "./components/MainHeader";
 import ServerSlice from "./slices/ServerSlice";
 import NetworkSlice from "./slices/NetworkSlice";
+import EndpointSlice from "./slices/EndpointSlice";
 
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
@@ -33,6 +34,7 @@ export default function Dashboard() {
           {tabs === "dashboard" && <DashboardSlice showSideBar={showSideBar} />}
           {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
           {tabs === "network" && <NetworkSlice />}
+          {tabs === "endpoint" && <EndpointSlice showSideBar={showSideBar} />}
         </section>
       </ScrollArea>
     </div>
