@@ -4,11 +4,15 @@ from tkinter import simpledialog, messagebox
 import threading
 import requests
 import system_config
-
+import _removeService
+import sys
+import shutil
 # Caminho onde o ID será salvo
 id_file_path = os.path.expanduser("~/.infra_watch_id")
 
 URL = "https://onor-ebon.vercel.app/admin/invite/all"
+log_dir = os.path.join(os.path.expanduser("~"), "Documents", "infra", "infra_watch")
+log_path = os.path.join(log_dir, "log.txt")
 
 def save_id(user_id):
     with open(id_file_path, "w") as f:
@@ -53,8 +57,6 @@ def make_request(loading_win, user_id, root):
     finally:
         loading_win.destroy()
 
-
-
 def request_user_id(root):
     user_id = simpledialog.askstring("Infra-Watch - Instalação", "Insira o Id do Agente:")
     if user_id:
@@ -65,14 +67,19 @@ def request_user_id(root):
     else:
         messagebox.showwarning("Infra-Watch", "Saindo...")
         root.destroy()
-        exit()
+        sys.exit()
 
 def request_remove_id(root, saved_id):
     confirm = messagebox.askyesno("Infra-Watch", f"Deseja desinstalar este agente?")
     if confirm:
-        if system_config.remove_service():
+        if _removeService.remove_service():
             remove_id()
+            # REMOVE LOG FILE   
+            if os.path.isdir(log_dir):
+                shutil.rmtree(log_dir)        
             messagebox.showinfo("Infra-Watch", "Agente removido com sucesso!")
+            root.destroy()  
+            sys.exit()          
         else:
             messagebox.showerror("Infra-Watch", "Erro ao remover serviço.")
     else:
