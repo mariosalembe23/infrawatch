@@ -58,7 +58,7 @@ const LateralBar: React.FC<ILateralBar> = ({ showSideBar, setShowSidebar }) => {
   return (
     <nav
       className={`border-r ${
-        showSideBar ? "block" : "hidden"
+        showSideBar ? "pot:block hidden" : "hidden"
       } border-zinc-900 overflow-y-auto`}
     >
       <header className="sticky bg-[#060607] top-0 left-0 w-full h-16">

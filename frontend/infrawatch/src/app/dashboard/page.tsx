@@ -12,13 +12,13 @@ export default function Dashboard() {
   return (
     <div
       className={`h-dvh w-full bg-[#060607] grid ${
-        showSideBar ? "grid-cols-[15%_85%]" : "grid-cols-1"
+        showSideBar ? "grid-cols-1 pot:grid-cols-[20%_80%] lal:grid-cols-[15%_85%]" : "grid-cols-1"
       } `}
     >
       <LateralBar showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
       <ScrollArea className="overflow-y-auto h-full">
         <MainHeader showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
-        <section className="p-14">
+        <section className="ret:py-14 ret:px-14 px-5 py-10">
           <DashboardSlice showSideBar={showSideBar} />
         </section>
       </ScrollArea>

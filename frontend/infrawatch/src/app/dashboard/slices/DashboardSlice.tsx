@@ -27,7 +27,9 @@ const ContainerData: React.FC<IContainerData> = ({ title, length }) => {
   return (
     <div className="px-5 py-2 rounded-lg bg-zinc-950 border border-zinc-900">
       <div className="flex items-center gap-2">
-        <p className="text-cyan-500 text-2xl font-medium">{length} </p>
+        <p className="text-cyan-500 text-xl pot:text-2xl font-medium">
+          {length}{" "}
+        </p>
         <p className="text-white/70">/ {title}</p>
       </div>
     </div>
@@ -45,7 +47,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
 }) => {
   return (
     <div
-      className={` border border-zinc-900 px-5 py-3 bg-zinc-950 rounded-lg items-start flex justify-between`}
+      className={` border border-zinc-900 px-5 py-3 bg-zinc-950 rounded-lg flex-wrap items-start flex justify-between`}
     >
       <div>
         <p className="text-white text-lg font-medium">
@@ -74,7 +76,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
             Detalhes <Info size={17} />
           </button>
         </div>
-        <div className="mt-2 flex items-center gap-2 text-[15px] text-zinc-500 justify-end">
+        <div className="mt-2 flex items-center gap-2 text-[15px] text-zinc-500 justify-start lal:justify-end">
           <p>Processando...</p>
           <span className="loader !w-3 !h-3 !border-2 !border-b-zinc-600"></span>
         </div>
@@ -242,10 +244,12 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
   return (
     <section>
       <header>
-        <div className="flex items-start justify-between mb-10">
+        <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
           <div>
-            <h2 className="text-white text-4xl font-semibold">Dashboard</h2>
-            <div className="w-[30rem]">
+            <h2 className="text-white text-4xl font-medium pot:font-semibold">
+              Dashboard
+            </h2>
+            <div className="w-full ret:w-[30rem]">
               <p className="text-zinc-500 font-[410]">
                 Aqui você pode visualizar o estado geral da sua infraestrutura e
                 acessar informações detalhadas sobre os seus servidores,
@@ -280,7 +284,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center  gap-2 mt-10">
+        <div className="flex items-center flex-wrap  gap-2 mt-10">
           <ContainerData title="Servidores Conectados" length={12} />
           <ContainerData title="Aparelhos Registados" length={8} />
           <ContainerData title="Endpoints Rodando" length={5} />
@@ -307,7 +311,9 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
           </header>
           <div
             className={`grid mt-4 ${
-              showSideBar ? "grid-cols-3" : "grid-cols-4"
+              showSideBar
+                ? "ret:grid-cols-2 grid-cols-1 pot:grid-cols-3"
+                : "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-4"
             }  gap-3`}
           >
             <ServerComponent nameServer="SR1" status="online" />
@@ -337,7 +343,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="grid mt-7 pot:grid-cols-4 grid-cols-1 lal:grid-cols-5 gap-3">
+          <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
             <NetworkComponent
               name="SW-CORE-01"
               status="operational"
@@ -415,8 +421,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
             </Button>
           </header>
           <div
-            className={`grid mt-7 pot:grid-cols-4 gap-1 grid-cols-1 ${
-              showSideBar ? "lal:grid-cols-3" : "lal:grid-cols-4"
+            className={`grid mt-7 gap-1 ${
+              showSideBar
+                ? "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
+                : "lal:grid-cols-4 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
             }`}
           >
             <EndpointComponent
