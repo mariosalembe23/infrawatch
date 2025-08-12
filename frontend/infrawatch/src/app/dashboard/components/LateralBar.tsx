@@ -20,15 +20,20 @@ interface IButtonCustom {
   children: React.ReactNode;
   title: string;
   type?: "normal" | "danger";
+  onClick?: () => void;
 }
 
 const ButtonCustom: React.FC<IButtonCustom> = ({
   children,
   title,
   type = "normal",
+  onClick = () => {},
 }) => {
   return type === "normal" ? (
-    <button className="flex items-center flex-nowrap font-[430] justify-between transition-all hover:opacity-80 cursor-pointer">
+    <button
+      onClick={onClick}
+      className="flex items-center flex-nowrap font-[430] justify-between transition-all hover:opacity-80 cursor-pointer"
+    >
       <span className="flex items-center text-start gap-2 text-white">
         {children}
         {title}
@@ -49,12 +54,19 @@ const ButtonCustom: React.FC<IButtonCustom> = ({
   );
 };
 
+type Tabs = "server" | "network" | "endpoint" | "dashboard";
+
 interface ILateralBar {
   showSideBar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
 }
 
-const LateralBar: React.FC<ILateralBar> = ({ showSideBar, setShowSidebar }) => {
+const LateralBar: React.FC<ILateralBar> = ({
+  showSideBar,
+  setShowSidebar,
+  setTabs,
+}) => {
   return (
     <nav
       className={`border-r ${
@@ -96,16 +108,19 @@ const LateralBar: React.FC<ILateralBar> = ({ showSideBar, setShowSidebar }) => {
       <div className="mt-1 p-5 text-start">
         <h2 className="text-zinc-400">Menu</h2>
         <div className="flex mt-7 flex-col gap-6">
-          <ButtonCustom title="Dashboard">
+          <ButtonCustom onClick={() => setTabs("dashboard")} title="Dashboard">
             <LayoutDashboard size={18} className="text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Servidores">
+          <ButtonCustom onClick={() => setTabs("server")} title="Servidores">
             <Server size={18} className="text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Aparelhos de Rede">
+          <ButtonCustom
+            onClick={() => setTabs("network")}
+            title="Aparelhos de Rede"
+          >
             <Network size={18} className="text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Endpoints">
+          <ButtonCustom onClick={() => setTabs("endpoint")} title="Endpoints">
             <Link2 size={18} className="text-white" />
           </ButtonCustom>
           <ButtonCustom title="Estatí. & Relatórios">

@@ -61,7 +61,10 @@ const MainHeader: React.FC<IMainHeader> = ({ showSideBar, setShowSidebar }) => {
             Mário Salembe
           </p>
         </div>
-        <Button size={"icon"} className="rounded-full cursor-pointer border border-zinc-800">
+        <Button
+          size={"icon"}
+          className="rounded-full cursor-pointer border border-zinc-800"
+        >
           <Bolt size={18} className="text-white size-5" />
         </Button>
       </div>
