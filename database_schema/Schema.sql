@@ -106,3 +106,16 @@ temperature
     "response_size_bytes": 1256
   }
 }
+
+[USER]
+name
+username
+email
+permission {
+  "edit": true,
+  "delete": false,
+  "view": true
+}
+last_login
+created_at
+updated_at

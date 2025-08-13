@@ -30,7 +30,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       <header>
         <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
           <div>
-            <h2 className="text-white text-4xl font-medium pot:font-semibold">
+            <h2 className="text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
               Dashboard
             </h2>
             <div className="w-full ret:w-[30rem]">
