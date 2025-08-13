@@ -29,7 +29,11 @@ export default function Dashboard() {
         setTabs={setTabs}
       />
       <ScrollArea className="overflow-y-auto w-full h-full">
-        <MainHeader showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
+        <MainHeader
+          showSideBar={showSideBar}
+          setTabs={setTabs}
+          setShowSidebar={setShowSidebar}
+        />
         <section className="ret:py-14 ret:px-14 px-5 py-10">
           {tabs === "dashboard" && <DashboardSlice showSideBar={showSideBar} />}
           {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}

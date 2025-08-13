@@ -1,17 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { Bolt, Menu, PanelLeft } from "lucide-react";
 import Image from "next/image";
+import React from "react";
+import BottomMenuSheet from "./BottomMenuSheet";
+
+type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
 interface IMainHeader {
   showSideBar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
 }
 
-const MainHeader: React.FC<IMainHeader> = ({ showSideBar, setShowSidebar }) => {
+const MainHeader: React.FC<IMainHeader> = ({
+  showSideBar,
+  setShowSidebar,
+  setTabs,
+}) => {
+  const [open, setOpen] = React.useState(false);
+
   return (
     <header className="sticky bg-[#060607]/10 backdrop-blur-2xl top-0 left-0 w-full h-16 z-20 border-b border-zinc-900 flex items-center justify-between px-5 ret:px-7">
       <div className="flex items-center gap-3">
-        <button className="border transition-all cursor-pointer hover:bg-zinc-900 border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center">
+        <button
+          onClick={() => setOpen(true)}
+          className="border transition-all cursor-pointer hover:bg-zinc-900 border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center"
+        >
           <Menu size={20} className="text-white" />
         </button>
         {!showSideBar && (
@@ -68,6 +82,7 @@ const MainHeader: React.FC<IMainHeader> = ({ showSideBar, setShowSidebar }) => {
           <Bolt size={18} className="text-white size-5" />
         </Button>
       </div>
+      <BottomMenuSheet open={open} setOpen={setOpen} setTabs={setTabs} />
     </header>
   );
 };
