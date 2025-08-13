@@ -8,6 +8,12 @@
 }
 
 @theme inline {
+  --breakpoint-smaller: 23rem;
+  --breakpoint-small: 37.4375rem;
+  --breakpoint-ret: 37.5rem;
+  --breakpoint-pot: 56.25rem;
+  --breakpoint-det: 75rem;
+  --breakpoint-lal: 112.5rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -127,5 +133,25 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
