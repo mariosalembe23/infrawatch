@@ -1,5 +1,6 @@
 import { ClipboardClock, Info } from "lucide-react";
 import DetailsDialog from "../slices/DetailsDialog";
+import LogsDialog from "../slices/LogsDialog";
 
 interface IServerComponent {
   nameServer: string;
@@ -34,9 +35,16 @@ const ServerComponent: React.FC<IServerComponent> = ({
       </div>
       <div>
         <div className="flex items-center gap-2">
-          <button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-md">
+          { /*<button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-md">
             Logs <ClipboardClock size={16} />
-          </button>
+          </button> */}
+          <LogsDialog title={`Logs - ${nameServer}`}>
+            <div className="font-mono text-sm space-y-1">
+              <p className="text-green-400">[INFO] Server started successfully <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-yellow-400">[WARN] High CPU usage detected <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-red-400">[ERROR] Connection timeout <span className="text-white">dd/mm/yy</span></p>
+              </div>
+          </LogsDialog>
           <DetailsDialog title={`Detalhes - ${nameServer}`} triggerText="Detalhes">
             <div className="space-y-3">
               <div className="flex justify-between">

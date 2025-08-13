@@ -17,7 +17,7 @@ export default function DetailsDialog({ title, children, triggerText = "Detalhes
             Detalhes <Eye size={16} />
           </button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl bg-black">
+      <DialogContent className="max-w-2xl text-white bg-black">
         <DialogHeader>
           <DialogTitle className="text-white">{title}</DialogTitle>
         </DialogHeader>
