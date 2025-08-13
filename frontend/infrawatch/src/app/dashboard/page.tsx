@@ -8,7 +8,6 @@ import MainHeader from "./components/MainHeader";
 import ServerSlice from "./slices/ServerSlice";
 import NetworkSlice from "./slices/NetworkSlice";
 import EndpointSlice from "./slices/EndpointSlice";
-
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
 export default function Dashboard() {
