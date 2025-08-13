@@ -38,14 +38,14 @@ const ServerComponent: React.FC<IServerComponent> = ({
           { /*<button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-md">
             Logs <ClipboardClock size={16} />
           </button> */}
-          <LogsDialog title={`Logs - ${nameServer}`}>
+          <LogsDialog title={`Logs - Servidor ${nameServer}`}>
             <div className="font-mono text-sm space-y-1">
-              <p className="text-green-400">[INFO] Server started successfully <span className="text-white">dd/mm/yy</span></p>
-              <p className="text-yellow-400">[WARN] High CPU usage detected <span className="text-white">dd/mm/yy</span></p>
-              <p className="text-red-400">[ERROR] Connection timeout <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-green-400">[INFO] Servevidor levantado com sucesso <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-yellow-400">[WARN] Alto uso da CPU detectado <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-red-400">[ERROR] Conexão perdida <span className="text-white">dd/mm/yy</span></p>
               </div>
           </LogsDialog>
-          <DetailsDialog title={`Detalhes - ${nameServer}`} triggerText="Detalhes">
+          <DetailsDialog title={`Detalhes - Servidor ${nameServer}`} triggerText="Detalhes">
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-zinc-400">Status:</span>
