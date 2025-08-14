@@ -1,4 +1,6 @@
 import { ClipboardClock, Info } from "lucide-react";
+import DetailsDialog from "../slices/DetailsDialog";
+import LogsDialog from "../slices/LogsDialog";
 
 interface IServerComponent {
   nameServer: string;
@@ -33,12 +35,38 @@ const ServerComponent: React.FC<IServerComponent> = ({
       </div>
       <div>
         <div className="flex items-center gap-2">
-          <button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-md">
+          { /*<button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-md">
             Logs <ClipboardClock size={16} />
-          </button>
-          <button className="px-3 gap-2 border border-zinc-900 transition-all hover:bg-zinc-900 cursor-pointer py-[0.19rem] flex items-center bg-black text-white rounded-md">
-            Detalhes <Info size={17} />
-          </button>
+          </button> */}
+          <LogsDialog title={`Logs - Servidor ${nameServer}`}>
+            <div className="font-mono text-sm space-y-1">
+              <p className="text-green-400">[INFO] Servevidor levantado com sucesso <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-yellow-400">[WARN] Alto uso da CPU detectado <span className="text-white">dd/mm/yy</span></p>
+              <p className="text-red-400">[ERROR] Conexão perdida <span className="text-white">dd/mm/yy</span></p>
+              </div>
+          </LogsDialog>
+          <DetailsDialog title={`Detalhes - Servidor ${nameServer}`} triggerText="Detalhes">
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Status:</span>
+                <span className={status === "online" ? "text-green-500" : "text-red-500"}>
+                  {status === "online" ? "Online" : "Offline"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Última atualização:</span>
+                <span className="text-white">há 2 horas</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">CPU:</span>
+                <span className="text-white">45%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">RAM:</span>
+                <span className="text-white">2.1GB / 8GB</span>
+              </div>
+            </div>
+          </DetailsDialog>
         </div>
         <div className="mt-2 flex items-center gap-2 text-[15px] text-zinc-500 pot:justify-start justify-end lal:justify-end">
           <p>Processando...</p>
