@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Bolt, Menu, PanelLeft } from "lucide-react";
+import { Bolt, Menu, PanelLeft, Sun } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import BottomMenuSheet from "./BottomMenuSheet";
@@ -80,6 +80,12 @@ const MainHeader: React.FC<IMainHeader> = ({
           className="rounded-full cursor-pointer border border-zinc-800"
         >
           <Bolt size={18} className="text-white size-5" />
+        </Button>
+        <Button
+          size={"icon"}
+          className="rounded-full cursor-pointer border border-zinc-800"
+        >
+          <Sun size={18} className="text-white size-5" />
         </Button>
       </div>
       <BottomMenuSheet open={open} setOpen={setOpen} setTabs={setTabs} />
