@@ -155,3 +155,7 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.rdp-dropdown option {
+  font-weight: 450;
+}
