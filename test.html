@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Test</title>
+</head>
+<body>
+	<script>
+		const url = "http://127.0.0.1:8000/"
+
+		fetch(url,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				}
+			}
+		)
+		.then(res => res.json())
+		.then(data => {
+			const message = document.createElement("h2");
+			message.innerText = data.message || "";
+			const body = document.body;
+			document.body.innerHTML += `<h2>${message.innerText}</h2>`;
+			console.log("Response:", data);
+		})
+		.catch(err => console.error("Error:", err));
+		document.body.innerHTML += "<h1>Pagina de teste by lleodev</h1>";
+	</script>
+</body>
+</html>

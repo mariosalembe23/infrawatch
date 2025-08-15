@@ -95,7 +95,7 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
               </ButtonCustom>
               <ButtonCustom title="Utilizadores">
                 <Users size={18} className="text-white" />
-              </ButtonCustom>
+              </ButtonCustom>es mandatory fields
             </div>
           </div>
           <div className="mt-5 p-5 border-t border-zinc-900">
