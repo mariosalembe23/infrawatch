@@ -1,4 +1,5 @@
 ping3
+aiohttp
 requests
 psycopg2-binary
 fastapi==0.116.1
