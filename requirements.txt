@@ -1,6 +1,10 @@
 ping3
 aiohttp
 requests
+pydantic
 psycopg2-binary
+python-multipart
 fastapi==0.116.1
+passlib[bcrypt]==1.7.4
 uvicorn[standard]==0.30.5
+python-jose[cryptography]
