@@ -44,6 +44,9 @@ memmory_usage {
     "available": ""
 }
 temperature
+
+
+===========================================
 {
   "description": {
     "model": "Cisco Catalyst 2960X-48FPS-L",

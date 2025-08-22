@@ -8,7 +8,7 @@ interface IServerSlice {
   showSideBar: boolean;
 }
 
-const ServerSlice: React.FC<IServerSlice> = ({ showSideBar }) => {
+const ServerSlice: React.FC<IServerSlice> = ({}) => {
   return (
     <section className="relative h-full">
       <header>
@@ -34,40 +34,22 @@ const ServerSlice: React.FC<IServerSlice> = ({ showSideBar }) => {
       </header>
       <div className="flex items-center justify-end">
         <p className="text-zinc-300 flex items-center gap-2">
-          Total <Badge className="rounded bg-cyan-600">30</Badge>
+          Total <Badge className="rounded-full">30</Badge>
         </p>
       </div>
-      <div
-        className={`grid mt-4 ${
-          showSideBar
-            ? "ret:grid-cols-2 grid-cols-1 pot:grid-cols-3"
-            : "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-4"
-        }  gap-3`}
-      >
-        <ServerComponent nameServer="SR1" status="online" />
-        <ServerComponent nameServer="SR2" status="offline" />
-        <ServerComponent nameServer="SR3" status="online" />
-        <ServerComponent nameServer="SR4" status="online" />
-        <ServerComponent nameServer="SR5" status="online" />
-        <ServerComponent nameServer="SR6" status="offline" />
-        <ServerComponent nameServer="SR1" status="online" />
-        <ServerComponent nameServer="SR2" status="offline" />
-        <ServerComponent nameServer="SR3" status="online" />
-        <ServerComponent nameServer="SR4" status="online" />
-        <ServerComponent nameServer="SR5" status="online" />
-        <ServerComponent nameServer="SR6" status="offline" />
-        <ServerComponent nameServer="SR1" status="online" />
-        <ServerComponent nameServer="SR2" status="offline" />
-        <ServerComponent nameServer="SR3" status="online" />
-        <ServerComponent nameServer="SR4" status="online" />
-        <ServerComponent nameServer="SR5" status="online" />
-        <ServerComponent nameServer="SR6" status="offline" />
-        <ServerComponent nameServer="SR1" status="online" />
-        <ServerComponent nameServer="SR2" status="offline" />
-        <ServerComponent nameServer="SR3" status="online" />
-        <ServerComponent nameServer="SR4" status="online" />
-        <ServerComponent nameServer="SR5" status="online" />
-        <ServerComponent nameServer="SR6" status="offline" />
+      <div className={`grid mt-4 grid-cols-1`}>
+        {
+          // arrays of servers
+          Array.from({ length: 30 }, (_, index) => (
+            <ServerComponent
+              key={index}
+              index={index + 1}
+              lastIndex={30}
+              nameServer={`SR ${index + 1}`}
+              status={index % 2 === 0 ? "online" : "offline"}
+            />
+          ))
+        }
       </div>
 
       <div className="fixed bottom-5 pot:bottom-10 end-7 pot:end-12">

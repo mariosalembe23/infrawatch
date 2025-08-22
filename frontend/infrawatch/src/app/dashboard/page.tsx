@@ -33,7 +33,7 @@ export default function Dashboard() {
           setTabs={setTabs}
           setShowSidebar={setShowSidebar}
         />
-        <section className="ret:py-14 ret:px-14 px-5 py-10">
+        <section className="ret:py-14 ret:px-20 px-5 py-10">
           {tabs === "dashboard" && <DashboardSlice showSideBar={showSideBar} />}
           {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
           {tabs === "network" && <NetworkSlice />}

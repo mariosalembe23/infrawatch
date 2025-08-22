@@ -15,7 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ContainerData from "../components/ContainerData";
 import ServerComponent from "../components/ServerComponent";
 import NetworkComponent from "../components/NetWorkComponent";
 import EndpointComponent from "../components/EndpointComponent";
@@ -68,12 +67,6 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center flex-wrap  gap-2 mt-10">
-          <ContainerData title="Servidores Conectados" length={12} />
-          <ContainerData title="Aparelhos Registados" length={8} />
-          <ContainerData title="Endpoints Rodando" length={5} />
-          <ContainerData title="Relatórios Prontos" length={3} />
-        </div>
       </header>
       <div className="mt-10">
         <div>
@@ -86,26 +79,26 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                   size={12}
                   aria-hidden="true"
                 />
-                Servidores
+                Servidores - 14
               </Badge>
             </h3>
             <Button className="cursor-pointer">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div
-            className={`grid mt-4 ${
-              showSideBar
-                ? "ret:grid-cols-2 grid-cols-1 pot:grid-cols-3"
-                : "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-4"
-            }  gap-3`}
-          >
-            <ServerComponent nameServer="SR1" status="online" />
-            <ServerComponent nameServer="SR2" status="offline" />
-            <ServerComponent nameServer="SR3" status="online" />
-            <ServerComponent nameServer="SR4" status="online" />
-            <ServerComponent nameServer="SR5" status="online" />
-            <ServerComponent nameServer="SR6" status="offline" />
+          <div className={`grid mt-4 grid-cols-1 `}>
+            {
+              // arrays of servers
+              Array.from({ length: 6 }, (_, index) => (
+                <ServerComponent
+                  key={index}
+                  index={index + 1}
+                  lastIndex={6}
+                  nameServer={`SR ${index + 1}`}
+                  status={index % 2 === 0 ? "online" : "offline"}
+                />
+              ))
+            }
           </div>
         </div>
       </div>
