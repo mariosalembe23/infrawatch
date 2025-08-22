@@ -257,7 +257,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
         </div>
       </div>
       <OTPCard
-        openOTP={AdiiopenOTP}
+        openOTP={openOTP}
         setOpenOTP={setOpenOTP}
         email={watch("email")}
       />
