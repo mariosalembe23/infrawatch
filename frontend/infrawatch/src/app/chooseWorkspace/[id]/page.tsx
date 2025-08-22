@@ -28,19 +28,19 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
   created_at,
 }) => {
   return (
-    <div className="bg-zinc-900 group transition-all hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border border-zinc-900/50 p-5 rounded-3xl gap-3">
+    <div className="dark:bg-zinc-900 bg-[#fff] group hover:border-gray-400 transition-all dark:hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border dark:border-zinc-900/50 p-5 rounded-3xl gap-3">
       <span className="flex absolute group-hover:-bottom-14 transition-all -bottom-16 -right-16 items-center gap-2 mb-2 flex-col">
         <Container
           size={50}
           strokeWidth={1}
-          className="text-zinc-950/50 group-hover:text-zinc-800/40 transition-all size-48 mb-2"
+          className="dark:text-zinc-950/50 dark:group-hover:text-zinc-800/40 text-gray-200 transition-all size-48 mb-2"
         />
       </span>
       <header>
-        <h2 className="text-white text-lg">
+        <h2 className="dark:text-white text-lg">
           {company_name || "Nome do Espaço de Trabalho"}
         </h2>
-        <p className="text-zinc-500 pt-2 text-[15px]">
+        <p className="dark:text-zinc-500 text-zinc-600 pt-2 text-[15px]">
           {about || "Descrição do espaço de trabalho"}
         </p>
       </header>
@@ -67,7 +67,7 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
             </AvatarFallback>
           </Avatar>
         </div>
-        <p className="font-mono text-white text-[13px] relative z-10 pt-1">
+        <p className="font-mono dark:text-white text-[14px] relative z-10 pt-1">
           Criado em{" "}
           {new Date(created_at).toLocaleDateString("pt-PT", {
             day: "2-digit",
@@ -140,7 +140,6 @@ export default function ChooseWorkspace() {
             Authorization: `Bearer ${getCookie("token")}`,
           },
         });
-        // console.log("Workspaces fetched:", response.data);
         setLoading(false);
         if (response.status === 200) {
           setWorkspaces(response.data || []);
@@ -181,15 +180,20 @@ export default function ChooseWorkspace() {
   return (
     <div className="">
       {(loading || userLoading) && <LoadingComponent />}
-      <header className="w-full sticky top-0 left-0 right-0 py-4 bg-black/40 backdrop-blur-md flex px-7 items-center justify-between">
+      <header className="w-full sticky top-0 left-0 right-0 py-4 bg-white/40 dark:bg-black/40 backdrop-blur-md flex px-7 items-center justify-between">
         <div className="flex items-center gap-2">
           <svg
-            className="text-black size-5"
+            className="dark:text-black text-white size-5"
             viewBox="0 0 56 56"
-            fill="none"
+            fill="#fff"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <rect width="56" height="56" rx="7" fill="#fff" />
+            <rect
+              width="56"
+              height="56"
+              rx="7"
+              fill={isDarkMode ? "#fff" : "#000"}
+            />
             <path
               d="M10 37C10 31.4772 14.4772 27 20 27V27V56H10V37Z"
               fill="currentColor"
@@ -203,7 +207,7 @@ export default function ChooseWorkspace() {
               fill="currentColor"
             />
           </svg>
-          <h1 className="text-white text-xl">Infra Watch</h1>
+          <h1 className="dark:text-white text-xl">Infra Watch</h1>
         </div>
         <div className="flex items-center gap-2">
           <TooltipProvider delayDuration={0}>
@@ -293,14 +297,14 @@ export default function ChooseWorkspace() {
               <Container
                 size={50}
                 strokeWidth={1}
-                className="text-white size-12 mb-2"
+                className="dark:text-white text-zinc-500 size-12 mb-2"
               />
             </span>
-            <h1 className="text-white text-xl ret:text-2xl uppercase">
+            <h1 className="dark:text-white text-xl ret:text-2xl uppercase">
               Escolha um Espaço de Trabalho
             </h1>
             <div className="pot:w-[26rem] w-full mx-auto">
-              <p className="text-zinc-400 font-[410] mt-2">
+              <p className="dark:text-zinc-400 text-zinc-700 font-[410] mt-2">
                 Selecione um espaço de trabalho existente ou crie um novo para
                 gerenciar seus servidores, dispositivos de rede e endpoints, bem
                 como sua aquipa!
@@ -335,14 +339,14 @@ export default function ChooseWorkspace() {
           <footer className="flex gap-2  flex-wrap ret:flex-row flex-col-reverse justify-center mt-10">
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
-              className="py-5  bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
+              className="py-5 bg-red-600/70 dark:bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
             >
               <ArrowLeft size={18} className="" />
               Terminar sessão
             </Button>
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
-              className="py-5  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+              className="py-5 bg-cyan-600/70 dark:bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
             >
               Criar Novo Espaço de Trabalho <Plus size={18} className="" />
             </Button>

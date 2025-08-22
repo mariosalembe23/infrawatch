@@ -55,9 +55,12 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+html,
 body {
   font-family: "Clash", sans-serif;
   font-weight: 450;
+  transition: background-color 0.4s ease, color 0.4s ease !important;
+  background-color: var(--background);
 }
 
 :root {
@@ -167,9 +170,9 @@ body {
 }
 
 input:is(:-webkit-autofill, :autofill) {
-  caret-color: #fff !important;
+  caret-color: var(--autofill-text);
   background-color: var(--autofill-bg) !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
+  color: var(--autofill-text) !important;
+  -webkit-text-fill-color: var(--autofill-text);
   transition: background-color 5000s ease-in-out 0s, color 0.4s ease;
 }

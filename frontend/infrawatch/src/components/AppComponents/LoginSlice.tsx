@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import {  useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowRightIcon, EyeIcon, EyeOffIcon, Plus } from "lucide-react";
 import Link from "next/link";
@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 
 interface LoginSliceProps {
   setSlice: React.Dispatch<React.SetStateAction<"login" | "register">>;
+  isDarkMode: boolean;
 }
 
 type LoginFormFields = {
@@ -23,7 +24,7 @@ type LoginFormFields = {
   password: string;
 };
 
-const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
+const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
   const [openOTP, setOpenOTP] = useState<boolean>(false);
@@ -107,12 +108,17 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
       <header className="text-center">
         <span className="flex items-center gap-2 mb-2 flex-col">
           <svg
-            className="text-black size-9"
+            className="dark:text-black text-white size-7"
             viewBox="0 0 56 56"
-            fill="none"
+            fill="#fff"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <rect width="56" height="56" rx="7" fill="#fff" />
+            <rect
+              width="56"
+              height="56"
+              rx="7"
+              fill={isDarkMode ? "#fff" : "#000"}
+            />
             <path
               d="M10 37C10 31.4772 14.4772 27 20 27V27V56H10V37Z"
               fill="currentColor"
@@ -126,9 +132,9 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
               fill="currentColor"
             />
           </svg>
-          <p className="text-2xl text-white">Infra Watch</p>
+          <p className="text-2xl dark:text-white">Infra Watch</p>
         </span>
-        <p className="text-lg font-[430] text-[15.55px] text-zinc-400 mb-4">
+        <p className="text-lg font-[430] text-[15.55px] tetx-zinc-600 dark:text-zinc-400 mb-4">
           Bem-vindo ao Infra Watch, a plataforma de monitoramento de
           infraestruturas!
         </p>
@@ -137,7 +143,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
         <div className="flex flex-col items-center justify-center gap-2 w-full">
           <button
             disabled={true}
-            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg dark:text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
           >
             <Image
               src={"/icons/google.svg"}
@@ -149,7 +155,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
           </button>
           <button
             disabled={true}
-            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all dark:text-white hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
           >
             <Image
               src={"/icons/linkedin.svg"}
@@ -161,16 +167,18 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
           </button>
         </div>
         <div className="w-full relative flex items-center justify-center my-8">
-          <hr className="w-full border-zinc-800" />
-          <p className="absolute px-5 text-[15px] bg-black text-white">Ou</p>
+          <hr className="w-full dark:border-zinc-800" />
+          <p className="absolute px-5 text-[15px] bg-white dark:bg-black dark:text-white">
+            Ou
+          </p>
         </div>
         <div className="w-full flex flex-col gap-5">
           <div className="*:not-first:mt-2">
             <Label
               htmlFor={"email"}
-              className="font-[450] text-white text-[15px]"
+              className="font-[450] dark:text-white text-[15px]"
             >
-              E-mail ou Username
+              E-mail
             </Label>
             <Input
               id={"email"}
@@ -178,14 +186,14 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
                 required: "E-mail ou username é obrigatório.",
               })}
               placeholder="Email"
-              className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
+              className="shadow-none dark:!ring-cyan-500/30 border-zinc-300 dark:border-zinc-800 dark:text-white py-5 text-base font-[450] dark:focus:!border-cyan-500/80 "
               type="email"
             />
           </div>
           <div className="*:not-first:mt-2">
             <Label
               htmlFor={"password"}
-              className="font-[450] text-white text-[15px]"
+              className="font-[450] dark:text-white text-[15px]"
             >
               Palavra-chave
             </Label>
@@ -195,7 +203,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
                 {...register("password", {
                   required: "Palavra-chave é obrigatória.",
                 })}
-                className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
+                className="shadow-none dark:!ring-cyan-500/30 border-zinc-300 dark:border-zinc-800 dark:text-white py-5 text-base font-[450] dark:focus:!border-cyan-500/80 "
                 placeholder="Password"
                 type={isVisible ? "text" : "password"}
               />
@@ -219,10 +227,10 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
             <Button
               type="submit"
               disabled={loading}
-              className="py-5  w-full bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+              className="py-5  w-full bg-cyan-600/70 dark:bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
             >
               {loading && (
-                <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
+                <span className="loader !text-base !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
               )}
               Iniciar sessão <ArrowRightIcon size={18} className="" />
             </Button>
@@ -241,7 +249,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
             </Button>
             <Link
               href={"/dashboard"}
-              className="inline-flex mt-5 transition-all hover:text-white text-zinc-400 underline"
+              className="inline-flex mt-5 transition-all dark:hover:text-white hover:opacity-75 dark:text-zinc-400 underline"
             >
               Esqueci a minha palavra-chave
             </Link>
@@ -249,7 +257,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
         </div>
       </div>
       <OTPCard
-        openOTP={openOTP}
+        openOTP={AdiiopenOTP}
         setOpenOTP={setOpenOTP}
         email={watch("email")}
       />

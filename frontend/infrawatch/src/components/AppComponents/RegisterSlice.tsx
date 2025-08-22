@@ -4,7 +4,6 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowRightIcon, EyeIcon, EyeOffIcon, Plus } from "lucide-react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { APIS, GenericAxiosActions } from "./API";
 import axios from "axios";
@@ -12,6 +11,7 @@ import { toast } from "sonner";
 
 interface RegisterSliceProps {
   setSlice: React.Dispatch<React.SetStateAction<"login" | "register">>;
+  isDarkMode: boolean;
 }
 
 type RegisterFormFields = {
@@ -20,7 +20,10 @@ type RegisterFormFields = {
   password: string;
 };
 
-const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
+const RegisterSlice: React.FC<RegisterSliceProps> = ({
+  setSlice,
+  isDarkMode,
+}) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,12 +73,17 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
       <header className="text-center">
         <span className="flex items-center gap-2 mb-2 flex-col">
           <svg
-            className="text-black size-9"
+            className="dark:text-black text-white size-7"
             viewBox="0 0 56 56"
-            fill="none"
+            fill="#fff"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <rect width="56" height="56" rx="7" fill="#fff" />
+            <rect
+              width="56"
+              height="56"
+              rx="7"
+              fill={isDarkMode ? "#fff" : "#000"}
+            />
             <path
               d="M10 37C10 31.4772 14.4772 27 20 27V27V56H10V37Z"
               fill="currentColor"
@@ -89,9 +97,9 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
               fill="currentColor"
             />
           </svg>
-          <p className="text-2xl text-white">Infra Watch</p>
+          <p className="text-2xl dark:text-white">Infra Watch</p>
         </span>
-        <p className="text-lg font-[430] text-[15.55px] text-zinc-400 mb-4">
+        <p className="text-lg font-[430] text-[15.55px] text-zinc-700 dark:text-zinc-400 mb-4">
           Bem-vindo ao Infra Watch, crie sua conta para começar a monitorar suas
           infraestruturas!
         </p>
@@ -100,7 +108,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
         <div className="flex flex-col items-center justify-center gap-2 w-full">
           <button
             disabled={true}
-            className="flex w-full px-5 disabled:cursor-not-allowed disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg dark:text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
           >
             <Image
               src={"/icons/google.svg"}
@@ -112,7 +120,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
           </button>
           <button
             disabled={true}
-            className="flex w-full px-5 disabled:cursor-not-allowed disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all dark:text-white hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
           >
             <Image
               src={"/icons/linkedin.svg"}
@@ -124,14 +132,16 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
           </button>
         </div>
         <div className="w-full relative flex items-center justify-center my-8">
-          <hr className="w-full border-zinc-800" />
-          <p className="absolute px-5 text-[15px] bg-black text-white">Ou</p>
+          <hr className="w-full dark:border-zinc-800" />
+          <p className="absolute px-5 text-[15px] bg-white dark:bg-black dark:text-white">
+            Ou
+          </p>
         </div>
         <div className="w-full flex flex-col gap-5">
           <div className="*:not-first:mt-2">
             <Label
               htmlFor={"fullName"}
-              className="font-[450] text-white text-[15px]"
+              className="font-[450] dark:text-white text-[15px]"
             >
               Nome Completo
             </Label>
@@ -158,12 +168,12 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
               className={`shadow-none ${
                 errors.fullName
                   ? " !ring-red-300/40 !border-red-500 focus:!border-red-500/80"
-                  : "!ring-cyan-500/30 border-zinc-800 focus:!border-cyan-500/80"
-              }   text-white py-5 text-base font-[450] `}
+                  : "dark:!ring-cyan-500/30 border-zinc-300 dark:border-zinc-800 dark:focus:!border-cyan-500/80"
+              }   dark:text-white py-5 text-base font-[450] `}
               type="text"
             />
             {errors.fullName && (
-              <p className="text-white/50 font-[450] text-sm mt-1">
+              <p className="dark:text-white/50 text-zinc-700 font-[450] text-sm mt-1">
                 {errors.fullName.message}
               </p>
             )}
@@ -171,7 +181,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
           <div className="*:not-first:mt-2">
             <Label
               htmlFor={"email"}
-              className="font-[450] text-white text-[15px]"
+              className="font-[450] dark:text-white text-[15px]"
             >
               E-mail
             </Label>
@@ -187,13 +197,13 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
               className={`shadow-none ${
                 errors.email
                   ? " !ring-red-300/40 !border-red-500 focus:!border-red-500/80"
-                  : "!ring-cyan-500/30 border-zinc-800 focus:!border-cyan-500/80"
-              }   text-white py-5 text-base font-[450] `}
+                  : "dark:!ring-cyan-500/30 border-zinc-300 dark:border-zinc-800 dark:focus:!border-cyan-500/80"
+              }   dark:text-white py-5 text-base font-[450] `}
               type="text"
               placeholder="Email"
             />
             {errors.email && (
-              <p className="text-white/50 font-[450] text-sm mt-1">
+              <p className="dark:text-white/50 text-zinc-700  font-[450] text-sm mt-1">
                 {errors.email.message}
               </p>
             )}
@@ -201,7 +211,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
           <div className="*:not-first:mt-2">
             <Label
               htmlFor={"password"}
-              className="font-[450] text-white text-[15px]"
+              className="font-[450] dark:text-white text-[15px]"
             >
               Palavra-chave
             </Label>
@@ -222,8 +232,8 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
                 className={`shadow-none ${
                   errors.password
                     ? " !ring-red-300/40 !border-red-500 focus:!border-red-500/80"
-                    : "!ring-cyan-500/30 border-zinc-800 focus:!border-cyan-500/80"
-                }   text-white py-5 text-base font-[450] `}
+                    : "dark:!ring-cyan-500/30 border-zinc-300 dark:border-zinc-800 dark:focus:!border-cyan-500/80"
+                }   dark:text-white py-5 text-base font-[450] `}
                 placeholder="Password"
                 type={isVisible ? "text" : "password"}
               />
@@ -243,7 +253,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
               </button>
             </div>
             {errors.password && (
-              <p className="text-white/50 font-[450] text-sm mt-1">
+              <p className="dark:text-white/50 text-zinc-700  font-[450] text-sm mt-1">
                 {errors.password.message}
               </p>
             )}
@@ -260,7 +270,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
                 !watch("password") ||
                 loading
               }
-              className="py-5  w-full bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+              className="py-5  w-full bg-cyan-600/80 dark:bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
             >
               {loading && (
                 <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
@@ -280,12 +290,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
                 aria-hidden="true"
               />
             </Button>
-            <Link
-              href={"/dashboard"}
-              className="inline-flex mt-5 transition-all hover:text-white text-zinc-400 underline"
-            >
-              Esqueci a minha palavra-chave
-            </Link>
+           
           </div>
         </div>
       </div>

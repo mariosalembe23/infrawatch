@@ -111,9 +111,9 @@ const OTPCard: React.FC<OTPCardProps> = ({ openOTP, setOpenOTP, email }) => {
             <DialogTitle className="sm:text-center text-xl font-medium text-white">
               {hasGuessed ? "Código Verificado!" : "Insira o código"}
             </DialogTitle>
-            <DialogDescription className="sm:text-center text-[15px] -mt-1">
+            <DialogDescription className="sm:text-center !text-zinc-300 text-[15px] -mt-1">
               {hasGuessed
-                ? "Your code has been successfully verified."
+                ? "Seu código foi verificado com sucesso."
                 : `Insira o código enviado para o seu e-mail(${email})`}
             </DialogDescription>
           </DialogHeader>
@@ -128,7 +128,7 @@ const OTPCard: React.FC<OTPCardProps> = ({ openOTP, setOpenOTP, email }) => {
             </DialogClose>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div className="flex justify-center">
               <OTPInput
                 id="cofirmation-code"
@@ -155,16 +155,16 @@ const OTPCard: React.FC<OTPCardProps> = ({ openOTP, setOpenOTP, email }) => {
               </p>
             ) : (
               <>
-                hasGuessed === false && (
-                <p
-                  className="text-red-200/70 text-center text-[15px]"
-                  role="alert"
-                  aria-live="polite"
-                >
-                  Código incorreto. Tente novamente.
-                </p>
-                )
-                <p className="text-center text-white text-[15px]">
+                {hasGuessed === false && (
+                  <p
+                    className="text-red-200/70 text-center text-[15px]"
+                    role="alert"
+                    aria-live="polite"
+                  >
+                    Código incorreto. Tente novamente.
+                  </p>
+                )}
+                <p className="text-center pt-5 text-white text-[15px]">
                   <button className="underline cursor-pointer hover:no-underline">
                     Reenviar código
                   </button>
