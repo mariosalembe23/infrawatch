@@ -79,8 +79,8 @@ const ServerComponent: React.FC<IServerComponent> = ({
           #chdwd45
         </p>
       </div>
-      <div className="pot:order-2 order-3 text-end">
-        <div className="flex  items-center gap-2 justify-start pot:justify-end">
+      <div className="pot:order-2 order-3 text-start pot:text-end">
+        <div className="flex items-center gap-2 justify-start pot:justify-end">
           <p className="dark:text-white">Status</p>
           <span className="relative flex size-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
@@ -103,15 +103,10 @@ const ServerComponent: React.FC<IServerComponent> = ({
               0
             </Badge>
           </p>
-
           <p className="dark:text-zinc-500 text-zinc-600 text-[15px]">
             há 2:30 min
           </p>
         </div>
-        {/* <div className="mt-2 flex items-center gap-2 text-[15px] text-zinc-500 justify-start  lal:justify-end">
-          <p>Processando...</p>
-          <span className="loader !w-3 !h-3 !border-2 !border-b-zinc-600"></span>
-        </div> */}
       </div>
       <div className="flex pot:order-4 order-2 items-center justify-end">
         <div className="flex items-center gap-3">
