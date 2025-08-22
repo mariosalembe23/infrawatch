@@ -299,7 +299,7 @@ export default function ChooseWorkspace() {
             <h1 className="text-white text-xl ret:text-2xl uppercase">
               Escolha um Espaço de Trabalho
             </h1>
-            <div className="w-[26rem] mx-auto">
+            <div className="pot:w-[26rem] w-full mx-auto">
               <p className="text-zinc-400 font-[410] mt-2">
                 Selecione um espaço de trabalho existente ou crie um novo para
                 gerenciar seus servidores, dispositivos de rede e endpoints, bem
