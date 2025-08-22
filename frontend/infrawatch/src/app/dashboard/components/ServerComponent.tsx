@@ -79,12 +79,15 @@ const ServerComponent: React.FC<IServerComponent> = ({
           #chdwd45
         </p>
       </div>
-      <div className="flex pot:order-2 order-3 items-center gap-2 justify-start pot:justify-end">
-        <p className="text-white">Status</p>
-        <span className="relative flex size-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-          <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
-        </span>
+      <div className="pot:order-2 order-3 text-end">
+        <div className="flex  items-center gap-2 justify-start pot:justify-end">
+          <p className="text-white">Status</p>
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+            <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
+          </span>
+        </div>
+        <p className="text-zinc-500 text-[15px]">2min/5seg</p>
       </div>
 
       <div className="pot:order-3 order-4">
