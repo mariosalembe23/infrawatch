@@ -16,7 +16,7 @@ import React from "react";
 import ButtonCustom from "./ButtonCustom";
 import { UserData } from "@/app/chooseWorkspace/[id]/page";
 import { deleteCookie } from "cookies-next/client";
-import { DashboardContext } from "../[id]/page";
+import { DashboardContext } from "../[id]/ContextProvider";
 
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 

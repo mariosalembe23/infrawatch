@@ -3,7 +3,6 @@ import { ArrowLeft, Bolt, Menu, PanelLeft, Sun } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import BottomMenuSheet from "./BottomMenuSheet";
-import { DashboardContext } from "../[id]/page";
 import { changeTheme } from "@/components/AppComponents/ThemeFunc";
 import {
   Tooltip,
@@ -11,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { DashboardContext } from "../[id]/ContextProvider";
 
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 

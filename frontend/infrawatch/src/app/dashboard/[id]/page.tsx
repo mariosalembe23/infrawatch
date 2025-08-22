@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import LateralBar from "../components/LateralBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DashboardSlice from "../slices/DashboardSlice";
@@ -14,20 +14,8 @@ import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import { UserData, WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 import LoadingComponent from "@/components/AppComponents/LoadComponent";
 import { getCookie } from "cookies-next/client";
+import { DashboardContext } from "./ContextProvider";
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
-
-interface DashboardContextType {
-  userData: UserData | null;
-  workSpaceInfo: WorkSpaceProps | null;
-  loading: boolean;
-  userLoading: boolean;
-  isDarkMode: boolean;
-  setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const DashboardContext = createContext<DashboardContextType | null>(
-  null
-);
 
 export default function Dashboard() {
   const [showSideBar, setShowSidebar] = React.useState(true);
