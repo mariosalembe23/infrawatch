@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="grid bg-black h-dvh w-full grid-cols-1 pot:grid-cols-[35%_65%]">
       <div className="bg-[url('/app/login_build.jpg')] bg-cover pot:inline-flex hidden bg-center"></div>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center overflow-y-auto py-10">
         {slice === "login" ? (
           <LoginSlice setSlice={setSlice} />
         ) : (

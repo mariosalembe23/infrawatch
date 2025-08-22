@@ -5,18 +5,83 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowRightIcon, EyeIcon, EyeOffIcon, Plus } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { APIS } from "./API";
+import axios from "axios";
+import { toast } from "sonner";
 
 interface RegisterSliceProps {
   setSlice: React.Dispatch<React.SetStateAction<"login" | "register">>;
 }
 
+type RegisterFormFields = {
+  fullName: string;
+  email: string;
+  password: string;
+};
+
 const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<RegisterFormFields>({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
+  const handleRegister = async (data: RegisterFormFields) => {
+    try {
+      setLoading(true);
+      const response = await axios.post(APIS.REGISTER, {
+        email: data.email,
+        name: data.fullName,
+        password: data.password,
+      });
+
+      if (response.status === 201) {
+        toast.success("Conta criada com sucesso! Inicie sessão.", {
+          position: "top-right",
+        });
+        setSlice("login");
+      }
+      setLoading(false);
+    } catch (error) {
+      toast.error("Erro ao criar conta.", {
+        position: "top-right",
+      });
+      console.error("Registration error:", error);
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status >= 400 && error.response.status < 500) {
+          toast.error(
+            error.response.data.message ||
+              "Erro na requisição. Tente novamente.",
+            {
+              position: "top-right",
+            }
+          );
+        } else if (error.response.status >= 500) {
+          toast.error("Erro no servidor. Tente novamente mais tarde.", {
+            position: "top-right",
+          });
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <form className="max-w-80 w-full">
+    <form onSubmit={handleSubmit(handleRegister)} className="max-w-80 w-full">
       <header className="text-center">
         <span className="flex items-center gap-2 mb-2 flex-col">
           <svg
@@ -48,7 +113,10 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
       </header>
       <div>
         <div className="flex flex-col items-center justify-center gap-2 w-full">
-          <button className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center">
+          <button
+            disabled={true}
+            className="flex w-full px-5 disabled:cursor-not-allowed disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+          >
             <Image
               src={"/icons/google.svg"}
               alt="Google Logo"
@@ -57,7 +125,10 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
             />
             Continuar com o Google
           </button>
-          <button className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center">
+          <button
+            disabled={true}
+            className="flex w-full px-5 disabled:cursor-not-allowed disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+          >
             <Image
               src={"/icons/linkedin.svg"}
               alt="Google Logo"
@@ -81,10 +152,36 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
             </Label>
             <Input
               id={"fullName"}
+              {...register("fullName", {
+                required: "Nome completo é obrigatório",
+                minLength: {
+                  value: 3,
+                  message: "Nome completo deve ter pelo menos 3 caracteres",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "Nome completo não pode exceder 50 caracteres",
+                },
+                pattern: {
+                  // Regular expression to allow only letters and spaces and accents
+                  value: /^[a-zA-ZÀ-ÿ\s]+$/,
+                  message:
+                    "Nome completo não pode conter números ou caracteres especiais",
+                },
+              })}
               placeholder="Nome Completo"
-              className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
+              className={`shadow-none ${
+                errors.fullName
+                  ? " !ring-red-300/40 !border-red-500 focus:!border-red-500/80"
+                  : "!ring-cyan-500/30 border-zinc-800 focus:!border-cyan-500/80"
+              }   text-white py-5 text-base font-[450] `}
               type="text"
             />
+            {errors.fullName && (
+              <p className="text-white/50 font-[450] text-sm mt-1">
+                {errors.fullName.message}
+              </p>
+            )}
           </div>
           <div className="*:not-first:mt-2">
             <Label
@@ -95,10 +192,26 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
             </Label>
             <Input
               id={"email"}
+              {...register("email", {
+                required: "Email é obrigatório",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Email inválido",
+                },
+              })}
+              className={`shadow-none ${
+                errors.email
+                  ? " !ring-red-300/40 !border-red-500 focus:!border-red-500/80"
+                  : "!ring-cyan-500/30 border-zinc-800 focus:!border-cyan-500/80"
+              }   text-white py-5 text-base font-[450] `}
+              type="text"
               placeholder="Email"
-              className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
-              type="email"
             />
+            {errors.email && (
+              <p className="text-white/50 font-[450] text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
           <div className="*:not-first:mt-2">
             <Label
@@ -110,7 +223,22 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
             <div className="relative">
               <Input
                 id={"password"}
-                className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
+                {...register("password", {
+                  required: "A Senha é obrigatória",
+                  minLength: {
+                    value: 6,
+                    message: "Senha deve ter pelo menos 6 caracteres",
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: "Senha não pode exceder 50 caracteres",
+                  },
+                })}
+                className={`shadow-none ${
+                  errors.password
+                    ? " !ring-red-300/40 !border-red-500 focus:!border-red-500/80"
+                    : "!ring-cyan-500/30 border-zinc-800 focus:!border-cyan-500/80"
+                }   text-white py-5 text-base font-[450] `}
                 placeholder="Password"
                 type={isVisible ? "text" : "password"}
               />
@@ -129,12 +257,32 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
                 )}
               </button>
             </div>
+            {errors.password && (
+              <p className="text-white/50 font-[450] text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
           <div className="text-center">
-            <Button className="py-5  w-full bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white">
+            <Button
+              disabled={
+                Boolean(errors.fullName) ||
+                Boolean(errors.email) ||
+                Boolean(errors.password) ||
+                !watch("fullName") ||
+                !watch("email") ||
+                !watch("password") ||
+                loading
+              }
+              className="py-5  w-full bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+            >
+              {loading && (
+                <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
+              )}
               Criar agora <ArrowRightIcon size={18} className="" />
             </Button>
             <Button
+              disabled={loading}
               onClick={() => setSlice("login")}
               className="group mt-2 text-base border border-zinc-900 w-full bg-zinc-950 py-5 hover:border-zinc-800 text-white cursor-pointer shadow-none"
             >
