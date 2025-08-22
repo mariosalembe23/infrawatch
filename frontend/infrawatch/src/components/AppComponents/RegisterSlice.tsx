@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { ArrowRightIcon, EyeIcon, EyeOffIcon, Plus } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { APIS } from "./API";
+import { APIS, GenericAxiosActions } from "./API";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -59,22 +59,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
       toast.error("Erro ao criar conta.", {
         position: "top-right",
       });
-      console.error("Registration error:", error);
-      if (axios.isAxiosError(error) && error.response) {
-        if (error.response.status >= 400 && error.response.status < 500) {
-          toast.error(
-            error.response.data.message ||
-              "Erro na requisição. Tente novamente.",
-            {
-              position: "top-right",
-            }
-          );
-        } else if (error.response.status >= 500) {
-          toast.error("Erro no servidor. Tente novamente mais tarde.", {
-            position: "top-right",
-          });
-        }
-      }
+      GenericAxiosActions({ error });
     } finally {
       setLoading(false);
     }
@@ -265,6 +250,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
           </div>
           <div className="text-center">
             <Button
+              type="submit"
               disabled={
                 Boolean(errors.fullName) ||
                 Boolean(errors.email) ||
@@ -282,6 +268,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({ setSlice }) => {
               Criar agora <ArrowRightIcon size={18} className="" />
             </Button>
             <Button
+              type="button"
               disabled={loading}
               onClick={() => setSlice("login")}
               className="group mt-2 text-base border border-zinc-900 w-full bg-zinc-950 py-5 hover:border-zinc-800 text-white cursor-pointer shadow-none"

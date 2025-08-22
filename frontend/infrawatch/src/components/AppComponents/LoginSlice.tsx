@@ -5,18 +5,105 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowRightIcon, EyeIcon, EyeOffIcon, Plus } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { APIS, GenericAxiosActions } from "./API";
+import { toast } from "sonner";
+import decodeJwtToken from "./decodeToken";
+import OTPCard from "./OTPCode";
+import { setCookie } from "cookies-next/client";
+import { useRouter } from "next/navigation";
 
 interface LoginSliceProps {
   setSlice: React.Dispatch<React.SetStateAction<"login" | "register">>;
 }
 
+type LoginFormFields = {
+  email: string;
+  password: string;
+};
+
 const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  const [openOTP, setOpenOTP] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const { register, handleSubmit, watch } = useForm<LoginFormFields>({
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const requestOTPCode = async () => {
+    try {
+      const response = await axios.post(
+        APIS.REQUEST_CODE,
+        {
+          username: watch("email"),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Código enviado com sucesso!", {
+          position: "top-right",
+        });
+        setOpenOTP(true);
+      }
+    } catch (error) {
+      GenericAxiosActions({ error });
+    }
+  };
+
+  const handleLogin = async (data: LoginFormFields) => {
+    try {
+      setLoading(true);
+      const response = await axios.post(APIS.LOGIN, {
+        username: data.email,
+        password: data.password,
+      });
+
+      if (response.status === 200) {
+        toast.success("Login bem-sucedido!", {
+          position: "top-right",
+        });
+        const data = decodeJwtToken(response.data.token);
+
+        if (
+          typeof data === "object" &&
+          data !== null &&
+          "is_active" in data &&
+          "id" in data
+        ) {
+          setCookie("token", response.data.token, {
+            maxAge: 60 * 60 * 24 * 5,
+          });
+          if (!data.is_active) {
+            await requestOTPCode();
+            return;
+          } else {
+            setOpenOTP(false);
+            router.push(`/chooseWorkspace/${data.id}`);
+          }
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      GenericAxiosActions({ error });
+    }
+  };
 
   return (
-    <form className="max-w-80 w-full">
+    <form onSubmit={handleSubmit(handleLogin)} className="max-w-80 w-full">
       <header className="text-center">
         <span className="flex items-center gap-2 mb-2 flex-col">
           <svg
@@ -48,7 +135,10 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
       </header>
       <div>
         <div className="flex flex-col items-center justify-center gap-2 w-full">
-          <button className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center">
+          <button
+            disabled={true}
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+          >
             <Image
               src={"/icons/google.svg"}
               alt="Google Logo"
@@ -57,7 +147,10 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
             />
             Continuar com o Google
           </button>
-          <button className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center">
+          <button
+            disabled={true}
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all text-white hover:border-cyan-500 cursor-pointer font-[450] border border-zinc-800 py-2 justify-center"
+          >
             <Image
               src={"/icons/linkedin.svg"}
               alt="Google Logo"
@@ -81,6 +174,9 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
             </Label>
             <Input
               id={"email"}
+              {...register("email", {
+                required: "E-mail ou username é obrigatório.",
+              })}
               placeholder="Email"
               className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
               type="email"
@@ -96,6 +192,9 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
             <div className="relative">
               <Input
                 id={"password"}
+                {...register("password", {
+                  required: "Palavra-chave é obrigatória.",
+                })}
                 className="shadow-none !ring-cyan-500/30 border-zinc-800 text-white py-5 text-base font-[450] focus:!border-cyan-500/80 "
                 placeholder="Password"
                 type={isVisible ? "text" : "password"}
@@ -117,10 +216,19 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
             </div>
           </div>
           <div className="text-center">
-            <Button className="py-5  w-full bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="py-5  w-full bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+            >
+              {loading && (
+                <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
+              )}
               Iniciar sessão <ArrowRightIcon size={18} className="" />
             </Button>
             <Button
+              type="button"
+              disabled={loading}
               onClick={() => setSlice("register")}
               className="group mt-2 text-base border border-zinc-900 w-full bg-zinc-950 py-5 hover:border-zinc-800 text-white cursor-pointer shadow-none"
             >
@@ -140,6 +248,11 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice }) => {
           </div>
         </div>
       </div>
+      <OTPCard
+        openOTP={openOTP}
+        setOpenOTP={setOpenOTP}
+        email={watch("email")}
+      />
     </form>
   );
 };

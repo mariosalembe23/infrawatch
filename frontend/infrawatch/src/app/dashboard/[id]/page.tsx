@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import LateralBar from "./components/LateralBar";
+import LateralBar from "../components/LateralBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import DashboardSlice from "./slices/DashboardSlice";
-import MainHeader from "./components/MainHeader";
-import ServerSlice from "./slices/ServerSlice";
-import NetworkSlice from "./slices/NetworkSlice";
-import EndpointSlice from "./slices/EndpointSlice";
+import DashboardSlice from "../slices/DashboardSlice";
+import MainHeader from "../components/MainHeader";
+import ServerSlice from "../slices/ServerSlice";
+import NetworkSlice from "../slices/NetworkSlice";
+import EndpointSlice from "../slices/EndpointSlice";
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
 export default function Dashboard() {
