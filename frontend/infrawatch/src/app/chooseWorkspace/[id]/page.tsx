@@ -179,9 +179,9 @@ export default function ChooseWorkspace() {
   }, [isOnline]);
 
   return (
-    <div className="grid grid-rows-[7%_93%] h-dvh">
+    <div className="">
       {(loading || userLoading) && <LoadingComponent />}
-      <header className="w-full flex px-7 items-center justify-between">
+      <header className="w-full sticky top-0 left-0 right-0 py-4 bg-black/40 backdrop-blur-md flex px-7 items-center justify-between">
         <div className="flex items-center gap-2">
           <svg
             className="text-black size-5"
@@ -286,8 +286,8 @@ export default function ChooseWorkspace() {
           </Button>
         </div>
       </header>
-      <main className=" flex items-center justify-center">
-        <section className="max-w-3xl overflow-y-auto h-full px-5 pt-16 pb-10 mx-auto w-full">
+      <main className=" flex verflow-y-auto  items-center justify-center">
+        <section className="max-w-3xl h-full px-5 pt-16 pb-10 mx-auto w-full">
           <header className="text-center mb-10">
             <span className="flex items-center gap-2 mb-2 flex-col">
               <Container
@@ -332,17 +332,17 @@ export default function ChooseWorkspace() {
               </div>
             )}
           </div>
-          <footer className="flex gap-2 justify-center mt-10">
+          <footer className="flex gap-2  flex-wrap ret:flex-row flex-col-reverse justify-center mt-10">
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
-              className="py-5 mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
+              className="py-5  bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
             >
               <ArrowLeft size={18} className="" />
               Terminar sessão
             </Button>
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
-              className="py-5 mt-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+              className="py-5  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
             >
               Criar Novo Espaço de Trabalho <Plus size={18} className="" />
             </Button>
