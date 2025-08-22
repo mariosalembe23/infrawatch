@@ -28,12 +28,12 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
   created_at,
 }) => {
   return (
-    <div className="bg-zinc-950 group transition-all hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border border-zinc-900/50 p-5 rounded-3xl gap-3">
+    <div className="bg-zinc-900 group transition-all hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border border-zinc-900/50 p-5 rounded-3xl gap-3">
       <span className="flex absolute group-hover:-bottom-14 transition-all -bottom-16 -right-16 items-center gap-2 mb-2 flex-col">
         <Container
           size={50}
           strokeWidth={1}
-          className="text-zinc-900/30 group-hover:text-zinc-900/40 transition-all size-48 mb-2"
+          className="text-zinc-950/50 group-hover:text-zinc-800/40 transition-all size-48 mb-2"
         />
       </span>
       <header>
