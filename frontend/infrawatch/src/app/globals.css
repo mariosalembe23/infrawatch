@@ -91,6 +91,8 @@ body {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --autofill-bg: #ffffff; /* light */
+  --autofill-text: #060607;
 }
 
 .dark {
@@ -125,6 +127,8 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --autofill-bg: #060607; /* dark */
+  --autofill-text: #ffffff;
 }
 
 @layer base {
@@ -158,4 +162,12 @@ body {
 
 .rdp-dropdown option {
   font-weight: 450;
+}
+
+input:is(:-webkit-autofill, :autofill) {
+  caret-color: #fff !important;
+  background-color: var(--autofill-bg) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s, color 0.4s ease;
 }
