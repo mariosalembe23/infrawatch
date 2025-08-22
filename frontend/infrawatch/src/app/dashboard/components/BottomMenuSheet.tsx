@@ -42,10 +42,10 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
         side="bottom"
-        className="bg-[#060607] border-none shadow-2xl h-full text-white"
+        className="dark:bg-[#060607] bg-white border-none shadow-2xl h-full dark:text-white"
       >
-        <SheetHeader className="border-b  border-zinc-900">
-          <SheetTitle className="text-white font-medium">Menu</SheetTitle>
+        <SheetHeader className="border-b  dark:border-zinc-900">
+          <SheetTitle className="dark:text-white font-medium">Menu</SheetTitle>
         </SheetHeader>
         <div className="h-full  overflow-y-auto">
           <div className=" p-5 text-start">
@@ -54,58 +54,58 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
                 onClick={() => execAndClose("dashboard")}
                 title="Dashboard"
               >
-                <LayoutDashboard size={18} className="text-white" />
+                <LayoutDashboard size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom
                 onClick={() => execAndClose("server")}
                 title="Servidores"
               >
-                <Server size={18} className="text-white" />
+                <Server size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom
                 onClick={() => execAndClose("network")}
                 title="Aparelhos de Rede"
               >
-                <Network size={18} className="text-white" />
+                <Network size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom
                 onClick={() => execAndClose("endpoint")}
                 title="Endpoints"
               >
-                <Link2 size={18} className="text-white" />
+                <Link2 size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom title="Estatí. & Relatórios">
-                <ChartArea size={18} className="text-white" />
+                <ChartArea size={18} className="dark:text-white" />
               </ButtonCustom>
             </div>
           </div>
-          <div className="mt-5 p-5 border-t border-zinc-900">
+          <div className="mt-5 p-5 border-t dark:border-zinc-900">
             <div className="flex mt-2 flex-col gap-6">
               <ButtonCustom title="Perfil">
-                <CircleUser size={18} className="text-white" />
+                <CircleUser size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom title="Configurações">
-                <Bolt size={18} className="text-white" />
+                <Bolt size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom type="danger" title="Alertas">
                 <OctagonAlert size={18} className="text-red-400" />
               </ButtonCustom>
               <ButtonCustom title="Aparelhos de Rede">
-                <Network size={18} className="text-white" />
+                <Network size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom title="Utilizadores">
-                <Users size={18} className="text-white" />
+                <Users size={18} className="dark:text-white" />
               </ButtonCustom>
             </div>
           </div>
-          <div className="mt-5 p-5 border-t border-zinc-900">
+          <div className="mt-5 p-5 border-t dark:border-zinc-900">
             <div className="flex mt-2 flex-col pb-5 gap-6">
               <ButtonCustom title="Suporte">
-                <Info size={18} className="text-white" />
+                <Info size={18} className="dark:text-white" />
               </ButtonCustom>
               <div>
-                <p className="text-zinc-300 text-lg">Mário Salembe</p>
-                <p className="text-zinc-500 text-[15px] font-[430]">
+                <p className="dark:text-zinc-300 text-lg">Mário Salembe</p>
+                <p className="dark:text-zinc-500 text-zinc-600 text-[15px] font-[430]">
                   linomario199010@gmail.com
                 </p>
                 <Button className="w-full mt-3">Terminar Sessão</Button>

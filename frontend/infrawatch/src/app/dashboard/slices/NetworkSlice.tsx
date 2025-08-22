@@ -1,24 +1,19 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import { Network, Plus } from "lucide-react";
 import NetworkComponent from "../components/NetWorkComponent";
-
-// interface INetworkSlice {
-//   showSideBar: boolean;
-// }
 
 const NetworkSlice: React.FC = () => {
   return (
     <section className="relative h-full">
       <header>
-        <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
+        <div className="flex items-start gap-5 flex-wrap justify-between mb-12">
           <div>
-            <h2 className="text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
+            <h2 className="dark:text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
               Aparelhos de Rede
             </h2>
             <div className="w-full ret:w-[30rem]">
-              <p className="text-zinc-500 font-[410]">
+              <p className="dark:text-zinc-500 text-zinc-700 font-[410]">
                 Aqui você pode gerenciar e monitorar todos os seus dispositivos
                 de rede, visualizar o status, logs e detalhes de cada um deles.
               </p>
@@ -32,11 +27,6 @@ const NetworkSlice: React.FC = () => {
           </div>
         </div>
       </header>
-      <div className="flex items-center justify-end">
-        <p className="text-zinc-300 flex items-center gap-2">
-          Total <Badge className="rounded bg-cyan-600">30</Badge>
-        </p>
-      </div>
       <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
         <NetworkComponent
           name="SW-CORE-01"

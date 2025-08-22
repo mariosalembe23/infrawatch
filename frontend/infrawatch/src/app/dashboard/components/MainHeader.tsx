@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Bolt, Menu, PanelLeft, Sun } from "lucide-react";
+import { ArrowLeft, Bolt, Menu, PanelLeft, Sun } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import BottomMenuSheet from "./BottomMenuSheet";
+import { DashboardContext } from "../[id]/page";
+import { changeTheme } from "@/components/AppComponents/ThemeFunc";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
@@ -18,15 +26,20 @@ const MainHeader: React.FC<IMainHeader> = ({
   setTabs,
 }) => {
   const [open, setOpen] = React.useState(false);
+  const dashboardContext = React.useContext(DashboardContext);
+  const userData = dashboardContext?.userData;
+  const isDarkMode = dashboardContext?.isDarkMode;
+  const setIsDarkMode = dashboardContext?.setIsDarkMode;
+  const workSpaceInfo = dashboardContext?.workSpaceInfo;
 
   return (
-    <header className="sticky bg-[#060607]/10 backdrop-blur-2xl top-0 left-0 w-full h-16 z-20 border-b border-zinc-900 flex items-center justify-between px-5 ret:px-7">
+    <header className="sticky bg-white/10 dark:bg-[#060607]/10 backdrop-blur-2xl top-0 left-0 w-full h-16 z-20 border-b dark:border-zinc-900 flex items-center justify-between px-5 ret:px-7">
       <div className="flex items-center gap-3">
         <button
           onClick={() => setOpen(true)}
-          className="border transition-all cursor-pointer hover:bg-zinc-900 border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center"
+          className="border transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-900 dark:border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center"
         >
-          <Menu size={20} className="text-white" />
+          <Menu size={20} className="dark:text-white" />
         </button>
         {!showSideBar && (
           <Button
@@ -39,12 +52,17 @@ const MainHeader: React.FC<IMainHeader> = ({
         )}
         <div className="flex items-center gap-2">
           <svg
-            className="text-black size-5"
+            className="dark:text-black text-white size-5"
             viewBox="0 0 56 56"
-            fill="none"
+            fill="#fff"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <rect width="56" height="56" rx="7" fill="#fff" />
+            <rect
+              width="56"
+              height="56"
+              rx="7"
+              fill={isDarkMode ? "#fff" : "#000"}
+            />
             <path
               d="M10 37C10 31.4772 14.4772 27 20 27V27V56H10V37Z"
               fill="currentColor"
@@ -58,34 +76,96 @@ const MainHeader: React.FC<IMainHeader> = ({
               fill="currentColor"
             />
           </svg>
-          <h1 className="text-white text-xl">Infra Watch</h1>
+          <h1 className="dark:text-white text-xl">Infra Watch</h1>
         </div>
-        <p className="text-cyan-500 ret:inline-flex hidden">RCS ANGOLA</p>
+        <p className="dark:text-cyan-500 text-cyan-600 ret:inline-flex hidden">
+          {workSpaceInfo?.company_name}
+        </p>
       </div>
       <div className="flex items-center gap-2">
-        <div className="p-1 rounded-full bg-[#161616] border border-zinc-800 flex gap-3 items-center">
-          <Image
-            src={"/app/male.svg"}
-            width={100}
-            height={100}
-            alt="User Avatar"
-            className="rounded-full size-7"
-          />
-          <p className="pe-3 ret:inline-flex hidden text-white">
-            Mário Salembe
-          </p>
-        </div>
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="p-1 rounded-full bg-[#161616] border border-zinc-800 flex gap-3 items-center">
+                <Image
+                  src={"/app/male.svg"}
+                  width={100}
+                  height={100}
+                  alt="User Avatar"
+                  className="rounded-full size-7"
+                />
+                <p className="pe-3 ret:inline-flex hidden text-white">
+                  {userData?.name || "Usuário"}
+                </p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent className="dark w-80 py-3">
+              <div className="flex gap-3">
+                <header className="border-b w-full items-center justify-between border-b-zinc-800 pb-3 flex gap-3">
+                  <div>
+                    <p className="text-white text-base">{userData?.name}</p>
+                    <p>
+                      <span className="text-zinc-300 text-[14px] font-[450]">
+                        {userData?.email}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <Button
+                      size={"icon"}
+                      className="rounded-full dark:bg-[#161616] dark:hover:bg-zinc-800 cursor-pointer border border-zinc-800"
+                    >
+                      <Bolt size={18} className="text-white size-5" />
+                    </Button>
+                  </div>
+                </header>
+              </div>
+              <div className="items-center flex pt-5 justify-between">
+                <p className="text-white text-base">Estado</p>
+                <p>
+                  <span className="text-green-500 text-[14px] font-[490]">
+                    {userData?.is_active ? "Ativo" : "Inativo"}
+                  </span>
+                </p>
+              </div>
+              <div className="items-center flex pt-5 justify-between">
+                <p className="text-white text-base">Role</p>
+                <p>
+                  <span className="text-zinc-300 text-[14px] font-[490]">
+                    {userData?.role || "User"}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <Button
+                  // onClick={() => setOpenCreateWorkspace(true)}
+                  className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
+                >
+                  <ArrowLeft size={18} className="" />
+                  Terminar sessão
+                </Button>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Button
           size={"icon"}
-          className="rounded-full cursor-pointer border border-zinc-800"
+          className="rounded-full cursor-pointer hover:bg-gray-200 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
         >
-          <Bolt size={18} className="text-white size-5" />
+          <Bolt size={18} className="dark:text-white text-black size-5" />
         </Button>
         <Button
           size={"icon"}
-          className="rounded-full cursor-pointer border border-zinc-800"
+          onClick={() =>
+            setIsDarkMode &&
+            changeTheme({
+              isDarkMode,
+              setIsDarkMode,
+            })
+          }
+          className="rounded-full hover:bg-gray-200 cursor-pointer bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
         >
-          <Sun size={18} className="text-white size-5" />
+          <Sun size={18} className="dark:text-white text-black size-5" />
         </Button>
       </div>
       <BottomMenuSheet open={open} setOpen={setOpen} setTabs={setTabs} />

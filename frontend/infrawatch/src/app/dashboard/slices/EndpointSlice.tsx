@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import { Plus, Server } from "lucide-react";
 import EndpointComponent from "../components/EndpointComponent";
 
@@ -12,13 +11,13 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({ showSideBar }) => {
   return (
     <section className="relative h-full">
       <header>
-        <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
+        <div className="flex items-start gap-5 flex-wrap justify-between mb-12">
           <div>
-            <h2 className="text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
+            <h2 className="dark:text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
               Endpoints / URLs
             </h2>
             <div className="w-full ret:w-[30rem]">
-              <p className="text-zinc-500 font-[410]">
+              <p className="dark:text-zinc-500 text-zinc-700 font-[410]">
                 Aqui você pode gerenciar e monitorar todos os seus endpoints e
                 URLs, visualizar o status, logs e detalhes de cada um deles.
               </p>
@@ -32,11 +31,6 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({ showSideBar }) => {
           </div>
         </div>
       </header>
-      <div className="flex items-center justify-end">
-        <p className="text-zinc-300 flex items-center gap-2">
-          Total <Badge className="rounded bg-cyan-600">30</Badge>
-        </p>
-      </div>
       <div
         className={`grid mt-7 gap-1 ${
           showSideBar

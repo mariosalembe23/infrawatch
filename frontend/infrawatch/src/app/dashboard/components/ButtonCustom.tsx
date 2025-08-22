@@ -19,11 +19,11 @@ const ButtonCustom: React.FC<IButtonCustom> = ({
       onClick={onClick}
       className="flex items-center flex-nowrap font-[430] justify-between transition-all hover:opacity-80 cursor-pointer"
     >
-      <span className="flex items-center text-start gap-2 text-white">
+      <span className="flex items-center text-start gap-2 text-black dark:text-white">
         {children}
         {title}
       </span>
-      <ChevronRight size={19} className="text-zinc-400" />
+      <ChevronRight size={19} className="dark:text-zinc-400" />
     </button>
   ) : (
     <button className="flex items-center font-[430] justify-between transition-all hover:opacity-80 cursor-pointer">

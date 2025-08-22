@@ -55,7 +55,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
 
   return (
     <div
-      className={` border-zinc-900 px-5 py-3 bg-zinc-950 ${
+      className={` dark:border-zinc-900 px-5 py-3 dark:bg-zinc-950 ${
         index === 1
           ? "rounded-t-lg border"
           : index === lastIndex
@@ -64,9 +64,9 @@ const ServerComponent: React.FC<IServerComponent> = ({
       }  grid grid-cols-2 gap-y-5 pot:grid-cols-4 items-center`}
     >
       <div>
-        <p className="text-white text-lg font-medium">
+        <p className="dark:text-white text-lg font-medium">
           {nameServer}{" "}
-          <Badge className="bg-cyan-500/40 border border-cyan-200/50">
+          <Badge className="dark:bg-cyan-500/40 bg-cyan-600 text-white  border dark:border-cyan-200/50">
             <ZapIcon
               className="-ms-0.5 opacity-60"
               size={12}
@@ -75,26 +75,26 @@ const ServerComponent: React.FC<IServerComponent> = ({
             25% CPU
           </Badge>
         </p>
-        <p className="text-zinc-500 uppercase font-[450] text-[14.77px]">
+        <p className="dark:text-zinc-500 text-zinc-600 uppercase font-[450] text-[14.77px]">
           #chdwd45
         </p>
       </div>
       <div className="pot:order-2 order-3 text-end">
         <div className="flex  items-center gap-2 justify-start pot:justify-end">
-          <p className="text-white">Status</p>
+          <p className="dark:text-white">Status</p>
           <span className="relative flex size-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
             <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
           </span>
         </div>
-        <p className="text-zinc-500 text-[15px]">2min/5seg</p>
+        <p className="text-zinc-500  text-[15px]">2min/5seg</p>
       </div>
 
       <div className="pot:order-3 order-4">
         <div className="flex flex-col items-end justify-end gap-1">
-          <p className="text-zinc-100 flex gap-2 items-center">
+          <p className="dark:text-zinc-100 flex gap-2 items-center">
             Alerta
-            <Badge className="bg-red-500/20">
+            <Badge className="bg-red-500/20 dark:text-white text-red-800">
               <ZapIcon
                 className="-ms-0.5 opacity-60"
                 size={12}
@@ -104,7 +104,9 @@ const ServerComponent: React.FC<IServerComponent> = ({
             </Badge>
           </p>
 
-          <p className="text-zinc-500 text-[15px]">há 2:30 min</p>
+          <p className="dark:text-zinc-500 text-zinc-600 text-[15px]">
+            há 2:30 min
+          </p>
         </div>
         {/* <div className="mt-2 flex items-center gap-2 text-[15px] text-zinc-500 justify-start  lal:justify-end">
           <p>Processando...</p>
@@ -113,7 +115,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
       </div>
       <div className="flex pot:order-4 order-2 items-center justify-end">
         <div className="flex items-center gap-3">
-          <p className="text-zinc-300 text-nowrap">Mário...</p>
+          <p className="dark:text-zinc-300 text-nowrap">Mário Salembe</p>
           <Image
             src={"/app/male.svg"}
             width={100}
@@ -122,7 +124,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
             className="rounded-full size-7"
           />
         </div>
-        <button className="text-zinc-400 transition-all hover:text-white cursor-pointer">
+        <button className="dark:text-zinc-400 text-zinc-500 hover:text-black transition-all dark:hover:text-white cursor-pointer">
           <Ellipsis size={20} className=" ms-4" />
         </button>
       </div>

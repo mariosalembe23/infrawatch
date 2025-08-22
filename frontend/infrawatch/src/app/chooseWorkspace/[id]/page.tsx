@@ -21,62 +21,66 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Link from "next/link";
 
 const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
   company_name,
   about,
   created_at,
+  id,
 }) => {
   return (
-    <div className="dark:bg-zinc-900 bg-[#fff] group hover:border-gray-400 transition-all dark:hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border dark:border-zinc-900/50 p-5 rounded-3xl gap-3">
-      <span className="flex absolute group-hover:-bottom-14 transition-all -bottom-16 -right-16 items-center gap-2 mb-2 flex-col">
-        <Container
-          size={50}
-          strokeWidth={1}
-          className="dark:text-zinc-950/50 dark:group-hover:text-zinc-800/40 text-gray-200 transition-all size-48 mb-2"
-        />
-      </span>
-      <header>
-        <h2 className="dark:text-white text-lg">
-          {company_name || "Nome do Espaço de Trabalho"}
-        </h2>
-        <p className="dark:text-zinc-500 text-zinc-600 pt-2 text-[15px]">
-          {about || "Descrição do espaço de trabalho"}
-        </p>
-      </header>
-      <footer>
-        <div className="flex  -space-x-[0.525rem]">
-          <Avatar>
-            <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-              KK
-            </AvatarFallback>
-          </Avatar>
-          <Avatar>
-            <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-              AZ
-            </AvatarFallback>
-          </Avatar>
-          <Avatar>
-            <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-              ZI
-            </AvatarFallback>
-          </Avatar>
-          <Avatar>
-            <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-              +3
-            </AvatarFallback>
-          </Avatar>
-        </div>
-        <p className="font-mono dark:text-white text-[14px] relative z-10 pt-1">
-          Criado em{" "}
-          {new Date(created_at).toLocaleDateString("pt-PT", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          })}
-        </p>
-      </footer>
-    </div>
+    <Link href={"/dashboard/" + id} className="w-full">
+      <div className="dark:bg-zinc-900 bg-[#fff] group hover:border-gray-400 transition-all dark:hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border dark:border-zinc-900/50 p-5 rounded-3xl gap-3">
+        <span className="flex absolute group-hover:-bottom-14 transition-all -bottom-16 -right-16 items-center gap-2 mb-2 flex-col">
+          <Container
+            size={50}
+            strokeWidth={1}
+            className="dark:text-zinc-950/50 dark:group-hover:text-zinc-800/40 text-gray-200 transition-all size-48 mb-2"
+          />
+        </span>
+        <header>
+          <h2 className="dark:text-white text-lg">
+            {company_name || "Nome do Espaço de Trabalho"}
+          </h2>
+          <p className="dark:text-zinc-500 text-zinc-600 pt-2 text-[15px]">
+            {about || "Descrição do espaço de trabalho"}
+          </p>
+        </header>
+        <footer>
+          <div className="flex  -space-x-[0.525rem]">
+            <Avatar>
+              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
+                KK
+              </AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
+                AZ
+              </AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
+                ZI
+              </AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
+                +3
+              </AvatarFallback>
+            </Avatar>
+          </div>
+          <p className="font-mono dark:text-white text-[14px] relative z-10 pt-1">
+            Criado em{" "}
+            {new Date(created_at).toLocaleDateString("pt-PT", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </p>
+        </footer>
+      </div>
+    </Link>
   );
 };
 
@@ -89,7 +93,7 @@ export interface WorkSpaceProps {
   userId: string;
 }
 
-interface UserData {
+export interface UserData {
   id: string;
   email: string;
   name: string;

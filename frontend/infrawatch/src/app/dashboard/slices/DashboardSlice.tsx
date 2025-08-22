@@ -29,11 +29,11 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       <header>
         <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
           <div>
-            <h2 className="text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
+            <h2 className="dark:text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
               Dashboard
             </h2>
             <div className="w-full ret:w-[30rem]">
-              <p className="text-zinc-500 font-[410]">
+              <p className="dark:text-zinc-500 text-zinc-700 font-[410]">
                 Aqui você pode visualizar o estado geral da sua infraestrutura e
                 acessar informações detalhadas sobre os seus servidores,
                 serviços e redes.
@@ -42,7 +42,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="cursor-pointer">
+              <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
                 Adicionar
                 <ChevronDownIcon
                   className="-me-1 opacity-60"
@@ -71,9 +71,9 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       <div className="mt-10">
         <div>
           <header className="flex items-center justify-between">
-            <h3 className="text-zinc-400 font-[410] text-lg">
+            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-lg">
               Dados Recentes{" "}
-              <Badge className="text-[14px] leading-none py-1 px-2">
+              <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
                 <ZapIcon
                   className="-ms-0.5 opacity-60"
                   size={12}
@@ -82,41 +82,38 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Servidores - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer">
+            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
           <div className={`grid mt-4 grid-cols-1 `}>
-            {
-              // arrays of servers
-              Array.from({ length: 6 }, (_, index) => (
-                <ServerComponent
-                  key={index}
-                  index={index + 1}
-                  lastIndex={6}
-                  nameServer={`SR ${index + 1}`}
-                  status={index % 2 === 0 ? "online" : "offline"}
-                />
-              ))
-            }
+            {Array.from({ length: 6 }, (_, index) => (
+              <ServerComponent
+                key={index}
+                index={index + 1}
+                lastIndex={6}
+                nameServer={`SR ${index + 1}`}
+                status={index % 2 === 0 ? "online" : "offline"}
+              />
+            ))}
           </div>
         </div>
       </div>
       <div className="mt-10">
         <div>
           <header className="flex items-center justify-between">
-            <h3 className="text-zinc-400 font-[410] text-lg">
+            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-lg">
               Dados Recentes{" "}
-              <Badge className="text-[14px] leading-none py-1 px-2">
+              <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
                 <ZapIcon
                   className="-ms-0.5 opacity-60"
                   size={12}
                   aria-hidden="true"
                 />
-                Redes
+                Redes - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer">
+            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
@@ -182,18 +179,18 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       <div className="mt-10">
         <div>
           <header className="flex items-center justify-between">
-            <h3 className="text-zinc-400 font-[410] text-lg">
+            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-lg">
               Dados Recentes{" "}
-              <Badge className="text-[14px] leading-none py-1 px-2">
+              <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
                 <ZapIcon
                   className="-ms-0.5 opacity-60"
                   size={12}
                   aria-hidden="true"
                 />
-                Endpoints
+                Endpoints - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer">
+            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>

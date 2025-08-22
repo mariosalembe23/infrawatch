@@ -238,7 +238,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
               type="button"
               disabled={loading}
               onClick={() => setSlice("register")}
-              className="group mt-2 text-base border border-zinc-900 w-full bg-zinc-950 py-5 hover:border-zinc-800 text-white cursor-pointer shadow-none"
+              className="group mt-2 text-base border hover:bg-zinc-900 border-zinc-900 w-full dark:bg-zinc-950 py-5 dark:hover:border-zinc-800 text-white cursor-pointer shadow-none"
             >
               Criar uma conta
               <Plus
