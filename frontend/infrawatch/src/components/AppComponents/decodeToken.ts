@@ -1,3 +1,5 @@
+import { getCookie } from "cookies-next/client";
+
 export interface JwtPayload {
   [key: string]: unknown;
   sub?: string;
@@ -34,3 +36,19 @@ export default function decodeJwtToken(token: string): JwtPayload | null {
   }
 }
 
+export const isLoggedIn = () => {
+  const token = getCookie("token");
+  if (!token) return false;
+
+  const decodedToken = decodeJwtToken(token);
+  if (!decodedToken) return false;
+  if (
+    typeof decodedToken === "object" &&
+    "id" in decodedToken &&
+    "email" in decodedToken
+  ) {
+    return true;
+  }
+
+  return false;
+};
