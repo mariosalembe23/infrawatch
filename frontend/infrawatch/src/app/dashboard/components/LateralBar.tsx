@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
   Bolt,
-  ChartArea,
-  CircleUser,
+  Container,
+  DatabaseZap,
   Info,
   LayoutDashboard,
   Link2,
@@ -15,28 +15,34 @@ import {
 } from "lucide-react";
 import React from "react";
 import ButtonCustom from "./ButtonCustom";
-import { UserData } from "@/app/chooseWorkspace/[id]/page";
+import { UserData, WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 import { deleteCookie } from "cookies-next/client";
 import { DashboardContext } from "../[id]/ContextProvider";
-
-type Tabs = "server" | "network" | "endpoint" | "dashboard";
+import { Tabs } from "../[id]/page";
+import SwitchWork from "./SwitchWork";
 
 interface ILateralBar {
   showSideBar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
   userData?: UserData | null;
+  workspacesData: {
+    workspaces: WorkSpaceProps[];
+    loadingWork: boolean;
+  };
 }
 
 const LateralBar: React.FC<ILateralBar> = ({
   showSideBar,
   setShowSidebar,
   setTabs,
+  workspacesData,
 }) => {
   const dashboardContext = React.useContext(DashboardContext);
   const userData = dashboardContext?.userData;
   const isDarkMode = dashboardContext?.isDarkMode;
-  // const workSpaceInfo = dashboardContext?.workSpaceInfo;
+  const [showCard, setShowCard] = React.useState<boolean>(false);
+  const workSpaceInfo = dashboardContext?.workSpaceInfo;
 
   return (
     <nav
@@ -102,26 +108,33 @@ const LateralBar: React.FC<ILateralBar> = ({
           <ButtonCustom onClick={() => setTabs("endpoint")} title="Endpoints">
             <Link2 size={18} className="dark:text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Estatí. & Relatórios">
-            <ChartArea size={18} className="dark:text-white" />
+          <ButtonCustom title="Serviços">
+            <DatabaseZap size={18} className="dark:text-white" />
           </ButtonCustom>
         </div>
       </div>
       <div className="mt-5 p-5 border-t dark:border-zinc-900">
         <div className="flex mt-2 flex-col gap-6">
-          <ButtonCustom title="Perfil">
-            <CircleUser size={18} className="dark:text-white" />
-          </ButtonCustom>
-          <ButtonCustom title="Configurações">
+          <ButtonCustom
+            onClick={() => setTabs("settings")}
+            title="Configurações"
+          >
             <Bolt size={18} className="dark:text-white" />
           </ButtonCustom>
           <ButtonCustom type="danger" title="Alertas">
-            <OctagonAlert size={18} className="text-red-400" />
+            <OctagonAlert size={18} className="dark:text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Aparelhos de Rede">
-            <Network size={18} className="dark:text-white" />
+          <ButtonCustom
+            disabled={workspacesData.loadingWork}
+            onClick={() => setShowCard(true)}
+            title="Workspaces"
+          >
+            {workspacesData.loadingWork && (
+              <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-zinc-600"></span>
+            )}
+            <Container size={18} className="dark:text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Utilizadores">
+          <ButtonCustom onClick={() => setTabs("members")} title="Membros">
             <Users size={18} className="dark:text-white" />
           </ButtonCustom>
         </div>
@@ -149,6 +162,13 @@ const LateralBar: React.FC<ILateralBar> = ({
           </div>
         </div>
       </div>
+      <SwitchWork
+        setShowInfo={setShowCard}
+        showInfo={showCard}
+        workName={workSpaceInfo?.workspace_name}
+        description={workSpaceInfo?.about}
+        workspaces={workspacesData.workspaces}
+      />
     </nav>
   );
 };

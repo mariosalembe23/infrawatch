@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { isLoggedIn } from "@/components/AppComponents/decodeToken";
+import { isLoggedIn, LogOut } from "@/components/AppComponents/decodeToken";
 import axios from "axios";
 import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import { toast } from "sonner";
@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import InfoCard from "@/app/dashboard/components/InfoCard";
 
 const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
   workspace_name,
@@ -40,9 +41,7 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
           />
         </span>
         <header>
-          <h2 className="dark:text-white text-lg">
-            {workspace_name}
-          </h2>
+          <h2 className="dark:text-white text-lg">{workspace_name}</h2>
           <p className="dark:text-zinc-400 text-zinc-600 text-[15px]">
             {about || "Descrição do espaço de trabalho"}
           </p>
@@ -114,6 +113,7 @@ export default function ChooseWorkspace() {
   const [userLoading, setUserLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
 
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
@@ -217,7 +217,10 @@ export default function ChooseWorkspace() {
           <TooltipProvider delayDuration={0}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="p-1 rounded-full bg-[#161616] border border-zinc-800 flex gap-3 items-center">
+                <div
+                  onClick={() => setShowInfo(true)}
+                  className="p-1 rounded-full cursor-pointer bg-[#161616] border border-zinc-800 flex gap-3 items-center"
+                >
                   <Image
                     src={"/app/male.svg"}
                     width={100}
@@ -269,7 +272,7 @@ export default function ChooseWorkspace() {
                 </div>
                 <div>
                   <Button
-                    onClick={() => setOpenCreateWorkspace(true)}
+                    onClick={LogOut}
                     className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
                   >
                     <ArrowLeft size={18} className="" />
@@ -341,7 +344,6 @@ export default function ChooseWorkspace() {
             )}
           </div>
           <footer className="flex gap-2  flex-wrap ret:flex-row flex-col-reverse justify-center mt-10">
-            
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
               className="py-5 bg-cyan-600/70 dark:bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
@@ -351,6 +353,12 @@ export default function ChooseWorkspace() {
           </footer>
         </section>
       </main>
+
+      <InfoCard
+        showInfo={showInfo}
+        setShowInfo={setShowInfo}
+        userData={userData}
+      />
 
       <CreateWorkspace
         open={openCreateWorkspace}

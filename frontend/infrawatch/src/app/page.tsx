@@ -4,14 +4,23 @@ import { useEffect, useState } from "react";
 import LoginSlice from "@/components/AppComponents/LoginSlice";
 import RegisterSlice from "@/components/AppComponents/RegisterSlice";
 import { ThemeFunc } from "@/components/AppComponents/ThemeFunc";
+import { isLoggedIn } from "@/components/AppComponents/decodeToken";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [slice, setSlice] = useState<"login" | "register">("login");
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
-  }, []);
+
+    const { status, id } = isLoggedIn();
+
+    if (status) {
+      router.push(`/chooseWorkspace/${id}`);
+    }
+  }, [router]);
 
   return (
     <div className="grid h-dvh w-full grid-cols-1 pot:grid-cols-[35%_65%]">

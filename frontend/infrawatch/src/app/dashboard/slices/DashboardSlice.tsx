@@ -24,6 +24,7 @@ interface IDashboardSlice {
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
+
   return (
     <section>
       <header>

@@ -19,8 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import React from "react";
 import { Button } from "@/components/ui/button";
-
-type Tabs = "server" | "network" | "endpoint" | "dashboard";
+import { Tabs } from "../[id]/page";
 
 interface IBottomMenuSheet {
   open: boolean;

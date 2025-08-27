@@ -16,7 +16,16 @@ import LoadingComponent from "@/components/AppComponents/LoadComponent";
 import { getCookie } from "cookies-next/client";
 import { DashboardContext } from "./ContextProvider";
 import { ThemeFunc } from "@/components/AppComponents/ThemeFunc";
-type Tabs = "server" | "network" | "endpoint" | "dashboard";
+import SettingsSlice from "../slices/SettingsSlice";
+import MembersSlice from "../slices/MembersSlice";
+
+export type Tabs =
+  | "server"
+  | "network"
+  | "endpoint"
+  | "dashboard"
+  | "settings"
+  | "members";
 
 export default function Dashboard() {
   const [showSideBar, setShowSidebar] = React.useState(true);
@@ -36,6 +45,8 @@ export default function Dashboard() {
     isDarkMode,
     setIsDarkMode,
   };
+  const [workspaces, setWorkspaces] = React.useState<WorkSpaceProps[]>([]);
+  const [loadingWork, setLoadingWork] = React.useState<boolean>(false);
 
   useEffect(() => {
     const getWorkSpaceInfo = async () => {
@@ -81,6 +92,28 @@ export default function Dashboard() {
       }
     };
 
+    const fecthWorkspaces = async () => {
+      try {
+        setLoadingWork(true);
+        const response = await axios.get(APIS.GET_WORKSPACES, {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        });
+        setLoadingWork(false);
+        if (response.status === 200) {
+          setWorkspaces(response.data || []);
+        }
+      } catch (error) {
+        setLoadingWork(false);
+        GenericAxiosActions({
+          error,
+          message: "Erro ao buscar espaços de trabalho.",
+        });
+      }
+    };
+
+    fecthWorkspaces();
     fetchUserData();
     getWorkSpaceInfo();
   }, [id]);
@@ -104,6 +137,10 @@ export default function Dashboard() {
           setShowSidebar={setShowSidebar}
           setTabs={setTabs}
           userData={userData}
+          workspacesData={{
+            workspaces,
+            loadingWork,
+          }}
         />
         <ScrollArea className="overflow-y-auto w-full h-full">
           <MainHeader
@@ -119,6 +156,8 @@ export default function Dashboard() {
             {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
             {tabs === "network" && <NetworkSlice />}
             {tabs === "endpoint" && <EndpointSlice showSideBar={showSideBar} />}
+            {tabs === "settings" && <SettingsSlice showSideBar={showSideBar} />}
+            {tabs === "members" && <MembersSlice showSideBar={showSideBar} />}
           </section>
         </ScrollArea>
       </DashboardContext.Provider>
