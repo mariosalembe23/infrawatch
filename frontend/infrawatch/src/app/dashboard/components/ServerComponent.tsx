@@ -19,6 +19,7 @@ interface IServerComponent {
   status: "online" | "offline";
   index: number;
   lastIndex?: number;
+  setSelectedItem?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const BetweenDiv = ({ children }: { children: React.ReactNode }) => {
@@ -35,6 +36,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
   nameServer,
   index,
   lastIndex,
+  setSelectedItem,
 }) => {
   const [openLogs, setOpenLogs] = React.useState(false);
   const [openDetails, setOpenDetails] = React.useState(false);
@@ -55,7 +57,8 @@ const ServerComponent: React.FC<IServerComponent> = ({
 
   return (
     <div
-      className={` dark:border-zinc-900 px-5 py-3 dark:bg-zinc-950 ${
+      onClick={() => setSelectedItem && setSelectedItem(nameServer)}
+      className={` dark:border-zinc-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-950/20 px-5 py-3 dark:bg-zinc-950 ${
         index === 1
           ? "rounded-t-lg border"
           : index === lastIndex

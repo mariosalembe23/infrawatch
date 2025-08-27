@@ -54,9 +54,12 @@ const MainHeader: React.FC<IMainHeader> = ({
           <Button
             onClick={() => setShowSidebar((prev) => !prev)}
             size={"icon"}
-            className="rounded-full border size-8 cursor-pointer border-zinc-800"
+            className="rounded-full hover:bg-gray-200 bg-zinc-50 border size-8 cursor-pointer dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
           >
-            <PanelLeft size={25} className="text-white size-4" />
+            <PanelLeft
+              size={25}
+              className="dark:text-white text-zinc-900 size-5"
+            />
           </Button>
         )}
         <div className="flex items-center gap-2">

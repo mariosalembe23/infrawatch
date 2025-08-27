@@ -341,13 +341,7 @@ export default function ChooseWorkspace() {
             )}
           </div>
           <footer className="flex gap-2  flex-wrap ret:flex-row flex-col-reverse justify-center mt-10">
-            {/* <Button
-              onClick={() => setOpenCreateWorkspace(true)}
-              className="py-5 bg-red-600/70 dark:bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
-            >
-              <ArrowLeft size={18} className="" />
-              Terminar sessão
-            </Button> */}
+            
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
               className="py-5 bg-cyan-600/70 dark:bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
