@@ -24,16 +24,16 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
             </div>
           </div>
           <div>
-            <Button>
+            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               <Server size={14} className="text-white size-4" />
               Adicionar Servidor
             </Button>
           </div>
         </div>
       </header>
-      <div className={`grid mt-4 grid-cols-1`}>
-        {
-          Array.from({ length: 30 }, (_, index) => (
+      <div className="grid grid-cols-2 gap-4">
+        <div className={`grid mt-4 grid-cols-1`}>
+          {Array.from({ length: 30 }, (_, index) => (
             <ServerComponent
               key={index}
               index={index + 1}
@@ -41,8 +41,19 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
               nameServer={`SR ${index + 1}`}
               status={index % 2 === 0 ? "online" : "offline"}
             />
-          ))
-        }
+          ))}
+        </div>
+        <div className={`grid mt-4 grid-cols-1`}>
+          {Array.from({ length: 30 }, (_, index) => (
+            <ServerComponent
+              key={index}
+              index={index + 1}
+              lastIndex={30}
+              nameServer={`SR ${index + 1}`}
+              status={index % 2 === 0 ? "online" : "offline"}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="fixed bottom-5 pot:bottom-10 end-7 pot:end-12">

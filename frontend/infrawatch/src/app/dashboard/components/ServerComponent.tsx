@@ -110,7 +110,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
       </div>
       <div className="flex pot:order-4 order-2 items-center justify-end">
         <div className="flex items-center gap-3">
-          <p className="dark:text-zinc-300 text-nowrap">Mário Salembe</p>
+          {/* <p className="dark:text-zinc-300 text-nowrap">Mário Salembe</p> */}
           <Image
             src={"/app/male.svg"}
             width={100}

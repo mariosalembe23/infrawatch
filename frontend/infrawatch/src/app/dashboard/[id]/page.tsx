@@ -15,6 +15,7 @@ import { UserData, WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 import LoadingComponent from "@/components/AppComponents/LoadComponent";
 import { getCookie } from "cookies-next/client";
 import { DashboardContext } from "./ContextProvider";
+import { ThemeFunc } from "@/components/AppComponents/ThemeFunc";
 type Tabs = "server" | "network" | "endpoint" | "dashboard";
 
 export default function Dashboard() {
@@ -41,7 +42,7 @@ export default function Dashboard() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://infra-watch-zeta.vercel.app/api/v1/company/each/${id}`,
+          `https://infra-watch-zeta.vercel.app/api/v1/workspace/each/${id}`,
           {
             headers: {
               Authorization: `Bearer ${getCookie("token")}`,
@@ -71,7 +72,6 @@ export default function Dashboard() {
         });
         setUserLoading(false);
         setUserData(response.data);
-        console.log("User data fetched:", response.data);
       } catch (error) {
         setUserLoading(false);
         GenericAxiosActions({
@@ -84,6 +84,10 @@ export default function Dashboard() {
     fetchUserData();
     getWorkSpaceInfo();
   }, [id]);
+
+  useEffect(() => {
+    ThemeFunc({ setIsDarkMode });
+  }, []);
 
   return (
     <div

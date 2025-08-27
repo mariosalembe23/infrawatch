@@ -24,9 +24,9 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({ showSideBar }) => {
             </div>
           </div>
           <div>
-            <Button>
+            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               <Server size={14} className="text-white size-4" />
-              Adicionar Servidor
+              Adicionar Endpoint
             </Button>
           </div>
         </div>

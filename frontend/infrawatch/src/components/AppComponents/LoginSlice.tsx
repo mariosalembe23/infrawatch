@@ -168,7 +168,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
         </div>
         <div className="w-full relative flex items-center justify-center my-8">
           <hr className="w-full dark:border-zinc-800" />
-          <p className="absolute px-5 text-[15px] bg-white dark:bg-black dark:text-white">
+          <p className="absolute px-5 text-[15px] bg-white dark:bg-[#060607] dark:text-white">
             Ou
           </p>
         </div>
@@ -187,7 +187,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
               })}
               placeholder="Email"
               className="shadow-none dark:!ring-cyan-500/30 border-zinc-300 dark:border-zinc-800 dark:text-white py-5 text-base font-[450] dark:focus:!border-cyan-500/80 "
-              type="email"
+              type="text"
             />
           </div>
           <div className="*:not-first:mt-2">

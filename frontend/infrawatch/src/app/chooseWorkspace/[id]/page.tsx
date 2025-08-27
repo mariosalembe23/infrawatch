@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 
 const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
-  company_name,
+  workspace_name,
   about,
   created_at,
   id,
@@ -41,9 +41,9 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
         </span>
         <header>
           <h2 className="dark:text-white text-lg">
-            {company_name || "Nome do Espaço de Trabalho"}
+            {workspace_name}
           </h2>
-          <p className="dark:text-zinc-500 text-zinc-600 pt-2 text-[15px]">
+          <p className="dark:text-zinc-400 text-zinc-600 text-[15px]">
             {about || "Descrição do espaço de trabalho"}
           </p>
         </header>
@@ -86,11 +86,11 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
 
 export interface WorkSpaceProps {
   id: string;
-  company_name: string;
+  workspace_name: string;
   about: string;
-  email: string;
   created_at: string;
   userId: string;
+  profileId: string;
 }
 
 export interface UserData {
@@ -184,7 +184,7 @@ export default function ChooseWorkspace() {
   return (
     <div className="">
       {(loading || userLoading) && <LoadingComponent />}
-      <header className="w-full sticky top-0 left-0 right-0 py-4 bg-white/40 dark:bg-black/40 backdrop-blur-md flex px-7 items-center justify-between">
+      <header className="w-full sticky top-0 left-0 right-0 py-4 bg-white/40 dark:bg-[#060607]/40 backdrop-blur-md flex px-7 items-center justify-between">
         <div className="flex items-center gap-2">
           <svg
             className="dark:text-black text-white size-5"
@@ -332,8 +332,8 @@ export default function ChooseWorkspace() {
               ))
             ) : (
               // só mostra essa mensagem quando loading = false
-              <div className="col-span-full bg-zinc-950 rounded-lg p-5 border border-zinc-900/50">
-                <p className="text-zinc-500 text-center">
+              <div className="col-span-full max-w-96 w-full mx-auto bg-zinc-950 rounded-lg p-5 border border-zinc-900/50">
+                <p className="text-zinc-500 text-[15px] text-center">
                   Nenhum espaço de trabalho encontrado. Crie um novo espaço de
                   trabalho para começar a monitorar sua infraestrutura.
                 </p>
@@ -341,13 +341,13 @@ export default function ChooseWorkspace() {
             )}
           </div>
           <footer className="flex gap-2  flex-wrap ret:flex-row flex-col-reverse justify-center mt-10">
-            <Button
+            {/* <Button
               onClick={() => setOpenCreateWorkspace(true)}
               className="py-5 bg-red-600/70 dark:bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
             >
               <ArrowLeft size={18} className="" />
               Terminar sessão
-            </Button>
+            </Button> */}
             <Button
               onClick={() => setOpenCreateWorkspace(true)}
               className="py-5 bg-cyan-600/70 dark:bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"

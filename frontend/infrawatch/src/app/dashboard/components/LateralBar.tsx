@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
+  ArrowLeft,
   Bolt,
   ChartArea,
   CircleUser,
@@ -31,7 +32,6 @@ const LateralBar: React.FC<ILateralBar> = ({
   showSideBar,
   setShowSidebar,
   setTabs,
-  // userData,
 }) => {
   const dashboardContext = React.useContext(DashboardContext);
   const userData = dashboardContext?.userData;
@@ -47,7 +47,7 @@ const LateralBar: React.FC<ILateralBar> = ({
       <header className="sticky  top-0 left-0 w-full h-16">
         <div className="flex border-b items-center px-5 h-16 dark:border-zinc-900 justify-between">
           <svg
-            className="dark:text-black text-white size-6"
+            className="dark:text-black text-white size-5"
             viewBox="0 0 56 56"
             fill="#fff"
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +76,10 @@ const LateralBar: React.FC<ILateralBar> = ({
             size={"icon"}
             className="rounded-full hover:bg-gray-200 bg-zinc-50 border size-8 cursor-pointer dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
           >
-            <PanelLeft size={25} className="dark:text-white text-zinc-900 size-5" />
+            <PanelLeft
+              size={25}
+              className="dark:text-white text-zinc-900 size-5"
+            />
           </Button>
         </div>
       </header>
@@ -138,9 +141,10 @@ const LateralBar: React.FC<ILateralBar> = ({
                 deleteCookie("token");
                 window.location.href = "/";
               }}
-              className="w-full mt-3"
+              className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
             >
-              Terminar Sessão
+              <ArrowLeft size={18} className="" />
+              Terminar sessão
             </Button>
           </div>
         </div>

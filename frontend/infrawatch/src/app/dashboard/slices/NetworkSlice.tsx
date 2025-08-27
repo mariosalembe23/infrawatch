@@ -20,7 +20,7 @@ const NetworkSlice: React.FC = () => {
             </div>
           </div>
           <div>
-            <Button>
+            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               <Network size={14} className="text-white size-4" />
               Adicionar aparelho
             </Button>

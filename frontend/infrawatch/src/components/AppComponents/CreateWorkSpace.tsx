@@ -65,8 +65,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
       const response = await axios.post(
         APIS.CREATE_WORKSPACE,
         {
-          company_name: data.name,
-          email: data.email,
+          workspace_name: data.name,
           about: data.description,
         },
         {
@@ -137,7 +136,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
                     </p>
                   )}
                 </div>
-                <div className="*:not-first:mt-3">
+                {/* <div className="*:not-first:mt-3">
                   <Label htmlFor={"email"} className="font-[450]">
                     E-mail
                   </Label>
@@ -170,7 +169,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
                       monitoramento.
                     </p>
                   )}
-                </div>
+                </div> */}
                 <div className="*:not-first:mt-2">
                   <Label htmlFor={"description"}>Descrição</Label>
                   <Textarea
