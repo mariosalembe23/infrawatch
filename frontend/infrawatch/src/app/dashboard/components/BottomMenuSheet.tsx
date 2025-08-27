@@ -1,8 +1,9 @@
 import ButtonCustom from "./ButtonCustom";
 import {
+  ArrowLeft,
   Bolt,
-  ChartArea,
-  CircleUser,
+  Container,
+  DatabaseZap,
   Info,
   LayoutDashboard,
   Link2,
@@ -20,22 +21,34 @@ import {
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs } from "../[id]/page";
+import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
+import SwitchWork from "./SwitchWork";
+import { DashboardContext } from "../[id]/ContextProvider";
+import { LogOut } from "@/components/AppComponents/decodeToken";
 
 interface IBottomMenuSheet {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
+  workspacesData: {
+    workspaces: WorkSpaceProps[];
+    loadingWork: boolean;
+  };
 }
 
 const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
   open,
   setOpen,
   setTabs,
+  workspacesData,
 }) => {
   const execAndClose = (tab: Tabs) => {
     setTabs(tab);
     setOpen(false);
   };
+  const [showCard, setShowCard] = React.useState<boolean>(false);
+  const dashboardContext = React.useContext(DashboardContext);
+  const workSpaceInfo = dashboardContext?.workSpaceInfo;
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -73,26 +86,39 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
               >
                 <Link2 size={18} className="dark:text-white" />
               </ButtonCustom>
-              <ButtonCustom title="Estatí. & Relatórios">
-                <ChartArea size={18} className="dark:text-white" />
+              <ButtonCustom title="Serviços">
+                <DatabaseZap size={18} className="dark:text-white" />
               </ButtonCustom>
             </div>
           </div>
           <div className="mt-5 p-5 border-t dark:border-zinc-900">
             <div className="flex mt-2 flex-col gap-6">
-              <ButtonCustom title="Perfil">
-                <CircleUser size={18} className="dark:text-white" />
+              <ButtonCustom
+                onClick={() => setTabs("settings")}
+                title="Configurações"
+              >
+                <Bolt size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom title="Configurações">
                 <Bolt size={18} className="dark:text-white" />
               </ButtonCustom>
               <ButtonCustom type="danger" title="Alertas">
-                <OctagonAlert size={18} className="text-red-400" />
+                <OctagonAlert size={18} className="dark:text-white" />
               </ButtonCustom>
-              <ButtonCustom title="Aparelhos de Rede">
-                <Network size={18} className="dark:text-white" />
+              <ButtonCustom
+                disabled={workspacesData.loadingWork}
+                onClick={() => setShowCard(true)}
+                title="Workspaces"
+              >
+                {workspacesData.loadingWork && (
+                  <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-zinc-600"></span>
+                )}
+                <Container size={18} className="dark:text-white" />
               </ButtonCustom>
-              <ButtonCustom title="Utilizadores">
+              <ButtonCustom
+                title="Membros"
+                onClick={() => execAndClose("members")}
+              >
                 <Users size={18} className="dark:text-white" />
               </ButtonCustom>
             </div>
@@ -107,12 +133,25 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
                 <p className="dark:text-zinc-500 text-zinc-600 text-[15px] font-[430]">
                   linomario199010@gmail.com
                 </p>
-                <Button className="w-full mt-3">Terminar Sessão</Button>
+                <Button
+                  onClick={LogOut}
+                  className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+                >
+                  <ArrowLeft size={18} className="" />
+                  Terminar sessão
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </SheetContent>
+      <SwitchWork
+        setShowInfo={setShowCard}
+        showInfo={showCard}
+        workName={workSpaceInfo?.workspace_name}
+        description={workSpaceInfo?.about}
+        workspaces={workspacesData.workspaces}
+      />
     </Sheet>
   );
 };

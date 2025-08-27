@@ -14,17 +14,23 @@ import { DashboardContext } from "../[id]/ContextProvider";
 import InfoCard from "./InfoCard";
 import { LogOut } from "@/components/AppComponents/decodeToken";
 import { Tabs } from "../[id]/page";
+import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 
 interface IMainHeader {
   showSideBar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
+  workspacesData: {
+    workspaces: WorkSpaceProps[];
+    loadingWork: boolean;
+  };
 }
 
 const MainHeader: React.FC<IMainHeader> = ({
   showSideBar,
   setShowSidebar,
   setTabs,
+  workspacesData,
 }) => {
   const [open, setOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -176,7 +182,15 @@ const MainHeader: React.FC<IMainHeader> = ({
           <Sun size={18} className="dark:text-white text-black size-5" />
         </Button>
       </div>
-      <BottomMenuSheet open={open} setOpen={setOpen} setTabs={setTabs} />
+      <BottomMenuSheet
+        workspacesData={{
+          workspaces: workspacesData.workspaces,
+          loadingWork: workspacesData.loadingWork,
+        }}
+        open={open}
+        setOpen={setOpen}
+        setTabs={setTabs}
+      />
       <InfoCard
         showInfo={showInfo}
         setShowInfo={setShowInfo}

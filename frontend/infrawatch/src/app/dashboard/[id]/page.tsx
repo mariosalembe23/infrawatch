@@ -147,6 +147,10 @@ export default function Dashboard() {
             showSideBar={showSideBar}
             setTabs={setTabs}
             setShowSidebar={setShowSidebar}
+            workspacesData={{
+              workspaces,
+              loadingWork,
+            }}
           />
           {/*  */}
           <section className="ret:py-14 lal:px-20 ret:px-10 px-5 py-10">
