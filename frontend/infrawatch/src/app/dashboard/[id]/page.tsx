@@ -112,7 +112,7 @@ export default function Dashboard() {
             setShowSidebar={setShowSidebar}
           />
           {/*  */}
-          <section className="ret:py-14 lal:px-20 pot:px-10 px-5 py-10">
+          <section className="ret:py-14 lal:px-20 ret:px-10 px-5 py-10">
             {tabs === "dashboard" && (
               <DashboardSlice showSideBar={showSideBar} />
             )}

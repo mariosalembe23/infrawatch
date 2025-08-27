@@ -2,9 +2,13 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import ServerComponent from "../components/ServerComponent";
 import {
+  ArrowLeft,
   ArrowRightLeft,
+  ChevronDown,
+  ChevronDownIcon,
   Cpu,
   EthernetPort,
+  ListFilterPlus,
   MemoryStick,
   Microchip,
   Network,
@@ -13,9 +17,16 @@ import {
   Server,
   Settings2,
   Thermometer,
+  Timer,
   Trash,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface IServerSlice {
   showSideBar: boolean;
@@ -33,14 +44,85 @@ const DataItem: React.FC<{
   );
 };
 
+const GradeGraph: React.FC<{
+  height: string;
+  week: string;
+  content?: string;
+}> = ({ height, week, content }) => {
+  return (
+    <TooltipProvider delayDuration={0}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className="flex flex-col items-center p-1 h-full justify-end gap-3">
+            <div
+              style={{
+                height: height,
+              }}
+              className="bg-gradient-to-t from-transparent to-cyan-400/80 w-10  border-cyan-100/30 rounded-t-2xl "
+            ></div>
+            <p className="text-zinc-300 text-[15px]">{week}</p>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent className="px-2 py-1 text-xs">
+          {content} - {height} de Utilização
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
+const LogComponent = () => {
+  return (
+    <div className="py-3 ps-5 pe-3 flex items-center justify-between rounded-lg bg-[#060607] border border-zinc-900/40">
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 justify-start pot:justify-end">
+          <p className="dark:text-white">Status</p>
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+            <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
+          </span>
+        </div>
+        <div>
+          <p className="text-zinc-500">
+            / <span className="text-white ps-2 text-[15px]">20% CPU</span>
+          </p>
+        </div>
+        <div>
+          <p className="text-zinc-500">
+            / <span className="text-white ps-2 text-[15px]">40% RAM</span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <Button
+          size={"icon"}
+          className="cursor-pointer rounded-full dark:bg-[#060607] border border-transparent dark:text-white dark:hover:bg-zinc-950 shadow-none"
+        >
+          <ChevronDown className="opacity-90" size={16} aria-hidden="true" />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 const ServerSlice: React.FC<IServerSlice> = ({}) => {
   const [selectedItem, setSelectedItem] = React.useState<string>("");
 
   return selectedItem ? (
     <section className="relative h-full">
       <header>
-        <div className="flex items-start gap-5 flex-wrap justify-between mb-12">
-          <div className="relative">
+        <div className="flex items-center gap-5 flex-wrap justify-between mb-12">
+          <div className="relative flex flex-col items-start">
+            <Button
+              onClick={() => setSelectedItem("")}
+              size={"icon"}
+              className="rounded-full mb-5 cursor-pointer hover:bg-gray-200 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
+            >
+              <ArrowLeft
+                size={18}
+                className="dark:text-white text-black size-5"
+              />
+            </Button>
             <div className="relative inline-flex">
               <h2 className="dark:text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
                 SR1
@@ -254,6 +336,70 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                 </div>
               }
             />
+          </div>
+          <div className="grid pot:grid-cols-2 lal:grid-cols-3 gap-3">
+            <div className="bg-zinc-950 flex flex-col justify-between p-5 h-96 border border-zinc-900/40 rounded-2xl">
+              <header className="border-b border-b-zinc-900/40 pb-2 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg text-cyan-500 uppercase font-medium">
+                    USO de CPU
+                  </h2>
+                  <p className="text-zinc-300 text-[15px]">
+                    Estatísticas & Gráficos
+                  </p>
+                </div>
+                <div>
+                  <Button className="cursor-pointer rounded-full dark:bg-[#060607] border border-zinc-900/50 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+                    Janeiro
+                    <ChevronDownIcon
+                      className="-me-1 opacity-60"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                  </Button>
+                </div>
+              </header>
+
+              <div className="grid grid-cols-4 h-full gap-5">
+                <GradeGraph height="70%" week="S1" content="Primeira Semana" />
+                <GradeGraph height="50%" week="S2" content="Segunda Semana" />
+                <GradeGraph height="80%" week="S3" content="Terceira Semana" />
+                <GradeGraph height="30%" week="S4" content="Quarta Semana" />
+              </div>
+            </div>
+            <div className="bg-zinc-950 lal:col-span-2 flex flex-col justify-between px-5 pt-5 pot:h-96 h-[28rem] border border-zinc-900/40 rounded-2xl">
+              <header className="border-b border-b-zinc-900/40 pb-2 flex items-center justify-between">
+                <div>
+                  <p className="text-[15px] flex items-center ">
+                    <Timer size={14} className="text-cyan-100 size-5 me-2" />
+                    Uptime - 34 dias, 4:23 min
+                  </p>
+                </div>
+                <div>
+                  <Button className="cursor-pointer rounded-full dark:bg-[#060607] border border-zinc-900/50 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+                    <ListFilterPlus
+                      className="-me-1 opacity-60"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                    Filtro
+                    <ChevronDownIcon
+                      className="-me-1 opacity-60"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                  </Button>
+                </div>
+              </header>
+              <div
+                className="grid scrollable h-full gap-1
+              overflow-y-auto grid-cols-1 lal:grid-cols-2 items-start pb-5 mt-5"
+              >
+                {Array.from({ length: 20 }, (_, index) => (
+                  <LogComponent key={index} />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -162,7 +162,7 @@ const MainHeader: React.FC<IMainHeader> = ({
         </TooltipProvider>
         <Button
           size={"icon"}
-          className="rounded-full cursor-pointer hover:bg-gray-200 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
+          className="rounded-full pot:inline-flex hidden cursor-pointer hover:bg-gray-200 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
         >
           <Bolt size={18} className="dark:text-white text-black size-5" />
         </Button>

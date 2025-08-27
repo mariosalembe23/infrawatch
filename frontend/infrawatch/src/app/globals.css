@@ -188,3 +188,19 @@ input:is(:-webkit-autofill, :autofill) {
   -webkit-text-fill-color: var(--autofill-text);
   transition: background-color 5000s ease-in-out 0s, color 0.4s ease;
 }
+
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: #2b2b2b;
+  border-radius: 10px;
+  height: 5px;
+}
