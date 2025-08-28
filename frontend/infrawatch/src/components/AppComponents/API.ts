@@ -10,6 +10,8 @@ export const APIS = {
   GET_WORKSPACES: "https://infra-watch-zeta.vercel.app/api/v1/workspace/get/my",
   CREATE_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/workspace/create",
   GET_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/me",
+  ALL_USERS_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/get/",
+  ADD_MEMBER_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/add/",
 };
 
 export const GenericAxiosActions = ({

@@ -1,27 +1,101 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import { DashboardContext } from "../[id]/ContextProvider";
-import {
-  Plus,
-  Trash,
-} from "lucide-react";
+import { Expand, Plus, Trash } from "lucide-react";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import axios from "axios";
+import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
+import { getCookie } from "cookies-next/client";
+import AddMember from "@/components/AppComponents/AddMember";
 
 interface IMembersSlice {
   showSideBar: boolean;
 }
 
+const MemberItem: React.FC<{
+  email: string;
+  role: string;
+  name?: string;
+  username?: string;
+}> = ({ email, role, name, username }) => {
+  return (
+    <div className="flex border flex-col rounded-2xl gap-3 flex-wrap p-5 dark:border-zinc-900/40 items-start justify-between">
+      <header className="flex items-center w-full justify-between">
+        <div className="font-medium rounded-full  dark:bg-transparent flex items-center justify-center">
+          <span className="text-zinc-600 text-[15px]">{username}</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button
+            size={"icon"}
+            className="rounded-full dark:bg-zinc-950 bg-gray-50 hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer border dark:border-zinc-900"
+          >
+            <Expand size={18} className="dark:text-white text-black size-4" />
+          </Button>
+        </div>
+      </header>
+      <div className="leading-none pt-2">
+        <p className="text-cyan-700 font-medium dark:text-cyan-500 text-[14px] pb-2">
+          {role}
+        </p>
+        <p className="dark:text-white flex items-center gap-1 text-black">
+          {name}
+        </p>
+        <p className="dark:text-zinc-300 text-zinc-600 font-mono text-sm pt-1">
+          {email}
+        </p>
+      </div>
+      <div className="w-full">
+        <Button className="py-4 w-full  mt-2 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+          Remover
+          <Trash size={18} className="" />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export interface IMember {
+  userId: string;
+  email: string;
+  role: "MASTER" | "MANAGER" | "VIEWER" | "EDITOR";
+  name: string;
+  username: string;
+  created_at: string;
+}
+
 const MembersSlice: React.FC<IMembersSlice> = () => {
   const dashboardContext = React.useContext(DashboardContext);
+  const userData = dashboardContext?.userData;
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
+  const [Users, setUsers] = React.useState<IMember[]>([]);
+  const [openAddMember, setOpenAddMember] = React.useState(false);
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${APIS.ALL_USERS_WORKSPACE}${workSpaceInfo?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("token")}`,
+            },
+          }
+        );
+        setUsers(
+          response.data.filter((user: IMember) => user.userId !== userData?.id)
+        );
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        GenericAxiosActions({
+          error,
+          message: "Erro ao trazer usuários de" + workSpaceInfo?.workspace_name,
+        });
+      }
+    };
+    if (workSpaceInfo?.id) {
+      getAllUsers();
+    }
+  }, [workSpaceInfo, userData]);
 
   return (
     <section className="max-w-7xl w-full mx-auto">
@@ -40,53 +114,45 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
           </div>
 
           <div>
-            <Button className="py-4  mt-3 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-red-800 dark:text-white">
+            <Button
+              onClick={() => setOpenAddMember(true)}
+              className="py-4  mt-3 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
+            >
               Adicionar Membro
               <Plus size={18} className="" />
             </Button>
           </div>
         </div>
       </header>
-      <div className="pb-10">
+      <div className="pb-6">
         <h2 className="text-xl"> {workSpaceInfo?.workspace_name}</h2>
       </div>
-      <div className="grid grid-cols-1 items-start gap-3">
-        <div className="flex border-b gap-3 flex-wrap py-3 border-zinc-900 items-end justify-between">
-          <div>
-            <p className="text-zinc-600">E-mail</p>
-            <p>linomario199010@gmail.com</p>
-          </div>
-          <div className="flex gap-3 items-center">
-            <Badge
-              variant="outline"
-              className="gap-1.5 text-[14px] border-none items-center"
-            >
-              <span
-                className="size-1.5 rounded-full bg-red-500"
-                aria-hidden="true"
-              ></span>
-              Inactivo
-            </Badge>
-          </div>
-          <div className="flex gap-2 items-center">
-            <Select defaultValue="1">
-              <SelectTrigger className="border-zinc-900 cursor-pointer">
-                <SelectValue placeholder="Adicione uma permissão" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2">MASTER</SelectItem>
-                <SelectItem value="1">MANAGER</SelectItem>
-                <SelectItem value="3">VIEWER</SelectItem>
-                <SelectItem value="4">EDITOR</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
-              <Trash size={16} className="" />
-              Remover
-            </Button>
-          </div>
+      {Users.length > 0 ? (
+        <div className="flex flex-wrap items-start gap-2">
+          {Users.map((user) => (
+            <MemberItem
+              key={user.userId}
+              email={user.email}
+              role={user.role}
+              name={user.name}
+              username={user.username}
+            />
+          ))}
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          <p className="text-zinc-600 dark:text-zinc-500">
+            Nenhum membro encontrado! Convide membros para colaborar no seu
+            workspace.
+          </p>
+        </div>
+      )}
+      <AddMember
+        open={openAddMember}
+        setOpen={setOpenAddMember}
+        setUsers={setUsers}
+        workspaceId={workSpaceInfo?.id ?? ""}
+      />
     </section>
   );
 };

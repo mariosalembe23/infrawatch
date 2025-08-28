@@ -50,7 +50,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
       </header>
 
       <div className="grid pot:grid-cols-2 grid-cols-1 items-start gap-3">
-        <div className="p-5 border dark:border-zinc-900/30 rounded-xl">
+        <div className="p-5 border dark:border-zinc-900/60 rounded-xl">
           <div className="flex gap-3">
             <header className="border-b w-full items-center justify-between dark:border-b-zinc-900/30 pb-3 flex gap-3">
               <div>
@@ -124,7 +124,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
           </div>
         </div>
 
-        <div className="p-5 border dark:border-zinc-900/30 rounded-xl">
+        <div className="p-5 border dark:border-zinc-900/60 rounded-xl">
           <div className="flex gap-3">
             <header className="border-b w-full items-center justify-between dark:border-b-zinc-900/30 pb-3 flex gap-3">
               <div>

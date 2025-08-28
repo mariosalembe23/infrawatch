@@ -63,7 +63,6 @@ export default function Dashboard() {
         if (response.status === 200) {
           setWorkSpaceInfo(response.data);
         }
-        console.log(response.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);

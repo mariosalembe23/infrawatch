@@ -16,7 +16,6 @@ import {
 import React from "react";
 import ButtonCustom from "./ButtonCustom";
 import { UserData, WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
-import { deleteCookie } from "cookies-next/client";
 import { DashboardContext } from "../[id]/ContextProvider";
 import { Tabs } from "../[id]/page";
 import SwitchWork from "./SwitchWork";
@@ -151,13 +150,12 @@ const LateralBar: React.FC<ILateralBar> = ({
             </p>
             <Button
               onClick={() => {
-                deleteCookie("token");
-                window.location.href = "/";
+                window.location.href = `/chooseWorkspace/${userData?.id}`;
               }}
               className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
             >
               <ArrowLeft size={18} className="" />
-              Terminar sessão
+              Sair
             </Button>
           </div>
         </div>
