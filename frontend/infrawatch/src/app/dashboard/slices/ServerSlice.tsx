@@ -37,7 +37,7 @@ const DataItem: React.FC<{
   footerChildren: React.ReactNode;
 }> = ({ headerChildren, footerChildren }) => {
   return (
-    <div className="p-4 flex items-start justify-between flex-col rounded-2xl bg-[#060607] border border-zinc-900/40 h-52">
+    <div className="p-4 flex items-start justify-between flex-col rounded-2xl bg-white dark:bg-[#060607] border dark:border-zinc-900/40 h-52">
       <header>{headerChildren}</header>
       <footer>{footerChildren}</footer>
     </div>
@@ -58,9 +58,9 @@ const GradeGraph: React.FC<{
               style={{
                 height: height,
               }}
-              className="bg-gradient-to-t from-transparent to-cyan-400/80 w-10  border-cyan-100/30 rounded-t-2xl "
+              className="bg-gradient-to-t from-transparent dark:to-cyan-400/80 to-cyan-500 w-10  border-cyan-100/30 rounded-t-2xl "
             ></div>
-            <p className="text-zinc-300 text-[15px]">{week}</p>
+            <p className="dark:text-zinc-300 text-[15px]">{week}</p>
           </div>
         </TooltipTrigger>
         <TooltipContent className="px-2 py-1 text-xs">
@@ -73,7 +73,7 @@ const GradeGraph: React.FC<{
 
 const LogComponent = () => {
   return (
-    <div className="py-3 ps-5 pe-3 flex items-center justify-between rounded-lg bg-[#060607] border border-zinc-900/40">
+    <div className="py-3 ps-5 pe-3 flex items-center justify-between rounded-lg dark:bg-[#060607] border dark:border-zinc-900/40">
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2 justify-start pot:justify-end">
           <p className="dark:text-white">Status</p>
@@ -82,21 +82,27 @@ const LogComponent = () => {
             <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
           </span>
         </div>
-        <div>
+        <div className="">
           <p className="text-zinc-500">
-            / <span className="text-white ps-2 text-[15px]">20% CPU</span>
+            /{" "}
+            <span className="dark:text-white text-black ps-2 text-[15px]">
+              20% CPU
+            </span>
           </p>
         </div>
         <div>
           <p className="text-zinc-500">
-            / <span className="text-white ps-2 text-[15px]">40% RAM</span>
+            /{" "}
+            <span className="dark:text-white text-black  ps-2 text-[15px]">
+              40% RAM
+            </span>
           </p>
         </div>
       </div>
       <div>
         <Button
           size={"icon"}
-          className="cursor-pointer rounded-full dark:bg-[#060607] border border-transparent dark:text-white dark:hover:bg-zinc-950 shadow-none"
+          className="cursor-pointer rounded-full bg-transparent hover:bg-gray-100 dark:bg-[#060607] border border-transparent text-zinc-800 dark:text-white dark:hover:bg-zinc-950 shadow-none"
         >
           <ChevronDown className="opacity-90" size={16} aria-hidden="true" />
         </Button>
@@ -156,16 +162,16 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
       </header>
       <div className="grid grid-cols-1 gap-4">
         <div className="grid grid-cols-1 gap-5">
-          <div className="bg-zinc-950 p-1 grid gap-1 pot:grid-cols-4 ret:grid-cols-3 grid-cols-1 lal:grid-cols-8 border border-zinc-900/40 rounded-2xl">
+          <div className="dark:bg-zinc-950 bg-[#f5f5f5] p-1 grid gap-1 pot:grid-cols-4 ret:grid-cols-3 grid-cols-1 lal:grid-cols-8 border dark:border-zinc-900/40 rounded-2xl">
             <DataItem
               headerChildren={
                 <div className="flex flex-col items-start">
-                  <Cpu size={18} className="text-cyan-500 size-6 mb-3" />
+                  <Cpu size={18} className="dark:text-cyan-500 size-6 mb-3" />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
                     Uso de CPU
                   </p>
                   <p className="text-xl font-medium">40.3%</p>
@@ -183,12 +189,12 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
             <DataItem
               headerChildren={
                 <div className="flex flex-col items-start">
-                  <Radio size={18} className="text-cyan-500 size-6 mb-3" />
+                  <Radio size={18} className="dark:text-cyan-500 size-6 mb-3" />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
                     Frequência CPU
                   </p>
                   <p className="text-xl font-medium">3.4 GHz</p>
@@ -208,7 +214,7 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                 <div className="flex flex-col items-start">
                   <MemoryStick
                     size={18}
-                    className="text-cyan-500 size-6 mb-3"
+                    className="dark:text-cyan-500 size-6 mb-3"
                   />
                 </div>
               }
@@ -218,7 +224,7 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                     RAM / Usada
                   </p>
                   <p className="text-xl font-medium">100 GB</p>
-                  <p className="text-cyan-500 text-[14px] uppercase">
+                  <p className="dark:text-cyan-500 text-cyan-600 text-[14px] uppercase">
                     Total de 256 GB
                   </p>
                 </div>
@@ -230,17 +236,17 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                 <div className="flex flex-col items-start">
                   <EthernetPort
                     size={18}
-                    className="text-cyan-500 size-6 mb-3"
+                    className="dark:text-cyan-500 size-6 mb-3"
                   />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
                     Interfaces de Rede
                   </p>
                   <p className="text-xl font-medium">20</p>
-                  <p className="text-cyan-500 text-[14px]">
+                  <p className="dark:text-cyan-500 text-cyan-600 text-[14px]">
                     12 Ativas / 8 Inativas
                   </p>
                 </div>
@@ -252,13 +258,13 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                 <div className="flex flex-col items-start">
                   <Thermometer
                     size={18}
-                    className="text-cyan-500 size-6 mb-3"
+                    className="dark:text-cyan-500 size-6 mb-3"
                   />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
                     Temperatura
                   </p>
                   <p className="text-xl font-medium">65°C</p>
@@ -278,15 +284,17 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                 <div className="flex flex-col items-start">
                   <ArrowRightLeft
                     size={18}
-                    className="text-cyan-500 size-6 mb-3"
+                    className="dark:text-cyan-500 size-6 mb-3"
                   />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">SWAP</p>
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
+                    SWAP
+                  </p>
                   <p className="text-xl font-medium">32 GB</p>
-                  <p className="text-cyan-500 text-[14px] uppercase">
+                  <p className="dark:text-cyan-500 text-cyan-600 text-[14px] uppercase">
                     Total de 100 GB
                   </p>
                 </div>
@@ -296,21 +304,28 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
             <DataItem
               headerChildren={
                 <div className="flex flex-col items-start">
-                  <Network size={18} className="text-cyan-500 size-6 mb-3" />
+                  <Network
+                    size={18}
+                    className="dark:text-cyan-500 size-6 mb-3"
+                  />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
                     Tráfego de Rede
                   </p>
                   <p className="text-base pt-2 flex items-start flex-col leading-none font-medium">
                     120 Mbps{" "}
-                    <span className="text-sm text-cyan-500">Enviados</span>
+                    <span className="text-sm text-cyan-600 dark:text-cyan-500">
+                      Enviados
+                    </span>
                   </p>
                   <p className="text-base pt-2 flex items-start flex-col leading-none font-medium">
                     80 Mbps{" "}
-                    <span className="text-sm text-cyan-500">Recebidos</span>
+                    <span className="text-sm text-cyan-600 dark:text-cyan-500">
+                      Recebidos
+                    </span>
                   </p>
                 </div>
               }
@@ -319,37 +334,46 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
             <DataItem
               headerChildren={
                 <div className="flex flex-col items-start">
-                  <Microchip size={18} className="text-cyan-500 size-6 mb-3" />
+                  <Microchip
+                    size={18}
+                    className="dark:text-cyan-500 size-6 mb-3"
+                  />
                 </div>
               }
               footerChildren={
                 <div>
-                  <p className="text-zinc-500 uppercase text-[14px]">Núcleos</p>
+                  <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
+                    Núcleos
+                  </p>
                   <p className="text-base pt-2 flex items-start flex-col leading-none font-medium">
                     16
-                    <span className="text-sm text-cyan-500">Físicos</span>
+                    <span className="text-sm text-cyan-600 dark:text-cyan-500">
+                      Físicos
+                    </span>
                   </p>
                   <p className="text-base pt-2 flex items-start flex-col leading-none font-medium">
                     32
-                    <span className="text-sm text-cyan-500">Lógicos</span>
+                    <span className="text-sm text-cyan-600 dark:text-cyan-500">
+                      Lógicos
+                    </span>
                   </p>
                 </div>
               }
             />
           </div>
           <div className="grid pot:grid-cols-2 lal:grid-cols-3 gap-3">
-            <div className="bg-zinc-950 flex flex-col justify-between p-5 h-96 border border-zinc-900/40 rounded-2xl">
-              <header className="border-b border-b-zinc-900/40 pb-2 flex items-center justify-between">
+            <div className="dark:bg-zinc-950 flex flex-col justify-between p-5 h-96 border dark:border-zinc-900/40 rounded-2xl">
+              <header className="border-b dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg text-cyan-500 uppercase font-medium">
+                  <h2 className="text-lg dark:text-cyan-500 uppercase font-medium">
                     USO de CPU
                   </h2>
-                  <p className="text-zinc-300 text-[15px]">
+                  <p className="dark:text-zinc-300 text-zinc-600 text-[15px]">
                     Estatísticas & Gráficos
                   </p>
                 </div>
                 <div>
-                  <Button className="cursor-pointer rounded-full dark:bg-[#060607] border border-zinc-900/50 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+                  <Button className="cursor-pointer rounded-full hover:bg-gray-100 bg-gray-50 dark:bg-[#060607] border dark:border-zinc-900/50 text-black dark:text-white dark:hover:bg-zinc-950 shadow-none">
                     Janeiro
                     <ChevronDownIcon
                       className="-me-1 opacity-60"
@@ -367,16 +391,19 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
                 <GradeGraph height="30%" week="S4" content="Quarta Semana" />
               </div>
             </div>
-            <div className="bg-zinc-950 lal:col-span-2 flex flex-col justify-between px-5 pt-5 pot:h-96 h-[28rem] border border-zinc-900/40 rounded-2xl">
-              <header className="border-b border-b-zinc-900/40 pb-2 flex items-center justify-between">
+            <div className="dark:bg-zinc-950 bg-[#fff] lal:col-span-2 flex flex-col justify-between px-5 pt-5 pot:h-96 h-[28rem] border dark:border-zinc-900/40 rounded-2xl">
+              <header className="border-b dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                 <div>
                   <p className="text-[15px] flex items-center ">
-                    <Timer size={14} className="text-cyan-100 size-5 me-2" />
+                    <Timer
+                      size={14}
+                      className="dark:text-cyan-100 text-zinc-500 size-5 me-2"
+                    />
                     Uptime - 34 dias, 4:23 min
                   </p>
                 </div>
                 <div>
-                  <Button className="cursor-pointer rounded-full dark:bg-[#060607] border border-zinc-900/50 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+                  <Button className="cursor-pointer rounded-full bg-gray-50 text-black dark:bg-[#060607] border dark:border-zinc-900/50 dark:text-white dark:hover:bg-zinc-950 shadow-none">
                     <ListFilterPlus
                       className="-me-1 opacity-60"
                       size={16}

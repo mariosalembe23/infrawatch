@@ -99,7 +99,7 @@ const MainHeader: React.FC<IMainHeader> = ({
             <TooltipTrigger asChild>
               <button
                 onClick={() => setShowInfo(true)}
-                className="p-1 cursor-pointer rounded-full bg-[#161616] border border-zinc-800 flex gap-3 items-center"
+                className="p-1 cursor-pointer rounded-full bg-gray-50 dark:bg-[#161616] border dark:border-zinc-800 flex gap-3 items-center"
               >
                 <Image
                   src={"/app/male.svg"}
@@ -108,18 +108,20 @@ const MainHeader: React.FC<IMainHeader> = ({
                   alt="User Avatar"
                   className="rounded-full size-7"
                 />
-                <p className="pe-3 ret:inline-flex hidden text-white">
+                <p className="pe-3 ret:inline-flex hidden dark:text-white">
                   {userData?.name || "Usuário"}
                 </p>
               </button>
             </TooltipTrigger>
-            <TooltipContent className="dark w-80 py-3">
+            <TooltipContent className="dark:dark w-80 py-3">
               <div className="flex gap-3">
-                <header className="border-b w-full items-center justify-between border-b-zinc-800 pb-3 flex gap-3">
+                <header className="border-b w-full items-center justify-between dark:border-b-zinc-800 pb-3 flex gap-3">
                   <div>
-                    <p className="text-white text-base">{userData?.name}</p>
+                    <p className="dark:text-white text-base">
+                      {userData?.name}
+                    </p>
                     <p>
-                      <span className="text-zinc-300 text-[14px] font-[450]">
+                      <span className="dark:text-zinc-300 text-zinc-600 text-[14px] font-[450]">
                         {userData?.email}
                       </span>
                     </p>
@@ -127,25 +129,29 @@ const MainHeader: React.FC<IMainHeader> = ({
                   <div>
                     <Button
                       size={"icon"}
-                      className="rounded-full dark:bg-[#161616] dark:hover:bg-zinc-800 cursor-pointer border border-zinc-800"
+                      onClick={() => setTabs("settings")}
+                      className="rounded-full dark:bg-[#161616] bg-gray-50 hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer border dark:border-zinc-800"
                     >
-                      <Bolt size={18} className="text-white size-5" />
+                      <Bolt
+                        size={18}
+                        className="dark:text-white text-black size-5"
+                      />
                     </Button>
                   </div>
                 </header>
               </div>
               <div className="items-center flex pt-5 justify-between">
-                <p className="text-white text-base">Estado</p>
+                <p className="dark:text-white text-base">Estado</p>
                 <p>
-                  <span className="text-green-500 text-[14px] font-[490]">
+                  <span className="dark:text-green-500 text-green-700 text-[14px] font-[490]">
                     {userData?.is_active ? "Ativo" : "Inativo"}
                   </span>
                 </p>
               </div>
               <div className="items-center flex pt-5 justify-between">
-                <p className="text-white text-base">Role</p>
+                <p className="dark:text-white text-base">Role</p>
                 <p>
-                  <span className="text-zinc-300 text-[14px] font-[490]">
+                  <span className="dark:text-zinc-300 text-zinc-700 text-[14px] font-[490]">
                     {userData?.role || "User"}
                   </span>
                 </p>
@@ -153,7 +159,7 @@ const MainHeader: React.FC<IMainHeader> = ({
               <div>
                 <Button
                   onClick={LogOut}
-                  className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-white"
+                  className="py-4 w-full mt-5 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
                 >
                   <ArrowLeft size={18} className="" />
                   Terminar sessão
@@ -162,12 +168,7 @@ const MainHeader: React.FC<IMainHeader> = ({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <Button
-          size={"icon"}
-          className="rounded-full pot:inline-flex hidden cursor-pointer hover:bg-gray-200 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
-        >
-          <Bolt size={18} className="dark:text-white text-black size-5" />
-        </Button>
+
         <Button
           size={"icon"}
           onClick={() =>

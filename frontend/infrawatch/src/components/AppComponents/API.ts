@@ -7,7 +7,7 @@ export const APIS = {
   REQUEST_CODE: "https://infra-watch-zeta.vercel.app/api/v1/auth/send_code",
   ACTIVATE_ACCOUNT:
     "https://infra-watch-zeta.vercel.app/api/v1/auth/active_account",
-  GET_WORKSPACES: "https://infra-watch-zeta.vercel.app/api/v1/workspace/get/all",
+  GET_WORKSPACES: "https://infra-watch-zeta.vercel.app/api/v1/workspace/get/my",
   CREATE_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/workspace/create",
   GET_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/me",
 };

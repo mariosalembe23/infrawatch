@@ -89,7 +89,8 @@ export interface WorkSpaceProps {
   about: string;
   created_at: string;
   userId: string;
-  profileId: string;
+  username: string;
+  name: string;
 }
 
 export interface UserData {
@@ -291,9 +292,9 @@ export default function ChooseWorkspace() {
                 setIsDarkMode,
               })
             }
-            className="rounded-full dark:bg-[#161616] cursor-pointer dark:hover:bg-zinc-800 border border-zinc-800"
+            className="rounded-full dark:bg-[#161616] bg-gray-50 hover:bg-gray-100 cursor-pointer dark:hover:bg-zinc-800 border shadow-none dark:border-zinc-800"
           >
-            <Sun size={18} className="text-white size-5" />
+            <Sun size={18} className="dark:text-white text-black size-5" />
           </Button>
         </div>
       </header>
@@ -311,7 +312,7 @@ export default function ChooseWorkspace() {
               Escolha um Espaço de Trabalho
             </h1>
             <div className="pot:w-[26rem] w-full mx-auto">
-              <p className="dark:text-zinc-400 text-zinc-700 font-[410] mt-2">
+              <p className="dark:text-zinc-400 text-zinc-800 font-[410] mt-2">
                 Selecione um espaço de trabalho existente ou crie um novo para
                 gerenciar seus servidores, dispositivos de rede e endpoints, bem
                 como sua aquipa!
@@ -335,8 +336,8 @@ export default function ChooseWorkspace() {
               ))
             ) : (
               // só mostra essa mensagem quando loading = false
-              <div className="col-span-full max-w-96 w-full mx-auto bg-zinc-950 rounded-lg p-5 border border-zinc-900/50">
-                <p className="text-zinc-500 text-[15px] text-center">
+              <div className="col-span-full max-w-96 w-full mx-auto dark:bg-zinc-950 rounded-lg p-5 border dark:border-zinc-900/50">
+                <p className="dark:text-zinc-500 text-[15px] text-zinc-700 text-center">
                   Nenhum espaço de trabalho encontrado. Crie um novo espaço de
                   trabalho para começar a monitorar sua infraestrutura.
                 </p>

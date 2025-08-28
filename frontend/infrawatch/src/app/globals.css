@@ -204,3 +204,7 @@ input:is(:-webkit-autofill, :autofill) {
   border-radius: 10px;
   height: 5px;
 }
+
+button {
+  box-shadow: none !important;
+}

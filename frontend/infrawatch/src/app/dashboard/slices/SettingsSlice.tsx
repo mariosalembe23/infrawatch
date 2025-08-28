@@ -49,12 +49,14 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
         </div>
       </header>
 
-      <div className="grid grid-cols-2 items-start gap-3">
+      <div className="grid pot:grid-cols-2 grid-cols-1 items-start gap-3">
         <div className="p-5 border dark:border-zinc-900/30 rounded-xl">
           <div className="flex gap-3">
             <header className="border-b w-full items-center justify-between dark:border-b-zinc-900/30 pb-3 flex gap-3">
               <div>
-                <p className="dark:text-white text-lg leading-none">{userData?.name}</p>
+                <p className="dark:text-white text-lg leading-none">
+                  {userData?.name}
+                </p>
                 <p>
                   <span className="dark:text-zinc-500 text-zinc-700 text-[15px] font-[450]">
                     {userData?.username}
@@ -126,7 +128,9 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
           <div className="flex gap-3">
             <header className="border-b w-full items-center justify-between dark:border-b-zinc-900/30 pb-3 flex gap-3">
               <div>
-                <p className="dark:text-white text-lg">Workspace</p>
+                <p className="dark:text-white text-lg leading-none">
+                  Workspace
+                </p>
                 <p>
                   <span className="dark:text-zinc-300 text-zinc-700 text-[15px] font-[450]">
                     {workSpaceInfo?.workspace_name}
@@ -185,7 +189,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
             <p className="dark:text-zinc-500 text-base">Crido por</p>
             <p>
               <span className="dark:text-zinc-300 text-zinc-700 text-[15px] font-[490]">
-                Mário Salembe(msalembe)
+                {workSpaceInfo?.name}({workSpaceInfo?.username})
               </span>
             </p>
           </div>
