@@ -446,8 +446,8 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
               </p>
             </div>
           </div>
-          <div>
-            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+          <div className="w-full">
+            <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
               <Server size={14} className="text-white size-4" />
               Adicionar Servidor
             </Button>

@@ -116,10 +116,10 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
             </div>
           </div>
 
-          <div>
+          <div className="w-full">
             <Button
               onClick={() => setOpenAddMember(true)}
-              className="py-4  mt-3 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
+              className=" ret:w-auto w-full py-5  mt-3 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
             >
               Adicionar Membro
               <Plus size={18} className="" />

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import {  useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowRightIcon, EyeIcon, EyeOffIcon, Plus } from "lucide-react";
 import Link from "next/link";
@@ -99,7 +99,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      GenericAxiosActions({ error });
+      GenericAxiosActions({ error, isOnPage: true });
     }
   };
 
@@ -141,30 +141,22 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
       </header>
       <div>
         <div className="flex flex-col items-center justify-center gap-2 w-full">
-          <button
-            disabled={true}
-            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg dark:text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
+          <Link
+            href={"https://infra-watch-zeta.vercel.app/api/v1/auth/google"}
+            className="w-full"
           >
-            <Image
-              src={"/icons/google.svg"}
-              alt="Google Logo"
-              width={25}
-              height={25}
-            />
-            Continuar com o Google
-          </button>
-          <button
-            disabled={true}
-            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all dark:text-white hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
-          >
-            <Image
-              src={"/icons/linkedin.svg"}
-              alt="Google Logo"
-              width={25}
-              height={25}
-            />
-            Continuar com o LinkedIn
-          </button>
+            <button 
+            type="button"
+            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg dark:text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center">
+              <Image
+                src={"/icons/google.svg"}
+                alt="Google Logo"
+                width={25}
+                height={25}
+              />
+              Continuar com o Google
+            </button>
+          </Link>
         </div>
         <div className="w-full relative flex items-center justify-center my-8">
           <hr className="w-full dark:border-zinc-800" />
@@ -178,7 +170,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
               htmlFor={"email"}
               className="font-[450] dark:text-white text-[15px]"
             >
-              E-mail
+              E-mail ou Username
             </Label>
             <Input
               id={"email"}

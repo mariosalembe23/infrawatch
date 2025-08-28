@@ -62,7 +62,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({
       toast.error("Erro ao criar conta.", {
         position: "top-right",
       });
-      GenericAxiosActions({ error });
+      GenericAxiosActions({ error, isOnPage: true });
     } finally {
       setLoading(false);
     }
@@ -117,18 +117,6 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({
               height={25}
             />
             Continuar com o Google
-          </button>
-          <button
-            disabled={true}
-            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg transition-all dark:text-white hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
-          >
-            <Image
-              src={"/icons/linkedin.svg"}
-              alt="Google Logo"
-              width={25}
-              height={25}
-            />
-            Continuar com o LinkedIn
           </button>
         </div>
         <div className="w-full relative flex items-center justify-center my-8">

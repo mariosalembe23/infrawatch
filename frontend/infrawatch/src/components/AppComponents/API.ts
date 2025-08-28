@@ -18,13 +18,19 @@ export const APIS = {
 export const GenericAxiosActions = ({
   error,
   message = "Erro na requisição. Tente novamente.",
+  isOnPage = false,
 }: {
   error: unknown;
   message?: string;
+  isOnPage?: boolean;
 }) => {
   if (axios.isAxiosError(error) && error.response) {
     if (error.response.status >= 400 && error.response.status < 500) {
-      if (error.response.status >= 401 && error.response.status <= 403) {
+      if (
+        error.response.status >= 401 &&
+        error.response.status <= 403 &&
+        !isOnPage
+      ) {
         toast.error("Sua sessão expirou. Faça login novamente.", {
           position: "top-right",
         });

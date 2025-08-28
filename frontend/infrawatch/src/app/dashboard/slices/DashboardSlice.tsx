@@ -24,7 +24,6 @@ interface IDashboardSlice {
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
-
   return (
     <section>
       <header>
@@ -43,7 +42,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+              <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
                 Adicionar
                 <ChevronDownIcon
                   className="-me-1 opacity-60"
@@ -71,8 +70,8 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       </header>
       <div className="mt-10">
         <div>
-          <header className="flex items-center justify-between">
-            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-lg">
+          <header className="flex flex-wrap items-center justify-between">
+            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-base">
               Dados Recentes{" "}
               <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
                 <ZapIcon
