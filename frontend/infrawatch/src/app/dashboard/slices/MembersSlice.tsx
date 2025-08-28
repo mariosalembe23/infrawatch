@@ -69,6 +69,7 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
   const [Users, setUsers] = React.useState<IMember[]>([]);
   const [openAddMember, setOpenAddMember] = React.useState(false);
+  const [loadingUsers, setLoadingUsers] = React.useState(true);
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -84,7 +85,9 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
         setUsers(
           response.data.filter((user: IMember) => user.userId !== userData?.id)
         );
+        setLoadingUsers(false);
       } catch (error) {
+        setLoadingUsers(false);
         console.error("Error fetching users:", error);
         GenericAxiosActions({
           error,
@@ -127,7 +130,13 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
       <div className="pb-6">
         <h2 className="text-xl"> {workSpaceInfo?.workspace_name}</h2>
       </div>
-      {Users.length > 0 ? (
+
+      {loadingUsers ? (
+        <p className="flex dark:text-white text-zinc-800 items-center gap-2">
+          <span className="loader !w-4 !h-4 !border-2 !border-b-zinc-900 dark:!border-b-zinc-100 !border-zinc-300 dark:!border-zinc-600"></span>
+          Processando
+        </p>
+      ) : Users.length > 0 ? (
         <div className="flex flex-wrap items-start gap-2">
           {Users.map((user) => (
             <MemberItem
