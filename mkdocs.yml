@@ -1,0 +1,13 @@
+site_name: InfraWatch Documentation
+theme:
+  name: material
+
+nav:
+  - Introdução: docs/introducao.md
+  - Instalação: docs/instalacao.md
+  - Arquitetura: docs/arquitetura.md
+  - Uso: docs/uso.md
+  - API: docs/api.md
+  - Contribuição: docs/contribuicao.md
+  - Roadmap: docs/roadmap.md
+  - FAQ: docs/faq.md
