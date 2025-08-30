@@ -3,10 +3,10 @@ theme:
   name: material
 
 nav:
-  - Introdução: docs/introducao.md
-  - Instalação: docs/instalacao.md
-  - Arquitetura: docs/arquitetura.md
-  - Uso: docs/uso.md
+  - O que é InfraWatch?: docs/introducao.md
+  - Como Instalar?: docs/instalacao.md
+  - Arquitetura?: docs/arquitetura.md
+  - Como Usar: docs/uso.md
   - API: docs/api.md
   - Contribuição: docs/contribuicao.md
   - Roadmap: docs/roadmap.md
