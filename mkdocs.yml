@@ -1,6 +1,6 @@
 site_name: RSC ANGOLA | InfraWatch docs
 site_description: Sistema moderno de monitoramento de infraestruturas
-site_url: https://infrawatch.io/docs/
+site_url: https://infrawatch-icn2.vercel.app
 repo_url: https://github.com/mariosalembe23/infrawatch
 repo_name: infrawatch
 
@@ -103,8 +103,8 @@ markdown_extensions:
 
 extra:
   social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/rcs-angola/infrawatch
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/rcs.angola/
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/company/rcs-angola
   generator: false
