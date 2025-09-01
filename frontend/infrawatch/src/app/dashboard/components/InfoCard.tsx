@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Bolt } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import React from "react";
 
 interface IInfoCard {
@@ -27,7 +27,7 @@ const InfoCard: React.FC<IInfoCard> = ({ showInfo, setShowInfo, userData }) => {
           <AlertDialogDescription></AlertDialogDescription>
           <div className="flex gap-3">
             <header className="border-b w-full items-center justify-between dark:border-b-zinc-800 pb-3 flex gap-3">
-              <div>
+              <div className="text-start">
                 <p className="dark:text-white text-lg">{userData?.name}</p>
                 <p>
                   <span className="dark:text-zinc-300 text-zinc-700 text-[15px] font-[450]">
@@ -35,17 +35,7 @@ const InfoCard: React.FC<IInfoCard> = ({ showInfo, setShowInfo, userData }) => {
                   </span>
                 </p>
               </div>
-              <div>
-                <Button
-                  size={"icon"}
-                  className="rounded-full dark:bg-[#161616] hover:bg-gray-200 transition-all shadow-none bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer border dark:border-zinc-800"
-                >
-                  <Bolt
-                    size={18}
-                    className="dark:text-white text-zinc-800 size-5"
-                  />
-                </Button>
-              </div>
+              <div></div>
             </header>
           </div>
           <div className="items-center flex pt-5 justify-between">

@@ -5,16 +5,24 @@ import LoginSlice from "@/components/AppComponents/LoginSlice";
 import RegisterSlice from "@/components/AppComponents/RegisterSlice";
 import { ThemeFunc } from "@/components/AppComponents/ThemeFunc";
 import { isLoggedIn } from "@/components/AppComponents/decodeToken";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Home() {
   const [slice, setSlice] = useState<"login" | "register">("login");
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const message = searchParams.get("message");
+    if (message) {
+      alert(message);
+      router.replace("/");
+    }
+  }, [router, searchParams]);
 
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
-
     const { status, id } = isLoggedIn();
 
     if (status) {

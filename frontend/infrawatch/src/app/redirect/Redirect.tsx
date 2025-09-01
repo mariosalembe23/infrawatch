@@ -29,8 +29,10 @@ const Redirect = () => {
   }, [token, router]);
 
   return (
-    <div className="flex justify-center items-center grotesk h-screen">
-      <h1 className="text-2xl font-medium animate-pulse">Redirecionando...</h1>
+    <div className="flex justify-center items-center  grotesk h-screen">
+      <h1 className="text-2xl font-medium animate-pulse dark:text-white text-black">
+        Redirecionando...
+      </h1>
     </div>
   );
 };

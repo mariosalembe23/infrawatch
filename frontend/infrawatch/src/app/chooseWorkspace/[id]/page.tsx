@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Bolt, Container, Plus, Sun } from "lucide-react";
+import { ArrowLeft, Bolt, Container, Plus, Sun, Users2 } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useParams, useRouter } from "next/navigation";
@@ -23,13 +23,56 @@ import {
 } from "@/components/ui/tooltip";
 import Link from "next/link";
 import InfoCard from "@/app/dashboard/components/InfoCard";
+import { IMember } from "@/app/dashboard/slices/MembersSlice";
+import { Badge } from "@/components/ui/badge";
+
+export interface WorkSpaceProps {
+  id: string;
+  workspace_name: string;
+  about: string;
+  created_at: string;
+  userId: string;
+  username: string;
+  name: string;
+  idUser: string | undefined;
+}
 
 const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
   workspace_name,
   about,
   created_at,
   id,
+  idUser,
 }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [Users, setUsers] = useState<IMember[]>([]);
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const response = await axios.get(`${APIS.ALL_USERS_WORKSPACE}${id}`, {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        });
+        setUsers(
+          response.data.filter((user: IMember) => user.userId !== idUser)
+        );
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching users:", error);
+        GenericAxiosActions({
+          error,
+          message: "Erro ao trazer usuários de " + workspace_name,
+        });
+      }
+    };
+    if (id) {
+      getAllUsers();
+    }
+  }, [id, workspace_name, idUser]);
+
   return (
     <Link href={"/dashboard/" + id} className="w-full">
       <div className="dark:bg-zinc-900 bg-[#fff] group hover:border-gray-400 transition-all dark:hover:border-white/30 hover:border-dashed cursor-pointer h-56 overflow-hidden relative flex flex-col justify-between border dark:border-zinc-900/50 p-5 rounded-3xl gap-3">
@@ -48,26 +91,37 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
         </header>
         <footer>
           <div className="flex  -space-x-[0.525rem]">
-            <Avatar>
-              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-                KK
-              </AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-                AZ
-              </AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-                ZI
-              </AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarFallback className="bg-zinc-900 border-2 border-zinc-950 text-white font-medium text-[14px] leading-none">
-                +3
-              </AvatarFallback>
-            </Avatar>
+            {loading ? (
+              <p className="flex dark:text-white text-zinc-800 items-center gap-2">
+                <span className="loader !w-4 !h-4 !border-2 !border-b-zinc-900 dark:!border-b-zinc-100 !border-zinc-300 dark:!border-zinc-600"></span>
+              </p>
+            ) : Users.length > 0 ? (
+              <>
+                {Users.slice(0, 5).map((user, index) => (
+                  <Avatar key={index}>
+                    <AvatarFallback className="bg-zinc-950 border border-zinc-950 text-white font-medium text-[14px] leading-none">
+                      {user.username?.slice(0, 2).toUpperCase() || "KK"}
+                    </AvatarFallback>
+                  </Avatar>
+                ))}
+                {Users.length > 5 && (
+                  <Avatar>
+                    <AvatarFallback className="bg-zinc-900 border border-zinc-950 text-white font-medium text-[14px] leading-none">
+                      +{Users.length - 5}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+              </>
+            ) : (
+              <Badge className="bg-zinc-950 relative text-white">
+                <Users2
+                  className="-ms-0.5 opacity-60"
+                  size={12}
+                  aria-hidden="true"
+                />
+                Sem membros
+              </Badge>
+            )}
           </div>
           <p className="font-mono dark:text-white text-[14px] relative z-10 pt-1">
             Criado em{" "}
@@ -82,16 +136,6 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
     </Link>
   );
 };
-
-export interface WorkSpaceProps {
-  id: string;
-  workspace_name: string;
-  about: string;
-  created_at: string;
-  userId: string;
-  username: string;
-  name: string;
-}
 
 export interface UserData {
   id: string;
@@ -145,6 +189,7 @@ export default function ChooseWorkspace() {
             Authorization: `Bearer ${getCookie("token")}`,
           },
         });
+
         setLoading(false);
         if (response.status === 200) {
           setWorkspaces(response.data || []);
@@ -168,7 +213,6 @@ export default function ChooseWorkspace() {
         });
         setUserLoading(false);
         setUserData(response.data);
-        console.log("User data fetched:", response.data);
       } catch (error) {
         setUserLoading(false);
         GenericAxiosActions({
@@ -322,7 +366,6 @@ export default function ChooseWorkspace() {
 
           <div className="grid pt-5 justify-center ret:grid-cols-2 grid-cols-1 pot:grid-cols-3 w-full gap-3">
             {loading ? (
-              // skeleton enquanto carrega
               <div className="flex flex-col space-y-3">
                 <Skeleton className="h-[125px] w-[250px] rounded-xl" />
                 <div className="space-y-2">
@@ -332,10 +375,13 @@ export default function ChooseWorkspace() {
               </div>
             ) : workspaces.length > 0 ? (
               workspaces.map((workspace) => (
-                <ChooseWorkspaceComponent key={workspace.id} {...workspace} />
+                <ChooseWorkspaceComponent
+                  key={workspace.id}
+                  {...workspace}
+                  idUser={userData?.id}
+                />
               ))
             ) : (
-              // só mostra essa mensagem quando loading = false
               <div className="col-span-full max-w-96 w-full mx-auto dark:bg-zinc-950 rounded-lg p-5 border dark:border-zinc-900/50">
                 <p className="dark:text-zinc-500 text-[15px] text-zinc-700 text-center">
                   Nenhum espaço de trabalho encontrado. Crie um novo espaço de
