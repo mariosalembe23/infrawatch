@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   CircleUser,
   Container,
@@ -24,6 +24,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import CreateWorkspace from "@/components/AppComponents/CreateWorkSpace";
+import { IMember } from "./MembersSlice";
 
 interface ISettingsSlice {
   showSideBar: boolean;
@@ -44,8 +45,44 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
 }) => {
   const [editUser, setEditUser] = React.useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = React.useState<boolean>(false);
-  const [deleteAlert, setDeleteAlert] = React.useState<boolean>(false);
+  const [deleteAlert, setDeleteAlert] = React.useState<{
+    status: "user" | "workspace";
+    open: boolean;
+  }>({
+    status: "user",
+    open: false,
+  });
   const [editWorkspace, setEditWorkspace] = React.useState<boolean>(false);
+  const [Users, setUsers] = React.useState<IMember[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${APIS.ALL_USERS_WORKSPACE}${workspaceInfo?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("token")}`,
+            },
+          }
+        );
+        setUsers(response.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching users:", error);
+        GenericAxiosActions({
+          error,
+          message:
+            "Erro ao trazer usuários de " + workspaceInfo?.workspace_name,
+        });
+      }
+    };
+
+    getAllUsers();
+  }, [workspaceInfo]);
 
   const deleteUser = async () => {
     try {
@@ -67,6 +104,31 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
     } catch (error) {
       console.error(error);
       GenericAxiosActions({ error, message: "Erro ao deletar usuário" });
+    }
+  };
+
+  const deleteWorkspace = async () => {
+    try {
+      setDeleteLoading(true);
+      const response = await axios.delete(
+        `${APIS.DELETE_WORKSPACE}${workspaceInfo?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success("Workspace deletado com sucesso", {
+          position: "top-center",
+        });
+        setDeleteLoading(false);
+        window.location.href = "/";
+      }
+    } catch (error) {
+      setDeleteLoading(false);
+      console.error(error);
+      GenericAxiosActions({ error, message: "Erro ao deletar workspace" });
     }
   };
 
@@ -173,7 +235,12 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
               Editar
             </Button>
             <Button
-              onClick={() => setDeleteAlert(true)}
+              onClick={() =>
+                setDeleteAlert({
+                  status: "user",
+                  open: true,
+                })
+              }
               className="py-4  bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
             >
               <CircleUser size={18} className="" />
@@ -238,11 +305,17 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
           </div>
           <div className="items-center flex pt-5 justify-between">
             <p className="dark:text-zinc-500 text-base">Membros</p>
-            <p>
-              <span className="dark:text-zinc-300 text-zinc-700 text-[15px] font-[490]">
-                10
-              </span>
-            </p>
+            {loading ? (
+              <p className="flex dark:text-white text-zinc-800 items-center gap-2">
+                <span className="loader !w-4 !h-4 !border-2 !border-b-zinc-900 dark:!border-b-zinc-100 !border-zinc-300 dark:!border-zinc-600"></span>
+              </p>
+            ) : (
+              <p>
+                <span className="dark:text-zinc-300 text-zinc-700 text-[15px] font-[490]">
+                  {Users.length}
+                </span>
+              </p>
+            )}
           </div>
           <div className="items-center flex pt-5 justify-between">
             <p className="dark:text-zinc-500 text-base">Crido por</p>
@@ -253,7 +326,15 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
             </p>
           </div>
           <div className="flex items-center dark:border-t-zinc-900/30 mt-5 border-t justify-end gap-2">
-            <Button className="py-4  mt-3 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+            <Button
+              onClick={() => {
+                setDeleteAlert({
+                  status: "workspace",
+                  open: true,
+                });
+              }}
+              className="py-4  mt-3 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
               <Container size={18} className="" />
               Eliminar Workspace
             </Button>
@@ -277,25 +358,37 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
         workspaceId={workspaceInfo?.id as string}
       />
 
-      <AlertDialog open={deleteAlert} onOpenChange={setDeleteAlert}>
+      <AlertDialog
+        open={deleteAlert.open}
+        onOpenChange={(open) =>
+          setDeleteAlert({
+            status: deleteAlert.status,
+            open,
+          })
+        }
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-medium">
-              Tens certeza que queres eliminar a tua conta?
+            <AlertDialogTitle className="font-medium text-base">
+              {deleteAlert.status === "user"
+                ? "Tens certeza que queres eliminar a tua conta?"
+                : "Tens certeza que queres eliminar este workspace?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação é irreversível. Todos os seus dados serão
-              permanentemente eliminados. Por favor, confirma que desejas
-              prosseguir com esta ação.
+              {deleteAlert.status === "user"
+                ? "Esta ação é irreversível. Todos os seus dados serão permanentemente eliminados. Por favor, confirma que desejas prosseguir com esta ação."
+                : "Esta ação é irreversível. O workspace será permanentemente eliminado. Por favor, confirma que desejas prosseguir com esta ação."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2">
             <AlertDialogCancel disabled={deleteLoading}>
-              Cancel
+              Cancelar
             </AlertDialogCancel>
             <Button
               disabled={deleteLoading}
-              onClick={deleteUser}
+              onClick={
+                deleteAlert.status === "user" ? deleteUser : deleteWorkspace
+              }
               className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
             >
               <Trash size={18} className="" />
