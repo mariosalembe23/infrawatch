@@ -6,10 +6,24 @@ import {
   Container,
   LockOpen,
   SquarePen,
+  Trash,
   UserPen,
 } from "lucide-react";
 import EditUser from "../components/EditUser";
 import { UserData } from "@/app/chooseWorkspace/[id]/page";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { deleteCookie, getCookie } from "cookies-next";
+import axios from "axios";
+import { toast } from "sonner";
+import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 
 interface ISettingsSlice {
   showSideBar: boolean;
@@ -22,6 +36,31 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({ data, setUserData }) => {
   const userData = dashboardContext?.userData;
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
   const [editUser, setEditUser] = React.useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = React.useState<boolean>(false);
+  const [deleteAlert, setDeleteAlert] = React.useState<boolean>(false);
+
+  const deleteUser = async () => {
+    try {
+      setDeleteLoading(true);
+      const response = await axios.delete(`${APIS.DELETE_USER}${data?.id}`, {
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      });
+      if (response.status === 200) {
+        toast.success("Usuário deletado com sucesso.", {
+          position: "top-center",
+        });
+        setDeleteLoading(false);
+        deleteCookie("token");
+        setUserData(null);
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error(error);
+      GenericAxiosActions({ error, message: "Erro ao deletar usuário" });
+    }
+  };
 
   return (
     <section className="max-w-6xl w-full mx-auto">
@@ -125,7 +164,10 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({ data, setUserData }) => {
               <UserPen size={18} className="" />
               Editar
             </Button>
-            <Button className="py-4  bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+            <Button
+              onClick={() => setDeleteAlert(true)}
+              className="py-4  bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
               <CircleUser size={18} className="" />
               Eliminar Conta
             </Button>
@@ -215,6 +257,37 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({ data, setUserData }) => {
         setData={setUserData}
         dataUser={data}
       />
+
+      <AlertDialog open={deleteAlert} onOpenChange={setDeleteAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-medium">
+              Tens certeza que queres eliminar a tua conta?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação é irreversível. Todos os seus dados serão
+              permanentemente eliminados. Por favor, confirma que desejas
+              prosseguir com esta ação.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel disabled={deleteLoading}>
+              Cancel
+            </AlertDialogCancel>
+            <Button
+              disabled={deleteLoading}
+              onClick={deleteUser}
+              className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
+              <Trash size={18} className="" />
+              Eliminar
+              {deleteLoading && (
+                <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-white/40"></span>
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };

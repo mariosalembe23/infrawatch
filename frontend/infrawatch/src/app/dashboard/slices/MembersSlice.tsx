@@ -7,6 +7,16 @@ import axios from "axios";
 import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import { getCookie } from "cookies-next/client";
 import AddMember from "@/components/AppComponents/AddMember";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface IMembersSlice {
   showSideBar: boolean;
@@ -17,7 +27,41 @@ const MemberItem: React.FC<{
   role: string;
   name?: string;
   username?: string;
-}> = ({ email, role, name, username }) => {
+  workspace_id: string;
+  setUsers: React.Dispatch<React.SetStateAction<IMember[]>>;
+}> = ({ email, role, name, username, workspace_id, setUsers }) => {
+  const [loading, setLoading] = React.useState(false);
+  const [deleteAlert, setDeleteAlert] = React.useState(false);
+
+  const deleteMember = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.delete(
+        APIS.REMOVE_FROM_WORKSPACE + workspace_id,
+        {
+          data: {
+            username: username,
+          },
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setLoading(false);
+        setUsers((prev) => prev.filter((user) => user.username !== username));
+        toast.success("Usuário removido com sucesso!");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Error removing user:", error);
+      GenericAxiosActions({
+        error,
+        message: "Erro ao remover usuário: " + username,
+      });
+    }
+  };
+
   return (
     <div className="flex border flex-col rounded-2xl gap-3 flex-wrap p-5 dark:border-zinc-900/40 items-start justify-between">
       <header className="flex items-center w-full justify-between">
@@ -45,11 +89,42 @@ const MemberItem: React.FC<{
         </p>
       </div>
       <div className="w-full">
-        <Button className="py-4 w-full  mt-2 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+        <Button
+          onClick={() => setDeleteAlert(true)}
+          className="py-4 w-full  mt-2 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+        >
           Remover
           <Trash size={18} className="" />
         </Button>
       </div>
+      <AlertDialog open={deleteAlert} onOpenChange={setDeleteAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-medium">
+              Tem certeza que deseja remover este membro?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação é irreversível. O membro será removido permanentemente
+              do workspace. Por favor, confirma que desejas prosseguir com esta
+              ação.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+            <Button
+              disabled={loading}
+              onClick={deleteMember}
+              className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
+              <Trash size={18} className="" />
+              Eliminar
+              {loading && (
+                <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-white/40"></span>
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
@@ -145,6 +220,8 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
               role={user.role}
               name={user.name}
               username={user.username}
+              workspace_id={workSpaceInfo?.id ?? ""}
+              setUsers={setUsers}
             />
           ))}
         </div>
