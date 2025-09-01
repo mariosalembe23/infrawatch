@@ -30,6 +30,7 @@ export const GenericAxiosActions = ({
   error: unknown;
   message?: string;
   isOnPage?: boolean;
+  undefinedRecourse?: boolean;
 }) => {
   if (axios.isAxiosError(error) && error.response) {
     if (error.response.status >= 400 && error.response.status < 500) {
@@ -43,6 +44,11 @@ export const GenericAxiosActions = ({
         });
         deleteCookie("token");
         window.location.href = "/";
+        return;
+      } else if (error.response.status === 404) {
+        toast.error("Recurso não encontrado.", {
+          position: "top-right",
+        });
         return;
       }
       toast.error(error.response.data.message || message, {
