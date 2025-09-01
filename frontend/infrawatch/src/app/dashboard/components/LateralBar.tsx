@@ -19,6 +19,7 @@ import { UserData, WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 import { DashboardContext } from "../[id]/ContextProvider";
 import { Tabs } from "../[id]/page";
 import SwitchWork from "./SwitchWork";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ILateralBar {
   showSideBar: boolean;
@@ -44,12 +45,12 @@ const LateralBar: React.FC<ILateralBar> = ({
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
 
   return (
-    <nav
-      className={`border-r ${
+    <ScrollArea
+      className={`border-r  ${
         showSideBar ? "pot:block hidden" : "hidden"
       } dark:border-zinc-900 overflow-y-auto`}
     >
-      <header className="sticky  top-0 left-0 w-full h-16">
+      <header className="sticky dark:bg-[#060607] bg-white top-0 left-0 w-full h-16">
         <div className="flex border-b items-center px-5 h-16 dark:border-zinc-900 justify-between">
           <svg
             className="dark:text-black text-white size-5"
@@ -89,7 +90,7 @@ const LateralBar: React.FC<ILateralBar> = ({
         </div>
       </header>
 
-      <div className="mt-1 p-5 text-start">
+      <div className="mt-1 p-5 text-start h-full">
         <h2 className="dark:text-zinc-400">Menu</h2>
         <div className="flex mt-7 flex-col gap-6">
           <ButtonCustom onClick={() => setTabs("dashboard")} title="Dashboard">
@@ -167,7 +168,7 @@ const LateralBar: React.FC<ILateralBar> = ({
         description={workSpaceInfo?.about}
         workspaces={workspacesData.workspaces}
       />
-    </nav>
+    </ScrollArea>
   );
 };
 

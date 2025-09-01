@@ -1,4 +1,5 @@
 import axios from "axios";
+import { deleteCookie } from "cookies-next";
 import { toast } from "sonner";
 
 export const APIS = {
@@ -13,6 +14,7 @@ export const APIS = {
   GET_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/me",
   ALL_USERS_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/get/",
   ADD_MEMBER_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/add/",
+  CREATE_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/create/"
 };
 
 export const GenericAxiosActions = ({
@@ -34,6 +36,7 @@ export const GenericAxiosActions = ({
         toast.error("Sua sessão expirou. Faça login novamente.", {
           position: "top-right",
         });
+        deleteCookie("token");
         window.location.href = "/";
         return;
       }

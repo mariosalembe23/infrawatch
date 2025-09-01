@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Link2,
   Network,
+  Plus,
   Server,
   ZapIcon,
 } from "lucide-react";
@@ -18,12 +19,18 @@ import {
 import ServerComponent from "../components/ServerComponent";
 import NetworkComponent from "../components/NetWorkComponent";
 import EndpointComponent from "../components/EndpointComponent";
+import CreateServer from "../components/CreateServer";
+import { DashboardContext } from "../[id]/ContextProvider";
 
 interface IDashboardSlice {
   showSideBar: boolean;
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
+  const [createServerOpen, setCreateServerOpen] = React.useState(false);
+  const dashboardContext = React.useContext(DashboardContext);
+  const workSpaceInfo = dashboardContext?.workSpaceInfo;
+
   return (
     <section>
       <header>
@@ -82,11 +89,24 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Servidores - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button className="cursor-pointer dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className={`grid mt-4 grid-cols-1 `}>
+          <div className="flex mt-5 items-center gap-2">
+            <div className="items-center gap-2  justify-between border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+              <Server size={16} className="dark:text-white text-zinc-900" />
+              Sem servidores registrados
+            </div>
+            <Button
+              onClick={() => setCreateServerOpen(true)}
+              className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
+            >
+              Adicionar
+              <Plus size={18} className="" />
+            </Button>
+          </div>
+          {/* <div className={`grid mt-4 grid-cols-1 `}>
             {Array.from({ length: 6 }, (_, index) => (
               <ServerComponent
                 key={index}
@@ -96,7 +116,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 status={index % 2 === 0 ? "online" : "offline"}
               />
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="mt-10">
@@ -113,55 +133,22 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Redes - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button className="cursor-pointer dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
-            <NetworkComponent
-              name="SW-CORE-01"
-              status="operational"
-              firmware="15.2(7)E4"
-              manufacturer="Cisco Systems"
-              totalInterfaces={10}
-              activeInterfaces={4}
-              downInterfaces={6}
-              cpuUsage={23}
-              temperature={41}
-            />
-            <NetworkComponent
-              name="SW-CORE-02"
-              status="maintenance"
-              firmware="15.2(7)E4"
-              manufacturer="Cisco Systems"
-              totalInterfaces={10}
-              activeInterfaces={6}
-              downInterfaces={4}
-              cpuUsage={18}
-              temperature={39}
-            />
-            <NetworkComponent
-              name="SW-CORE-03"
-              status="operational"
-              firmware="15.2(7)E4"
-              manufacturer="Cisco Systems"
-              totalInterfaces={10}
-              activeInterfaces={8}
-              downInterfaces={2}
-              cpuUsage={12}
-              temperature={36}
-            />
-            <NetworkComponent
-              name="SW-CORE-04"
-              status="offline"
-              firmware="15.2(7)E4"
-              manufacturer="Cisco Systems"
-              totalInterfaces={10}
-              activeInterfaces={0}
-              downInterfaces={10}
-              cpuUsage={0}
-              temperature={0}
-            />
+          <div className="flex mt-5 items-center gap-2">
+            <div className="items-center gap-2  justify-between border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+              <Network size={16} className="dark:text-white text-zinc-900" />
+              Sem aparelhos de rede registrados
+            </div>
+            <Button className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white">
+              Adicionar
+              <Plus size={18} className="" />
+            </Button>
+          </div>
+          {/* <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
+            
             <NetworkComponent
               name="SW-CORE-05"
               status="operational"
@@ -173,7 +160,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
               cpuUsage={20}
               temperature={38}
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="mt-10">
@@ -190,11 +177,21 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Endpoints - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button className="cursor-pointer dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div
+          <div className="flex mt-5 items-center gap-2">
+            <div className="items-center gap-2  justify-between border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+              <Link2 size={16} className="dark:text-white text-zinc-900" />
+              Sem endpoints registrados
+            </div>
+            <Button className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white">
+              Adicionar
+              <Plus size={18} className="" />
+            </Button>
+          </div>
+          {/* <div
             className={`grid mt-7 gap-1 ${
               showSideBar
                 ? "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
@@ -207,39 +204,17 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
               httpStatus={200}
               status="recheable"
             />
-            <EndpointComponent
-              url="https://api.infrawatch.com/endpoint/2"
-              responseTime="0.456"
-              httpStatus={401}
-              status="unreachable"
-            />
-            <EndpointComponent
-              url="https://api.infrawatch.com/endpoint/3"
-              responseTime="0.789"
-              httpStatus={500}
-              status="unreachable"
-            />
-            <EndpointComponent
-              url="https://api.infrawatch.com/endpoint/4"
-              responseTime="0.123"
-              httpStatus={200}
-              status="recheable"
-            />
-            <EndpointComponent
-              url="https://api.infrawatch.com/endpoint/5"
-              responseTime="0.345"
-              httpStatus={200}
-              status="recheable"
-            />
-            <EndpointComponent
-              url="https://api.infrawatch.com/endpoint/6"
-              responseTime="0.567"
-              httpStatus={200}
-              status="recheable"
-            />
-          </div>
+            
+           
+          </div> */}
         </div>
       </div>
+      <CreateServer
+        open={createServerOpen}
+        setOpen={setCreateServerOpen}
+        setWorkspaces={() => {}}
+        workspace_id={workSpaceInfo?.id || ""}
+      />
     </section>
   );
 };

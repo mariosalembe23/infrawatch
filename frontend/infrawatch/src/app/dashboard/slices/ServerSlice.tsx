@@ -6,6 +6,7 @@ import {
   ArrowRightLeft,
   ChevronDown,
   ChevronDownIcon,
+  Cog,
   Cpu,
   EthernetPort,
   ListFilterPlus,
@@ -27,6 +28,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ServerMetricConfig from "../components/Metrics/ServerMetricsConfig";
 
 interface IServerSlice {
   showSideBar: boolean;
@@ -113,6 +115,8 @@ const LogComponent = () => {
 
 const ServerSlice: React.FC<IServerSlice> = ({}) => {
   const [selectedItem, setSelectedItem] = React.useState<string>("");
+  const [showMetricConfig, setShowMetricConfig] =
+    React.useState<boolean>(false);
 
   return selectedItem ? (
     <section className="relative h-full">
@@ -446,10 +450,16 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
               </p>
             </div>
           </div>
-          <div className="w-full">
-            <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+          <div className="w-full flex items-center flex-wrap gap-2">
+            <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-900/50 shadow-none">
               <Server size={14} className="text-white size-4" />
               Adicionar Servidor
+            </Button>
+            <Button
+              onClick={() => setShowMetricConfig(true)}
+              className="cursor-pointer py-5 ret:w-auto w-full dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none"
+            >
+              Configurações <Cog size={16} className="text-zinc-400" />
             </Button>
           </div>
         </div>
@@ -489,6 +499,13 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
           <Plus size={18} className="text-black size-5" />
         </Button>
       </div>
+
+      <ServerMetricConfig
+        open={showMetricConfig}
+        setOpen={setShowMetricConfig}
+        setWorkspaces={() => {}}
+        workspace_id={""}
+      />
     </section>
   );
 };

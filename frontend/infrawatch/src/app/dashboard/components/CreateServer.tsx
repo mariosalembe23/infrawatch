@@ -12,61 +12,89 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Container } from "lucide-react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Server } from "lucide-react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { APIS, GenericAxiosActions } from "./API";
 import { getCookie } from "cookies-next/client";
 import { toast } from "sonner";
 import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
-interface CreateWorkspaceProps {
+const optionsTime = [
+  { label: "1 minuto", value: "60000" },
+  {
+    label: "5 minutos",
+    value: "300000",
+  },
+  { label: "10 minutos", value: "600000" },
+  { label: "30 minutos", value: "1800000" },
+  { label: "1 hora", value: "3600000" },
+];
+
+interface CreateServerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setWorkspaces: React.Dispatch<React.SetStateAction<WorkSpaceProps[]>>;
+  workspace_id: string;
 }
-type CreateWorkSpaceState = {
-  name: string;
-  email: string;
-  description: string;
+type CreateServerState = {
+  servername: string;
+  identifier: string;
+  time_ms: string;
 };
 
-const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
+const CreateServer: React.FC<CreateServerProps> = ({
   open,
   setOpen,
   setWorkspaces,
+  workspace_id,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedTime, setSelectedTime] = useState<{
+    label: string;
+    value: string;
+  }>(optionsTime[0]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateWorkSpaceState>({
+  } = useForm<CreateServerState>({
     mode: "onChange",
     defaultValues: {
-      name: "",
-      email: "",
-      description: "",
+      servername: "",
+      identifier: "",
     },
   });
 
-  const createWorkspace = async (data: CreateWorkSpaceState) => {
+  const createWorkspace = async (data: CreateServerState) => {
+    if (!selectedTime.value) {
+      toast.error("Por favor, selecione um intervalo de verificação.");
+      return;
+    }
+
     try {
       setLoading(true);
-      toast.loading("Criando workspace...", {
+      toast.loading("Criando Servidor...", {
         position: "top-center",
-        id: "createWorkspace",
+        id: "createServer",
       });
       const response = await axios.post(
-        APIS.CREATE_WORKSPACE,
+        APIS.CREATE_SERVER + workspace_id,
         {
-          workspace_name: data.name,
-          about: data.description,
+          servername: data.servername,
+          indentifier: data.identifier,
+          time_ms: data.time_ms,
         },
         {
           headers: {
@@ -81,15 +109,15 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
       if (response.status === 201) {
         toast.success("Workspace criado com sucesso!", {
           position: "top-center",
-          id: "createWorkspace",
+          id: "createServer",
         });
         setLoading(false);
         setOpen(false);
       }
     } catch (error) {
       setLoading(false);
-      toast.dismiss("createWorkspace");
-      GenericAxiosActions({ error, message: "Erro ao criar workspace." });
+      toast.dismiss("createServer");
+      GenericAxiosActions({ error, message: "Erro ao criar Servidor" });
     }
   };
 
@@ -98,7 +126,8 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
       <DialogContent className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5">
         <DialogHeader className="contents space-y-0 text-left">
           <DialogTitle className="border-b flex items-center gap-2 font-medium px-6 py-4 text-base">
-            <Container size={17} /> Criar Espaço de Trabalho
+            <Server size={17} />
+            Cadastrar Servidor
           </DialogTitle>
           <div ref={contentRef} className="overflow-y-auto">
             <DialogDescription asChild>
@@ -107,13 +136,13 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
                 className="px-6 grid grid-cols-1 gap-5 py-6"
               >
                 <div className="*:not-first:mt-3">
-                  <Label htmlFor={"name"} className="font-[450]">
-                    Nome do workspace
+                  <Label htmlFor={"servername"} className="font-[450]">
+                    Nome do Servidor
                   </Label>
                   <Input
-                    id={"name"}
-                    {...register("name", {
-                      required: "Nome é obrigatório",
+                    id={"servername"}
+                    {...register("servername", {
+                      required: "O Nome é obrigatório",
                       minLength: { value: 3, message: "Mínimo 3 caracteres" },
                       maxLength: { value: 50, message: "Máximo 50 caracteres" },
                       pattern: {
@@ -123,78 +152,82 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
                       },
                     })}
                     className={`text-white py-5 text-base ${
-                      errors.name
+                      errors.servername
                         ? "!ring-red-500/20 !border-red-700"
                         : "border-zinc-800"
                     }`}
-                    placeholder="Nome do Espaço de Trabalho"
+                    placeholder="Nome do Servidor"
                     type="text"
                   />
-                  {errors.name && (
+                  {errors.servername && (
                     <p className="text-[14px] text-white/60 mt-1">
-                      {errors.name.message}
+                      {errors.servername.message}
                     </p>
                   )}
                 </div>
-                {/* <div className="*:not-first:mt-3">
-                  <Label htmlFor={"email"} className="font-[450]">
-                    E-mail
+
+                <div className="*:not-first:mt-3">
+                  <Label htmlFor={"identifier"} className="font-[450]">
+                    Identificador
                   </Label>
                   <Input
-                    id={"email"}
-                    {...register("email", {
-                      required: "E-mail é obrigatório",
+                    id={"identifier"}
+                    {...register("identifier", {
+                      required: "O Identificador é obrigatório",
+                      minLength: { value: 3, message: "Mínimo 3 caracteres" },
+                      maxLength: { value: 50, message: "Máximo 50 caracteres" },
                       pattern: {
-                        value:
-                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                        message: "Formato de e-mail inválido.",
+                        value: /^[a-zA-ZÀ-ÿ\s0-9 _-]+$/,
+                        message:
+                          "Apenas letras, números, espaços, hífens e underscores são permitidos.",
                       },
                     })}
                     className={`text-white py-5 text-base ${
-                      errors.email
+                      errors.servername
                         ? "!ring-red-500/20 !border-red-700"
                         : "border-zinc-800"
                     }`}
-                    placeholder="Email"
-                    type="email"
+                    placeholder="Identificador do Servidor"
+                    type="text"
                   />
-                  {errors.email ? (
+                  {errors.servername && (
                     <p className="text-[14px] text-white/60 mt-1">
-                      {errors.email.message}
-                    </p>
-                  ) : (
-                    <p>
-                      O e-mail será usado para convidar membros para o espaço de
-                      trabalho e para notificações relacionadas ao
-                      monitoramento.
+                      {errors.servername.message}
                     </p>
                   )}
-                </div> */}
+                </div>
+
                 <div className="*:not-first:mt-2">
-                  <Label htmlFor={"description"}>Descrição</Label>
-                  <Textarea
-                    id={"description"}
-                    {...register("description", {
-                      required: "Descrição é obrigatória",
-                      minLength: { value: 10, message: "Mínimo 10 caracteres" },
-                      maxLength: {
-                        value: 150,
-                        message: "Máximo 200 caracteres",
-                      },
-                    })}
-                    maxLength={150}
-                    className={`text-white [resize:none]  text-base ${
-                      errors.description
-                        ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
-                    }`}
-                    placeholder="Descrição do Espaço de Trabalho"
-                  />
-                  {errors.description && (
-                    <p className="text-[14px] text-white/60 mt-1">
-                      {errors.description.message}
-                    </p>
-                  )}
+                  <Label htmlFor={"time_sm"}>Intervalo de verificação</Label>
+                  <Select
+                    defaultValue={optionsTime[0].value}
+                    onValueChange={(value) => {
+                      const time = optionsTime.find(
+                        (option) => option.value === value
+                      );
+                      if (time) {
+                        setSelectedTime(time);
+                      }
+                    }}
+                  >
+                    <SelectTrigger
+                      id="time_sm"
+                      className="border-zinc-800 text-base py-5 cursor-pointer"
+                    >
+                      <SelectValue placeholder="Defina um tempo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {optionsTime.map((time, index) => (
+                        <SelectItem
+                          key={index}
+                          className="text-base"
+                          value={time.value}
+                        >
+                          {time.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <DialogFooter className="border-t px-1 mt-3 pt-4 sm:items-center">
                   <DialogClose asChild>
@@ -215,7 +248,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
                     {loading && (
                       <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
                     )}
-                    Criar workspace
+                    Criar Servidor
                   </Button>
                 </DialogFooter>
               </form>
@@ -227,4 +260,4 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
   );
 };
 
-export default CreateWorkspace;
+export default CreateServer;
