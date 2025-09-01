@@ -160,7 +160,7 @@ export default function Dashboard() {
             {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
             {tabs === "network" && <NetworkSlice />}
             {tabs === "endpoint" && <EndpointSlice showSideBar={showSideBar} />}
-            {tabs === "settings" && <SettingsSlice showSideBar={showSideBar} />}
+            {tabs === "settings" && <SettingsSlice showSideBar={showSideBar} data={userData} setUserData={setUserData} />}
             {tabs === "members" && <MembersSlice showSideBar={showSideBar} />}
           </section>
         </ScrollArea>

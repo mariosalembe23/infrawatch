@@ -5,19 +5,23 @@ import {
   CircleUser,
   Container,
   LockOpen,
-  ShieldBan,
   SquarePen,
   UserPen,
 } from "lucide-react";
+import EditUser from "../components/EditUser";
+import { UserData } from "@/app/chooseWorkspace/[id]/page";
 
 interface ISettingsSlice {
   showSideBar: boolean;
+  data: UserData | null;
+  setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
 }
 
-const SettingsSlice: React.FC<ISettingsSlice> = () => {
+const SettingsSlice: React.FC<ISettingsSlice> = ({ data, setUserData }) => {
   const dashboardContext = React.useContext(DashboardContext);
   const userData = dashboardContext?.userData;
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
+  const [editUser, setEditUser] = React.useState<boolean>(false);
 
   return (
     <section className="max-w-6xl w-full mx-auto">
@@ -66,6 +70,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
               <div>
                 <Button
                   size={"icon"}
+                  onClick={() => setEditUser(true)}
                   className="rounded-full dark:bg-[#0c0c0c] hover:bg-gray-200 transition-all shadow-none bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer border dark:border-zinc-900"
                 >
                   <UserPen
@@ -112,10 +117,13 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
                 : "Data desconhecida"}
             </p>
           </div>
-          <div className="flex items-center pt-3 dark:border-t-zinc-900/30 mt-5 border-t justify-end gap-2">
-            <Button className="dark:bg-[#161616] dark:hover:bg-zinc-800 text-white cursor-pointer border border-zinc-800">
-              <ShieldBan size={18} className="" />
-              Desativar Conta
+          <div className="flex items-center w-full flex-wrap pt-3 dark:border-t-zinc-900/30 mt-5 border-t justify-end gap-2">
+            <Button
+              onClick={() => setEditUser(true)}
+              className="py-4  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
+            >
+              <UserPen size={18} className="" />
+              Editar
             </Button>
             <Button className="py-4  bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
               <CircleUser size={18} className="" />
@@ -201,6 +209,12 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
           </div>
         </div>
       </div>
+      <EditUser
+        open={editUser}
+        setOpen={setEditUser}
+        setData={setUserData}
+        dataUser={data}
+      />
     </section>
   );
 };
