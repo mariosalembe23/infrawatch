@@ -412,6 +412,10 @@ export default function ChooseWorkspace() {
         open={openCreateWorkspace}
         setOpen={setOpenCreateWorkspace}
         setWorkspaces={setWorkspaces}
+        mode="CREATE"
+        dataWorkspace={{} as WorkSpaceProps}
+        workspaceId={""}
+        setWorkspaceInfo={() => {}}
       />
     </div>
   );

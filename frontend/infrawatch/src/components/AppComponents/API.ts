@@ -17,7 +17,8 @@ export const APIS = {
   CREATE_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/create/",
   EDIT_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/update",
   DELETE_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/delete/",
-  REMOVE_FROM_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/remove/"
+  REMOVE_FROM_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/remove/",
+  EDIT_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/workspace/update/",
 };
 
 export const GenericAxiosActions = ({

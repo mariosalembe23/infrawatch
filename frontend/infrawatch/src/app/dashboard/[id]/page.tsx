@@ -37,16 +37,19 @@ export default function Dashboard() {
   const [userLoading, setUserLoading] = React.useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
   const { id } = useParams();
-  const contextValue = {
-    userData,
-    workSpaceInfo,
-    loading,
-    userLoading,
-    isDarkMode,
-    setIsDarkMode,
-  };
   const [workspaces, setWorkspaces] = React.useState<WorkSpaceProps[]>([]);
   const [loadingWork, setLoadingWork] = React.useState<boolean>(false);
+  const contextValue = React.useMemo(
+    () => ({
+      userData,
+      workSpaceInfo,
+      loading,
+      userLoading,
+      isDarkMode,
+      setIsDarkMode,
+    }),
+    [userData, workSpaceInfo, loading, userLoading, isDarkMode]
+  );
 
   useEffect(() => {
     const getWorkSpaceInfo = async () => {
@@ -118,6 +121,8 @@ export default function Dashboard() {
     getWorkSpaceInfo();
   }, [id]);
 
+  // atualizar o context quando userData ou workSpaceInfo mudarem
+
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
   }, []);
@@ -160,7 +165,17 @@ export default function Dashboard() {
             {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
             {tabs === "network" && <NetworkSlice />}
             {tabs === "endpoint" && <EndpointSlice showSideBar={showSideBar} />}
-            {tabs === "settings" && <SettingsSlice showSideBar={showSideBar} data={userData} setUserData={setUserData} />}
+            {tabs === "settings" && (
+              <SettingsSlice
+                setWorkspaces={setWorkspaces}
+                showSideBar={showSideBar}
+                data={userData}
+                setUserData={setUserData}
+                workspaceInfo={workSpaceInfo}
+                setWorkspaceInfo={setWorkSpaceInfo}
+                workspaces={workspaces}
+              />
+            )}
             {tabs === "members" && <MembersSlice showSideBar={showSideBar} />}
           </section>
         </ScrollArea>

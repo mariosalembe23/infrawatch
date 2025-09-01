@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,17 +26,24 @@ import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 interface CreateWorkspaceProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setWorkspaceInfo: React.Dispatch<React.SetStateAction<WorkSpaceProps | null>>;
   setWorkspaces: React.Dispatch<React.SetStateAction<WorkSpaceProps[]>>;
+  mode: "CREATE" | "EDIT";
+  dataWorkspace: WorkSpaceProps;
+  workspaceId: string;
 }
 type CreateWorkSpaceState = {
   name: string;
-  email: string;
   description: string;
 };
 
 const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
   open,
   setOpen,
+  setWorkspaceInfo,
+  mode = "CREATE",
+  dataWorkspace,
+  workspaceId,
   setWorkspaces,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -46,14 +53,73 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateWorkSpaceState>({
     mode: "onChange",
     defaultValues: {
       name: "",
-      email: "",
       description: "",
     },
   });
+
+  useEffect(() => {
+    if (mode === "EDIT" && dataWorkspace) {
+      reset({
+        name: dataWorkspace.workspace_name,
+        description: dataWorkspace.about,
+      });
+    } else {
+      reset({
+        name: "",
+        description: "",
+      });
+    }
+  }, [dataWorkspace, mode, reset]);
+
+  const editWorkspace = async (data: CreateWorkSpaceState) => {
+    if (!data.name || !data.description) {
+      toast.error("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (
+      data.name === dataWorkspace.workspace_name &&
+      data.description === dataWorkspace.about
+    ) {
+      setOpen(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        APIS.EDIT_WORKSPACE + workspaceId,
+        {
+          workspace_name: data.name,
+          about: data.description,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setWorkspaceInfo(response.data);
+        toast.success("Workspace editado com sucesso!", {
+          position: "top-center",
+        });
+        setLoading(false);
+        setOpen(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setLoading(false);
+      GenericAxiosActions({ error, message: "Erro ao editar workspace." });
+    }
+  };
 
   const createWorkspace = async (data: CreateWorkSpaceState) => {
     try {
@@ -76,7 +142,6 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
         }
       );
 
-      console.log("Create Workspace Response:", response.data);
       setWorkspaces((prev) => [...prev, response.data]);
       if (response.status === 201) {
         toast.success("Workspace criado com sucesso!", {
@@ -95,7 +160,10 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5">
+      <DialogContent
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5"
+      >
         <DialogHeader className="contents space-y-0 text-left">
           <DialogTitle className="border-b flex items-center gap-2 font-medium px-6 py-4 text-base">
             <Container size={17} /> Criar Espaço de Trabalho
@@ -103,7 +171,11 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
           <div ref={contentRef} className="overflow-y-auto">
             <DialogDescription asChild>
               <form
-                onSubmit={handleSubmit(createWorkspace)}
+                onSubmit={handleSubmit(
+                  mode === "EDIT" && workspaceId
+                    ? editWorkspace
+                    : createWorkspace
+                )}
                 className="px-6 grid grid-cols-1 gap-5 py-6"
               >
                 <div className="*:not-first:mt-3">
@@ -136,40 +208,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
                     </p>
                   )}
                 </div>
-                {/* <div className="*:not-first:mt-3">
-                  <Label htmlFor={"email"} className="font-[450]">
-                    E-mail
-                  </Label>
-                  <Input
-                    id={"email"}
-                    {...register("email", {
-                      required: "E-mail é obrigatório",
-                      pattern: {
-                        value:
-                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                        message: "Formato de e-mail inválido.",
-                      },
-                    })}
-                    className={`text-white py-5 text-base ${
-                      errors.email
-                        ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
-                    }`}
-                    placeholder="Email"
-                    type="email"
-                  />
-                  {errors.email ? (
-                    <p className="text-[14px] text-white/60 mt-1">
-                      {errors.email.message}
-                    </p>
-                  ) : (
-                    <p>
-                      O e-mail será usado para convidar membros para o espaço de
-                      trabalho e para notificações relacionadas ao
-                      monitoramento.
-                    </p>
-                  )}
-                </div> */}
+
                 <div className="*:not-first:mt-2">
                   <Label htmlFor={"description"}>Descrição</Label>
                   <Textarea

@@ -103,8 +103,6 @@ const CreateServer: React.FC<CreateServerProps> = ({
           },
         }
       );
-
-      console.log("Create Workspace Response:", response.data);
       setWorkspaces((prev) => [...prev, response.data]);
       if (response.status === 201) {
         toast.success("Workspace criado com sucesso!", {
