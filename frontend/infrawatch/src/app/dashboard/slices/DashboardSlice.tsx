@@ -26,7 +26,7 @@ interface IDashboardSlice {
   showSideBar: boolean;
 }
 
-const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
+const DashboardSlice: React.FC<IDashboardSlice> = ({}) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
@@ -77,8 +77,8 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       </header>
       <div className="mt-10">
         <div>
-          <header className="flex flex-wrap items-center justify-between">
-            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-base">
+          <header className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="dark:text-zinc-400 text-zinc-600 font-[410]  text-base">
               Dados Recentes{" "}
               <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
                 <ZapIcon
@@ -89,12 +89,12 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Servidores - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="flex mt-5 items-center gap-2">
-            <div className="items-center gap-2  justify-between border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+          <div className="flex flex-wrap mt-5 items-center gap-2">
+            <div className="items-center  ret:w-auto w-full gap-2 flex-wrap  border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
               <Server size={16} className="dark:text-white text-zinc-900" />
               Sem servidores registrados
             </div>
@@ -121,7 +121,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       </div>
       <div className="mt-10">
         <div>
-          <header className="flex items-center justify-between">
+          <header className="flex items-center gap-3 justify-between">
             <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-lg">
               Dados Recentes{" "}
               <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
@@ -133,12 +133,12 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Redes - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="flex mt-5 items-center gap-2">
-            <div className="items-center gap-2  justify-between border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+          <div className="flex flex-wrap mt-5 items-center gap-2">
+            <div className="items-center  ret:w-auto w-full gap-3 border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
               <Network size={16} className="dark:text-white text-zinc-900" />
               Sem aparelhos de rede registrados
             </div>
@@ -165,7 +165,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
       </div>
       <div className="mt-10">
         <div>
-          <header className="flex items-center justify-between">
+          <header className="flex items-center gap-3 justify-between">
             <h3 className="dark:text-zinc-400 text-zinc-600 font-[410] text-lg">
               Dados Recentes{" "}
               <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
@@ -177,12 +177,12 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ showSideBar }) => {
                 Endpoints - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="flex mt-5 items-center gap-2">
-            <div className="items-center gap-2  justify-between border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+          <div className="flex mt-5 items-center flex-wrap gap-2">
+            <div className="items-center ret:w-auto w-full gap-2  border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
               <Link2 size={16} className="dark:text-white text-zinc-900" />
               Sem endpoints registrados
             </div>

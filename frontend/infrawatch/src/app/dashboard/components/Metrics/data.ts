@@ -56,4 +56,5 @@ const defaultSliderValues = [
     default: (1000 * 90) / 100,
   },
 ];
+
 export default defaultSliderValues;

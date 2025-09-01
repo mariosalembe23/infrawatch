@@ -95,11 +95,10 @@ const ServerMetricConfig: React.FC<ServerMetricConfigProps> = ({
           </DialogTitle>
           <div ref={contentRef} className="overflow-y-auto">
             <header className="flex py-4 px-5 items-center justify-between">
-              <div className="inline-flex items-center gap-2"></div>
               <Button
                 type="submit"
                 onClick={resetAll}
-                className="py-4 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+                className="py-4 text-cyan-800 dark:text-white bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer "
               >
                 Resetar Tudo
               </Button>
@@ -130,7 +129,7 @@ const ServerMetricConfig: React.FC<ServerMetricConfigProps> = ({
                       type="button"
                       disabled={loading}
                       variant="outline"
-                      className="py-5 dark:text-white"
+                      className="py-5 dark:text-white text-black"
                     >
                       Cancelar
                     </Button>
@@ -138,7 +137,7 @@ const ServerMetricConfig: React.FC<ServerMetricConfigProps> = ({
 
                   <Button
                     type="submit"
-                    className="py-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+                    className="py-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
                   >
                     {loading && (
                       <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
@@ -196,7 +195,7 @@ function SliderWithInput({
         aria-label={label}
       />
       <Input
-        className="h-8 w-12 px-2 py-1"
+        className="h-8 w-14 px-2 py-1 dark:text-white text-black ret:text-[14px] text-base"
         type="text"
         inputMode="decimal"
         value={inputValues[0]}

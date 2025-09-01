@@ -39,7 +39,7 @@ const DataItem: React.FC<{
   footerChildren: React.ReactNode;
 }> = ({ headerChildren, footerChildren }) => {
   return (
-    <div className="p-4 flex items-start justify-between flex-col rounded-2xl bg-white dark:bg-[#060607] border dark:border-zinc-900/40 h-52">
+    <div className="p-4 flex items-start justify-between flex-col rounded-2xl bg-white dark:bg-[#060607] border dark:border-zinc-900/40 h-36 ret:h-52">
       <header>{headerChildren}</header>
       <footer>{footerChildren}</footer>
     </div>
@@ -457,9 +457,10 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
             </Button>
             <Button
               onClick={() => setShowMetricConfig(true)}
-              className="cursor-pointer py-5 ret:w-auto w-full dark:bg-transparent border dark:text-white dark:hover:bg-zinc-950 shadow-none"
+              className="cursor-pointer py-5 ret:w-auto w-full hover:bg-gray-100 bg-white dark:bg-transparent border text-black dark:text-white dark:hover:bg-zinc-950 shadow-none"
             >
-              Configurações <Cog size={16} className="text-zinc-400" />
+              Configurações{" "}
+              <Cog size={16} className="dark:text-zinc-400 text-zinc-600" />
             </Button>
           </div>
         </div>
