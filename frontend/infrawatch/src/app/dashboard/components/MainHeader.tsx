@@ -196,6 +196,7 @@ const MainHeader: React.FC<IMainHeader> = ({
         showInfo={showInfo}
         setShowInfo={setShowInfo}
         userData={userData}
+        mode={true}
       />
     </header>
   );

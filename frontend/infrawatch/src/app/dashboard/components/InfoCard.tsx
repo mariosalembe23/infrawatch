@@ -9,16 +9,22 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Bolt } from "lucide-react";
 import React from "react";
 
 interface IInfoCard {
   showInfo: boolean;
   setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
   userData?: UserData | null;
+  mode: boolean;
 }
 
-const InfoCard: React.FC<IInfoCard> = ({ showInfo, setShowInfo, userData }) => {
+const InfoCard: React.FC<IInfoCard> = ({
+  showInfo,
+  setShowInfo,
+  userData,
+  mode,
+}) => {
   return (
     <AlertDialog open={showInfo} onOpenChange={setShowInfo}>
       <AlertDialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
@@ -35,7 +41,19 @@ const InfoCard: React.FC<IInfoCard> = ({ showInfo, setShowInfo, userData }) => {
                   </span>
                 </p>
               </div>
-              <div></div>
+              {mode && (
+                <div>
+                  <Button
+                    size={"icon"}
+                    className="rounded-full dark:bg-[#161616] hover:bg-gray-200 transition-all shadow-none bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer border dark:border-zinc-800"
+                  >
+                    <Bolt
+                      size={18}
+                      className="dark:text-white text-zinc-800 size-5"
+                    />
+                  </Button>
+                </div>
+              )}
             </header>
           </div>
           <div className="items-center flex pt-5 justify-between">

@@ -63,16 +63,16 @@ const SwitchWork: React.FC<ISwitchWork> = ({
           <AlertDialogTitle className="!p-0 leading-none"></AlertDialogTitle>
           <AlertDialogDescription className="!p-0 leading-none"></AlertDialogDescription>
           <div className="flex gap-3 -mt-1">
-            <header className="border flex-col bg-cyan-500/10 rounded-lg p-3 w-full items-start justify-between  pb-3 flex gap-3">
+            <header className="border flex-col dark:bg-cyan-500/10 rounded-lg p-3 w-full items-start justify-between  pb-3 flex gap-3">
               <div>
                 <h4 className="font-medium gap-1 flex items-center">
                   <BadgeCheck
                     size={16}
-                    className="inline-block text-cyan-100"
+                    className="inline-block dark:text-cyan-100"
                   />
                   {workName}
                 </h4>
-                <p className="text-[13px]">{description?.slice(0, 40)}...</p>
+                <p className="text-[13px] dark:text-white text-zinc-600">{description?.slice(0, 40)}...</p>
               </div>
             </header>
           </div>
@@ -80,7 +80,7 @@ const SwitchWork: React.FC<ISwitchWork> = ({
             <div className="flex flex-col mt-2 gap-2">
               <label
                 htmlFor="select_work"
-                className="ps-2 text-[15px] text-zinc-400"
+                className="ps-2 text-[15px] dark:text-zinc-400"
               >
                 Mudar de workspace
               </label>
@@ -96,7 +96,7 @@ const SwitchWork: React.FC<ISwitchWork> = ({
               >
                 <SelectTrigger
                   id="select_work"
-                  className="border-zinc-900 text-base py-5 cursor-pointer"
+                  className="dark:border-zinc-900 text-base py-5 cursor-pointer"
                 >
                   <SelectValue placeholder="Adicione uma permissão" />
                 </SelectTrigger>
@@ -140,7 +140,7 @@ const SwitchWork: React.FC<ISwitchWork> = ({
                 <CheckCheck size={18} className="" />
               </Button>
             )}
-            <AlertDialogCancel className="w-full py-5 border-zinc-900 cursor-pointer">
+            <AlertDialogCancel className="w-full py-5 dark:border-zinc-900 cursor-pointer">
               Cancelar
             </AlertDialogCancel>
           </div>

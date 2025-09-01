@@ -212,4 +212,5 @@ input {
 
 button {
   cursor: pointer;
+  outline: none !important;
 }

@@ -38,7 +38,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = () => {
           <div>
             <Button
               size={"icon"}
-              className="rounded-full pot:inline-flex hidden cursor-pointer hover:bg-gray-200 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
+              className="rounded-full pot:inline-flex hidden cursor-pointer hover:bg-gray-100 bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
             >
               <LockOpen
                 size={18}

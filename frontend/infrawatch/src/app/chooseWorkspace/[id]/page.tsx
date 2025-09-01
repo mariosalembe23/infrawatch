@@ -405,6 +405,7 @@ export default function ChooseWorkspace() {
         showInfo={showInfo}
         setShowInfo={setShowInfo}
         userData={userData}
+        mode={false}
       />
 
       <CreateWorkspace

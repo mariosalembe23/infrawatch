@@ -94,14 +94,12 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
           <div className="mt-5 p-5 border-t dark:border-zinc-900">
             <div className="flex mt-2 flex-col gap-6">
               <ButtonCustom
-                onClick={() => setTabs("settings")}
+                onClick={() => execAndClose("settings")}
                 title="Configurações"
               >
                 <Bolt size={18} className="dark:text-white" />
               </ButtonCustom>
-              <ButtonCustom title="Configurações">
-                <Bolt size={18} className="dark:text-white" />
-              </ButtonCustom>
+
               <ButtonCustom type="danger" title="Alertas">
                 <OctagonAlert size={18} className="dark:text-white" />
               </ButtonCustom>
