@@ -1,5 +1,3 @@
-ping3
-requests
-psycopg2-binary
-fastapi==0.116.1
-uvicorn[standard]==0.30.5
+mkdocs>=1.5.0
+mkdocs-material>=9.0.0
+pymdown-extensions>=10.0.0
