@@ -117,12 +117,12 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
-  - Início: introducao.md
-  - Guia de Instalação: instalacao.md
-  - Arquitetura: arquitetura.md
-  - Manual de Uso: uso.md
-  - Referência da API: api.md
+  - Início: pages/introducao.md
+  - Guia de Instalação: pages/instalacao.md
+  - Arquitetura: pages/arquitetura.md
+  - Manual de Uso: pages/uso.md
+  - Referência da API: pages/api.md
   - Desenvolvimento:
-    - Contribuição: contribuicao.md
-    - Roadmap: roadmap.md
-  - Suporte: faq.md
+    - Contribuição: pages/contribuicao.md
+    - Roadmap: pages/roadmap.md
+  - Suporte: pages/faq.md
