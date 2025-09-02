@@ -18,6 +18,7 @@ import { DashboardContext } from "./ContextProvider";
 import { ThemeFunc } from "@/components/AppComponents/ThemeFunc";
 import SettingsSlice from "../slices/SettingsSlice";
 import MembersSlice from "../slices/MembersSlice";
+import ServiceNotFound from "@/components/AppComponents/ServiceNotFound";
 
 export type Tabs =
   | "server"
@@ -50,6 +51,7 @@ export default function Dashboard() {
     }),
     [userData, workSpaceInfo, loading, userLoading, isDarkMode]
   );
+  const [messageError, setMessageError] = React.useState<string>("");
 
   useEffect(() => {
     const getWorkSpaceInfo = async () => {
@@ -72,6 +74,7 @@ export default function Dashboard() {
         GenericAxiosActions({
           error,
           message: "Erro ao buscar informações do workspace",
+          setErrorMessage: setMessageError,
         });
       }
     };
@@ -91,6 +94,7 @@ export default function Dashboard() {
         GenericAxiosActions({
           error,
           message: "Erro ao buscar dados do usuário.",
+          setErrorMessage: setMessageError,
         });
       }
     };
@@ -112,6 +116,7 @@ export default function Dashboard() {
         GenericAxiosActions({
           error,
           message: "Erro ao buscar espaços de trabalho.",
+          setErrorMessage: setMessageError,
         });
       }
     };
@@ -120,8 +125,6 @@ export default function Dashboard() {
     fetchUserData();
     getWorkSpaceInfo();
   }, [id]);
-
-  // atualizar o context quando userData ou workSpaceInfo mudarem
 
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
@@ -135,6 +138,9 @@ export default function Dashboard() {
           : "grid-cols-1"
       } `}
     >
+      {messageError.length > 0 && (
+        <ServiceNotFound messageError={messageError} />
+      )}
       {(loading || userLoading) && <LoadingComponent />}
       <DashboardContext.Provider value={contextValue}>
         <LateralBar
@@ -162,9 +168,19 @@ export default function Dashboard() {
             {tabs === "dashboard" && (
               <DashboardSlice showSideBar={showSideBar} />
             )}
-            {tabs === "server" && <ServerSlice showSideBar={showSideBar} />}
+            {tabs === "server" && (
+              <ServerSlice
+                showSideBar={showSideBar}
+                setErrorMessage={setMessageError}
+              />
+            )}
             {tabs === "network" && <NetworkSlice />}
-            {tabs === "endpoint" && <EndpointSlice showSideBar={showSideBar} />}
+            {tabs === "endpoint" && (
+              <EndpointSlice
+                showSideBar={showSideBar}
+                setErrorMessage={setMessageError}
+              />
+            )}
             {tabs === "settings" && (
               <SettingsSlice
                 setWorkspaces={setWorkspaces}
@@ -174,6 +190,7 @@ export default function Dashboard() {
                 workspaceInfo={workSpaceInfo}
                 setWorkspaceInfo={setWorkSpaceInfo}
                 workspaces={workspaces}
+                setErrorMessage={setMessageError}
               />
             )}
             {tabs === "members" && <MembersSlice showSideBar={showSideBar} />}

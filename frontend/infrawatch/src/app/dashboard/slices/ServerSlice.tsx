@@ -32,6 +32,7 @@ import ServerMetricConfig from "../components/Metrics/ServerMetricsConfig";
 
 interface IServerSlice {
   showSideBar: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const DataItem: React.FC<{

@@ -5,6 +5,7 @@ import EndpointComponent from "../components/EndpointComponent";
 
 interface IEndpointSlice {
   showSideBar: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const EndpointSlice: React.FC<IEndpointSlice> = ({ showSideBar }) => {

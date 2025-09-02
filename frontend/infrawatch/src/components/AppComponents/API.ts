@@ -1,5 +1,6 @@
 import axios from "axios";
 import { deleteCookie } from "cookies-next";
+import React from "react";
 import { toast } from "sonner";
 
 export const APIS = {
@@ -17,20 +18,25 @@ export const APIS = {
   CREATE_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/create/",
   EDIT_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/update",
   DELETE_USER: "https://infra-watch-zeta.vercel.app/api/v1/user/delete/",
-  REMOVE_FROM_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/user/remove/",
-  EDIT_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/workspace/update/",
-  DELETE_WORKSPACE: "https://infra-watch-zeta.vercel.app/api/v1/workspace/delete/"
+  REMOVE_FROM_WORKSPACE:
+    "https://infra-watch-zeta.vercel.app/api/v1/user/remove/",
+  EDIT_WORKSPACE:
+    "https://infra-watch-zeta.vercel.app/api/v1/workspace/update/",
+  DELETE_WORKSPACE:
+    "https://infra-watch-zeta.vercel.app/api/v1/workspace/delete/",
 };
 
 export const GenericAxiosActions = ({
   error,
   message = "Erro na requisição. Tente novamente.",
   isOnPage = false,
+  setErrorMessage,
 }: {
   error: unknown;
   message?: string;
   isOnPage?: boolean;
   undefinedRecourse?: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   if (axios.isAxiosError(error) && error.response) {
     if (error.response.status >= 400 && error.response.status < 500) {
@@ -46,9 +52,15 @@ export const GenericAxiosActions = ({
         window.location.href = "/";
         return;
       } else if (error.response.status === 404) {
-        toast.error("Recurso não encontrado.", {
+        toast.error("Recurso não encontrado em " + axios.getUri(error.config), {
           position: "top-right",
         });
+        if (setErrorMessage) {
+          console.log("setou");
+          setErrorMessage(
+            "Recurso não encontrado em " + axios.getUri(error.config)
+          );
+        }
         return;
       }
       toast.error(error.response.data.message || message, {

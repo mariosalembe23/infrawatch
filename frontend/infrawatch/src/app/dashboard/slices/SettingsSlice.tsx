@@ -34,6 +34,7 @@ interface ISettingsSlice {
   workspaces: WorkSpaceProps[];
   workspaceInfo?: WorkSpaceProps | null;
   setWorkspaceInfo: React.Dispatch<React.SetStateAction<WorkSpaceProps | null>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SettingsSlice: React.FC<ISettingsSlice> = ({
@@ -42,6 +43,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
   setWorkspaces,
   workspaceInfo,
   setWorkspaceInfo,
+  setErrorMessage,
 }) => {
   const [editUser, setEditUser] = React.useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = React.useState<boolean>(false);
@@ -55,8 +57,6 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
   const [editWorkspace, setEditWorkspace] = React.useState<boolean>(false);
   const [Users, setUsers] = React.useState<IMember[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [messageError, setMessageError] = React.useState<string>("");
-
   useEffect(() => {
     const getAllUsers = async () => {
       try {
@@ -78,12 +78,13 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
           error,
           message:
             "Erro ao trazer usuários de " + workspaceInfo?.workspace_name,
+          setErrorMessage,
         });
       }
     };
 
     getAllUsers();
-  }, [workspaceInfo]);
+  }, [workspaceInfo, setErrorMessage]);
 
   const deleteUser = async () => {
     try {
@@ -104,11 +105,11 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
       }
     } catch (error) {
       console.error(error);
-      if (axios.isAxiosError(error) && error.response?.status) {
-        // get URL
-        setMessageError("Recurso não encontrdo em " + APIS.DELETE_USER);
-      }
-      GenericAxiosActions({ error, message: "Erro ao deletar usuário" });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao deletar usuário",
+        setErrorMessage,
+      });
     }
   };
 
@@ -133,15 +134,16 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
     } catch (error) {
       setDeleteLoading(false);
       console.error(error);
-      GenericAxiosActions({ error, message: "Erro ao deletar workspace" });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao deletar workspace",
+        setErrorMessage,
+      });
     }
   };
 
   return (
     <section className="max-w-6xl w-full mx-auto">
-      <aside className="fixed top-0 left-0 bg-white dark:bg-zinc-950">
-
-      </aside>
       <header>
         <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
           <div>

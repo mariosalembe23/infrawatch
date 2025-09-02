@@ -16,9 +16,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ServerComponent from "../components/ServerComponent";
-import NetworkComponent from "../components/NetWorkComponent";
-import EndpointComponent from "../components/EndpointComponent";
 import CreateServer from "../components/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
 
@@ -49,7 +46,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({}) => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+              <Button
+                variant={"outline"}
+                className="cursor-pointer ret:w-auto w-full  shadow-none"
+              >
                 Adicionar
                 <ChevronDownIcon
                   className="-me-1 opacity-60"

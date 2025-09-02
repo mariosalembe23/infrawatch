@@ -25,6 +25,7 @@ import Link from "next/link";
 import InfoCard from "@/app/dashboard/components/InfoCard";
 import { IMember } from "@/app/dashboard/slices/MembersSlice";
 import { Badge } from "@/components/ui/badge";
+import ServiceNotFound from "@/components/AppComponents/ServiceNotFound";
 
 export interface WorkSpaceProps {
   id: string;
@@ -35,6 +36,7 @@ export interface WorkSpaceProps {
   username: string;
   name: string;
   idUser: string | undefined;
+  setMessageError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
@@ -43,6 +45,7 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
   created_at,
   id,
   idUser,
+  setMessageError,
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [Users, setUsers] = useState<IMember[]>([]);
@@ -65,13 +68,14 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
         GenericAxiosActions({
           error,
           message: "Erro ao trazer usuários de " + workspace_name,
+          setErrorMessage: setMessageError,
         });
       }
     };
     if (id) {
       getAllUsers();
     }
-  }, [id, workspace_name, idUser]);
+  }, [id, workspace_name, idUser, setMessageError]);
 
   return (
     <Link href={"/dashboard/" + id} className="w-full">
@@ -159,6 +163,7 @@ export default function ChooseWorkspace() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [showInfo, setShowInfo] = useState<boolean>(false);
+  const [messageError, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
@@ -199,6 +204,7 @@ export default function ChooseWorkspace() {
         GenericAxiosActions({
           error,
           message: "Erro ao buscar espaços de trabalho.",
+          setErrorMessage,
         });
       }
     };
@@ -218,6 +224,7 @@ export default function ChooseWorkspace() {
         GenericAxiosActions({
           error,
           message: "Erro ao buscar dados do usuário.",
+          setErrorMessage,
         });
       }
     };
@@ -228,6 +235,9 @@ export default function ChooseWorkspace() {
 
   return (
     <div className="">
+      {messageError.length > 0 && (
+        <ServiceNotFound messageError={messageError} />
+      )}
       {(loading || userLoading) && <LoadingComponent />}
       <header className="w-full sticky top-0 left-0 right-0 py-4 bg-white/40 dark:bg-[#060607]/40 backdrop-blur-md flex px-7 items-center justify-between">
         <div className="flex items-center gap-2">
@@ -379,6 +389,7 @@ export default function ChooseWorkspace() {
                   key={workspace.id}
                   {...workspace}
                   idUser={userData?.id}
+                  setMessageError={setErrorMessage}
                 />
               ))
             ) : (
