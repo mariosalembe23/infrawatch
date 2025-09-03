@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Bolt, Menu, PanelLeft, Sun } from "lucide-react";
+import { ArrowLeft, Bolt, Megaphone, Menu, PanelLeft, Sun } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import BottomMenuSheet from "./BottomMenuSheet";
@@ -15,6 +15,7 @@ import InfoCard from "./InfoCard";
 import { LogOut } from "@/components/AppComponents/decodeToken";
 import { Tabs } from "../[id]/page";
 import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
+import Notifications from "./Notifications";
 
 interface IMainHeader {
   showSideBar: boolean;
@@ -24,6 +25,7 @@ interface IMainHeader {
     workspaces: WorkSpaceProps[];
     loadingWork: boolean;
   };
+  setMessageError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const MainHeader: React.FC<IMainHeader> = ({
@@ -31,6 +33,7 @@ const MainHeader: React.FC<IMainHeader> = ({
   setShowSidebar,
   setTabs,
   workspacesData,
+  setMessageError,
 }) => {
   const [open, setOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -39,13 +42,15 @@ const MainHeader: React.FC<IMainHeader> = ({
   const setIsDarkMode = dashboardContext?.setIsDarkMode;
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
   const [showInfo, setShowInfo] = React.useState<boolean>(false);
+  const [openNotifications, setOpenNotifications] =
+    React.useState<boolean>(false);
 
   return (
     <header className="sticky bg-white/10 dark:bg-[#060607]/10 backdrop-blur-2xl top-0 left-0 w-full h-16 z-20 border-b dark:border-zinc-900 flex items-center justify-between px-5 ret:px-7">
       <div className="flex items-center gap-3">
         <button
           onClick={() => setOpen(true)}
-          className="border transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-900 dark:border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center"
+          className=" transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-900 dark:border-zinc-900 w-9 h-9 rounded-full pot:hidden flex items-center justify-center"
         >
           <Menu size={20} className="dark:text-white" />
         </button>
@@ -87,7 +92,7 @@ const MainHeader: React.FC<IMainHeader> = ({
               fill="currentColor"
             />
           </svg>
-          <h1 className="dark:text-white text-xl">Infra Watch</h1>
+          <h1 className="dark:text-white text-base ret:text-xl">Infra Watch</h1>
         </div>
         <p className="dark:text-cyan-500 text-cyan-600 ret:inline-flex hidden">
           {workSpaceInfo?.workspace_name}
@@ -182,6 +187,16 @@ const MainHeader: React.FC<IMainHeader> = ({
         >
           <Sun size={18} className="dark:text-white text-black size-5" />
         </Button>
+        <Button
+          size={"icon"}
+          onClick={() => setOpenNotifications(true)}
+          className="rounded-full relative hover:bg-gray-200 cursor-pointer bg-gray-50 shadow-none border dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:border-zinc-800"
+        >
+          <Megaphone size={18} className="dark:text-white text-black size-5" />
+          <span className="border-background absolute -end-1 -top-1 size-3 rounded-full border-2 bg-cyan-500">
+            <span className="sr-only">Online</span>
+          </span>
+        </Button>
       </div>
       <BottomMenuSheet
         workspacesData={{
@@ -197,6 +212,12 @@ const MainHeader: React.FC<IMainHeader> = ({
         setShowInfo={setShowInfo}
         userData={userData}
         mode={true}
+      />
+      <Notifications
+        open={openNotifications}
+        setOpen={setOpenNotifications}
+        setMessageError={setMessageError}
+        workspace_id={workSpaceInfo?.id || ""}
       />
     </header>
   );

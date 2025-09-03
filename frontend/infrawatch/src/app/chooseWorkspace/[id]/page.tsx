@@ -58,9 +58,10 @@ const ChooseWorkspaceComponent: React.FC<WorkSpaceProps> = ({
             Authorization: `Bearer ${getCookie("token")}`,
           },
         });
-        setUsers(
-          response.data.filter((user: IMember) => user.userId !== idUser)
+        const arrFilter = response.data.filter(
+          (user: IMember) => user.userId !== idUser
         );
+        setUsers(arrFilter);
         setLoading(false);
       } catch (error) {
         setLoading(false);

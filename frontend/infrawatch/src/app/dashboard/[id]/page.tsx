@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import LateralBar from "../components/LateralBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DashboardSlice from "../slices/DashboardSlice";
@@ -19,6 +19,9 @@ import { ThemeFunc } from "@/components/AppComponents/ThemeFunc";
 import SettingsSlice from "../slices/SettingsSlice";
 import MembersSlice from "../slices/MembersSlice";
 import ServiceNotFound from "@/components/AppComponents/ServiceNotFound";
+import { io } from "socket.io-client";
+import type { Socket } from "socket.io-client";
+import type { DefaultEventsMap } from "@socket.io/component-emitter";
 
 export type Tabs =
   | "server"
@@ -52,6 +55,46 @@ export default function Dashboard() {
     [userData, workSpaceInfo, loading, userLoading, isDarkMode]
   );
   const [messageError, setMessageError] = React.useState<string>("");
+
+  const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap> | null>(
+    null
+  );
+  const [isConnected, setIsConnected] = React.useState(false);
+  const [messages, setMessages] = React.useState<string[]>([]);
+
+  useEffect(() => {
+    // 1. Inicialize a conexão Socket.IO
+    socketRef.current = io("https://infrawatch-in5r.onrender.com/");
+
+    // 2. Escute os eventos de conexão/desconexão
+    socketRef.current.on("connect", () => {
+      setIsConnected(true);
+      console.log("Conectado ao servidor Socket.IO!");
+    });
+
+    socketRef.current.on("disconnect", () => {
+      setIsConnected(false);
+      console.log("Desconectado do servidor Socket.IO!");
+    });
+
+    // 3. Escute o evento de mensagem do servidor
+    socketRef.current.on("notification", (message) => {
+      console.log("Mensagem recebida do servidor:", message);
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    socketRef.current.onAny((event, ...args) => {
+      console.log(`Evento recebido: ${event}`, args);
+      setMessages((prevMessages) => [...prevMessages, `${event}: ${args}`]);
+    });
+
+    // 4. Limpeza (cleanup) quando o componente é desmontado
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []); // Array de dependências vazio para rodar apenas uma vez
 
   useEffect(() => {
     const getWorkSpaceInfo = async () => {
@@ -130,6 +173,8 @@ export default function Dashboard() {
     ThemeFunc({ setIsDarkMode });
   }, []);
 
+  // console.log("MESSAGES: ", workSpaceInfo);
+
   return (
     <div
       className={`h-dvh w-full grid ${
@@ -162,11 +207,15 @@ export default function Dashboard() {
               workspaces,
               loadingWork,
             }}
+            setMessageError={setMessageError}
           />
           {/*  */}
           <section className="ret:py-14 lal:px-20 ret:px-10 px-5 py-10">
             {tabs === "dashboard" && (
-              <DashboardSlice showSideBar={showSideBar} />
+              <DashboardSlice
+                showSideBar={showSideBar}
+                setErrorMessage={setMessageError}
+              />
             )}
             {tabs === "server" && (
               <ServerSlice

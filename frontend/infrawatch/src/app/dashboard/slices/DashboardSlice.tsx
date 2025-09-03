@@ -9,7 +9,7 @@ import {
   Server,
   ZapIcon,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,14 +19,17 @@ import {
 import CreateServer from "../components/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
 
+
 interface IDashboardSlice {
   showSideBar: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const DashboardSlice: React.FC<IDashboardSlice> = ({}) => {
+const DashboardSlice: React.FC<IDashboardSlice> = ({ setErrorMessage }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
+
 
   return (
     <section>
@@ -214,6 +217,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({}) => {
         setOpen={setCreateServerOpen}
         setWorkspaces={() => {}}
         workspace_id={workSpaceInfo?.id || ""}
+        setErrorMessage={setErrorMessage}
       />
     </section>
   );

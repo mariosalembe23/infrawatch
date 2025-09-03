@@ -45,6 +45,7 @@ interface CreateServerProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setWorkspaces: React.Dispatch<React.SetStateAction<WorkSpaceProps[]>>;
   workspace_id: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 type CreateServerState = {
   servername: string;
@@ -57,6 +58,7 @@ const CreateServer: React.FC<CreateServerProps> = ({
   setOpen,
   setWorkspaces,
   workspace_id,
+  setErrorMessage,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -115,7 +117,11 @@ const CreateServer: React.FC<CreateServerProps> = ({
     } catch (error) {
       setLoading(false);
       toast.dismiss("createServer");
-      GenericAxiosActions({ error, message: "Erro ao criar Servidor" });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao criar Servidor",
+        setErrorMessage,
+      });
     }
   };
 
