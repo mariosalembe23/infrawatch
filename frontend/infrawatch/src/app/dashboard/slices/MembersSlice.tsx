@@ -20,6 +20,7 @@ import {
 
 interface IMembersSlice {
   showSideBar: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const MemberItem: React.FC<{
@@ -29,7 +30,16 @@ const MemberItem: React.FC<{
   username?: string;
   workspace_id: string;
   setUsers: React.Dispatch<React.SetStateAction<IMember[]>>;
-}> = ({ email, role, name, username, workspace_id, setUsers }) => {
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+}> = ({
+  email,
+  role,
+  name,
+  username,
+  workspace_id,
+  setUsers,
+  setErrorMessage,
+}) => {
   const [loading, setLoading] = React.useState(false);
   const [deleteAlert, setDeleteAlert] = React.useState(false);
 
@@ -58,6 +68,7 @@ const MemberItem: React.FC<{
       GenericAxiosActions({
         error,
         message: "Erro ao remover usuário: " + username,
+        setErrorMessage,
       });
     }
   };
@@ -138,7 +149,7 @@ export interface IMember {
   created_at: string;
 }
 
-const MembersSlice: React.FC<IMembersSlice> = () => {
+const MembersSlice: React.FC<IMembersSlice> = ({ setErrorMessage }) => {
   const dashboardContext = React.useContext(DashboardContext);
   const userData = dashboardContext?.userData;
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
@@ -167,13 +178,14 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
         GenericAxiosActions({
           error,
           message: "Erro ao trazer usuários de" + workSpaceInfo?.workspace_name,
+          setErrorMessage,
         });
       }
     };
     if (workSpaceInfo?.id) {
       getAllUsers();
     }
-  }, [workSpaceInfo, userData]);
+  }, [workSpaceInfo, userData, setErrorMessage]);
 
   return (
     <section className="max-w-7xl w-full mx-auto">
@@ -222,6 +234,7 @@ const MembersSlice: React.FC<IMembersSlice> = () => {
               username={user.username}
               workspace_id={workSpaceInfo?.id ?? ""}
               setUsers={setUsers}
+              setErrorMessage={setErrorMessage}
             />
           ))}
         </div>

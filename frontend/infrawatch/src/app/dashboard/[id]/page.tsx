@@ -273,7 +273,12 @@ export default function Dashboard() {
                 setErrorMessage={setMessageError}
               />
             )}
-            {tabs === "members" && <MembersSlice showSideBar={showSideBar} />}
+            {tabs === "members" && (
+              <MembersSlice
+                showSideBar={showSideBar}
+                setErrorMessage={setMessageError}
+              />
+            )}
           </section>
         </ScrollArea>
       </DashboardContext.Provider>
