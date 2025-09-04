@@ -24,6 +24,7 @@ import type { Socket } from "socket.io-client";
 import type { DefaultEventsMap } from "@socket.io/component-emitter";
 import { NotificationsProps } from "../components/Notifications";
 import { toast } from "sonner";
+import { ServerProps } from "../slices/Types/Server";
 
 export type Tabs =
   | "server"
@@ -57,7 +58,6 @@ export default function Dashboard() {
     [userData, workSpaceInfo, loading, userLoading, isDarkMode]
   );
   const [messageError, setMessageError] = React.useState<string>("");
-
   const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap> | null>(
     null
   );
@@ -67,6 +67,8 @@ export default function Dashboard() {
     workspaceId: "",
     created_at: "",
   });
+  const [servers, setServers] = React.useState<ServerProps[]>([]);
+  const [serversLoading, setServersLoading] = React.useState<boolean>(true);
 
   useEffect(() => {
     socketRef.current = io("https://infrawatch-in5r.onrender.com/");
@@ -94,6 +96,31 @@ export default function Dashboard() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const getServers = async () => {
+      if (!workSpaceInfo?.id) return;
+      try {
+        const response = await axios.get(APIS.GET_SERVERS + workSpaceInfo?.id, {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        });
+        console.log(response.data);
+        setServers(response.data || []);
+        setServersLoading(false);
+      } catch (error) {
+        setServersLoading(false);
+        console.error("Error fetching servers:", error);
+        GenericAxiosActions({
+          error,
+          message: "Erro ao buscar servidores",
+          setErrorMessage: setMessageError,
+        });
+      }
+    };
+    getServers();
+  }, [workSpaceInfo?.id, setMessageError]);
 
   useEffect(() => {
     const getWorkSpaceInfo = async () => {
@@ -172,8 +199,6 @@ export default function Dashboard() {
     ThemeFunc({ setIsDarkMode });
   }, []);
 
-  // console.log("MESSAGES: ", workSpaceInfo);
-
   return (
     <div
       className={`h-dvh w-full grid ${
@@ -185,7 +210,7 @@ export default function Dashboard() {
       {messageError.length > 0 && (
         <ServiceNotFound messageError={messageError} />
       )}
-      {(loading || userLoading) && <LoadingComponent />}
+      {(loading || userLoading || serversLoading) && <LoadingComponent />}
       <DashboardContext.Provider value={contextValue}>
         <LateralBar
           showSideBar={showSideBar}
@@ -215,12 +240,14 @@ export default function Dashboard() {
               <DashboardSlice
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
+                servers={servers}
               />
             )}
             {tabs === "server" && (
               <ServerSlice
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
+                workspace_id={workSpaceInfo?.id || ""}
               />
             )}
             {tabs === "network" && <NetworkSlice />}

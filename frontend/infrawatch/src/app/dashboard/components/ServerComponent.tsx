@@ -1,5 +1,13 @@
 import React, { useRef } from "react";
-import { Ellipsis, ZapIcon } from "lucide-react";
+import {
+  ChartArea,
+  Ellipsis,
+  Info,
+  OctagonAlert,
+  Settings2,
+  ToggleLeft,
+  ZapIcon,
+} from "lucide-react";
 import LogSheet from "./LogSheet";
 import {
   Dialog,
@@ -12,14 +20,20 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+import { ServerProps } from "../slices/Types/Server";
+import { DataMode } from "../slices/Types/DataMod";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface IServerComponent {
-  nameServer: string;
-  status: "online" | "offline";
+  server: ServerProps;
   index: number;
-  lastIndex?: number;
-  setSelectedItem?: React.Dispatch<React.SetStateAction<string>>;
+  lastIndex: number;
+  setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const BetweenDiv = ({ children }: { children: React.ReactNode }) => {
@@ -33,10 +47,10 @@ const ColDiv = ({ children }: { children: React.ReactNode }) => {
 };
 
 const ServerComponent: React.FC<IServerComponent> = ({
-  nameServer,
   index,
   lastIndex,
   setSelectedItem,
+  server,
 }) => {
   const [openLogs, setOpenLogs] = React.useState(false);
   const [openDetails, setOpenDetails] = React.useState(false);
@@ -57,7 +71,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
 
   return (
     <div
-      onClick={() => setSelectedItem && setSelectedItem(nameServer)}
+      onClick={() => setSelectedItem && setSelectedItem(server.servername)}
       className={` dark:border-zinc-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-950/20 px-5 py-3 dark:bg-zinc-950 ${
         index === 1
           ? "rounded-t-lg border"
@@ -67,77 +81,113 @@ const ServerComponent: React.FC<IServerComponent> = ({
       }  grid grid-cols-2 gap-y-5 pot:grid-cols-4 items-center`}
     >
       <div>
-        <p className="dark:text-white text-lg font-medium">
-          {nameServer}{" "}
+        <p className="dark:text-white text-base font-[450]">
+          {server.servername}{" "}
+        </p>
+        <p className="dark:text-zinc-500 text-zinc-600 uppercase font-[450] text-[13px]">
           <Badge className="dark:bg-cyan-500/40 bg-cyan-600 text-white  border dark:border-cyan-200/50">
             <ZapIcon
               className="-ms-0.5 opacity-60"
               size={12}
               aria-hidden="true"
             />
-            25% CPU
+            {server.last_metrics.cpu_usage} CPU
           </Badge>
-        </p>
-        <p className="dark:text-zinc-500 text-zinc-600 uppercase font-[450] text-[14.77px]">
-          #chdwd45
         </p>
       </div>
       <div className="pot:order-2 order-3 text-start pot:text-end">
         <div className="flex items-center gap-2 justify-start pot:justify-end">
           <p className="dark:text-white">Status</p>
           <span className="relative flex size-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-            <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
+            <span
+              className={`absolute inline-flex h-full w-full animate-ping rounded-full ${
+                server.is_busy ? "bg-sky-400" : "bg-zinc-500"
+              }  opacity-75`}
+            ></span>
+            <span
+              className={`relative inline-flex size-2 rounded-full ${
+                server.is_busy ? "bg-sky-400" : "bg-zinc-500"
+              } bg-sky-500`}
+            ></span>
           </span>
         </div>
-        <p className="text-zinc-500  text-[15px]">2min/5seg</p>
+        <p className="text-zinc-500 leading-none  text-[15px]">
+          {server.is_busy ? "Ocioso" : "Desconectado"}
+        </p>
       </div>
 
       <div className="pot:order-3 order-4">
         <div className="flex flex-col items-end justify-end gap-1">
-          <p className="dark:text-zinc-100 flex gap-2 items-center">
-            Alerta
-            <Badge className="bg-red-500/20 dark:text-white text-red-800">
-              <ZapIcon
-                className="-ms-0.5 opacity-60"
-                size={12}
-                aria-hidden="true"
-              />
-              0
-            </Badge>
+          <p className="dark:text-zinc-100 flex gap-1 items-center">
+            <ZapIcon className=" opacity-60" size={12} aria-hidden="true" />
+            Deploys
           </p>
-          <p className="dark:text-zinc-500 text-zinc-600 text-[15px]">
-            há 2:30 min
-          </p>
+          <Badge className="bg-red-500/20 dark:text-white text-red-800">
+            <OctagonAlert
+              className=" opacity-60"
+              size={12}
+              aria-hidden="true"
+            />{" "}
+            Alertas 0
+          </Badge>
         </div>
       </div>
       <div className="flex pot:order-4 order-2 items-center justify-end">
         <div className="flex items-center gap-3">
-          {/* <p className="dark:text-zinc-300 text-nowrap">Mário Salembe</p> */}
-          <Image
-            src={"/app/male.svg"}
-            width={100}
-            height={100}
-            alt="User Avatar"
-            className="rounded-full size-7"
-          />
+          <p className="text-zinc-400 text-[15px]">
+            há {DataMode(server.created_at)} por msalembe
+          </p>
         </div>
-        <button className="dark:text-zinc-400 text-zinc-500 hover:text-black transition-all dark:hover:text-white cursor-pointer">
-          <Ellipsis size={20} className=" ms-4" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="dark:text-zinc-400 text-zinc-500 hover:text-black transition-all dark:hover:text-white cursor-pointer">
+              <Ellipsis size={20} className=" ms-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="min-w-40">
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setOpenDetails(true)}
+            >
+              <Info size={16} className="opacity-60" aria-hidden="true" />
+              Detalhes
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setOpenDetails(true)}
+            >
+              <Settings2 size={16} className="opacity-60" aria-hidden="true" />
+              Conf. de métricas
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setOpenDetails(true)}
+            >
+              <ChartArea size={16} className="opacity-60" aria-hidden="true" />
+              Gráficos de desempenho
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setOpenDetails(true)}
+            >
+              <ToggleLeft size={16} className="opacity-60" aria-hidden="true" />
+              Desativar monitoramento
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <LogSheet
         openLogs={openLogs}
         setOpenLogs={setOpenLogs}
-        nameServer={nameServer}
+        nameServer={server.servername}
       />
 
       <Dialog open={openDetails} onOpenChange={setOpenDetails}>
         <DialogContent className="flex bg-[#060607] flex-col  border-zinc-900  gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-xl [&>button:last-child]:top-3.5">
           <DialogHeader className="contents space-y-0 text-left">
             <DialogTitle className="border-b font-medium border-zinc-900 text-white px-6 py-4 text-base">
-              Detalhes - Servidor {nameServer}
+              Detalhes - Servidor {server.servername}
             </DialogTitle>
             <div
               ref={contentRef}
@@ -152,7 +202,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
                         Nome do Servidor
                       </p>
                       <p className="text-base text-white text-[15px]">
-                        {nameServer}
+                        {server.servername}
                       </p>
                     </ColDiv>
                     <BetweenDiv>

@@ -24,7 +24,8 @@ export const APIS = {
     "https://infra-watch-zeta.vercel.app/api/v1/workspace/update/",
   DELETE_WORKSPACE:
     "https://infra-watch-zeta.vercel.app/api/v1/workspace/delete/",
-  GET_NOTIFICATIONS: "https://infra-watch-zeta.vercel.app/api/v1/notifications/get/"
+  GET_NOTIFICATIONS: "https://infra-watch-zeta.vercel.app/api/v1/notifications/get/",
+  GET_SERVERS: "https://infra-watch-zeta.vercel.app/api/v1/server/get/",
 };
 
 export const GenericAxiosActions = ({

@@ -18,18 +18,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 import CreateServer from "../components/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
+import { ServerProps } from "./Types/Server";
+import ServerComponent from "../components/ServerComponent";
+import Graph from "./ServerComponents/Graph";
 
 interface IDashboardSlice {
   showSideBar: boolean;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  servers: ServerProps[];
 }
 
-const DashboardSlice: React.FC<IDashboardSlice> = ({ setErrorMessage }) => {
+const DashboardSlice: React.FC<IDashboardSlice> = ({
+  setErrorMessage,
+  servers,
+}) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
+  const [selectedItem, setSelectedItem] = React.useState<string>("");
 
-  return (
+  return selectedItem ? (
+    <Graph setSelectedItem={setSelectedItem} />
+  ) : (
     <section>
       <header>
         <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
@@ -78,7 +88,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ setErrorMessage }) => {
       </header>
       <div className="mt-10">
         <div>
-          <header className="flex flex-wrap items-center justify-between gap-3">
+          <header className="flex mb-5 flex-wrap items-center justify-between gap-3">
             <h3 className="dark:text-zinc-400 text-zinc-600 font-[410]  text-base">
               Dados Recentes{" "}
               <Badge className="text-[14px] dark:bg-zinc-900 dark:text-white leading-none py-1 px-2">
@@ -87,37 +97,41 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ setErrorMessage }) => {
                   size={12}
                   aria-hidden="true"
                 />
-                Servidores - 14
+                Servidores - {servers.length}
               </Badge>
             </h3>
             <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="flex flex-wrap mt-5 items-center gap-2">
-            <div className="items-center  ret:w-auto w-full gap-2 flex-wrap  border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
-              <Server size={16} className="dark:text-white text-zinc-900" />
-              Sem servidores registrados
+
+          {servers.length === 0 ? (
+            <div className="flex flex-wrap  items-center gap-2">
+              <div className="items-center  ret:w-auto w-full gap-2 flex-wrap  border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+                <Server size={16} className="dark:text-white text-zinc-900" />
+                Sem servidores registrados
+              </div>
+              <Button
+                onClick={() => setCreateServerOpen(true)}
+                className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
+              >
+                Adicionar
+                <Plus size={18} className="" />
+              </Button>
             </div>
-            <Button
-              onClick={() => setCreateServerOpen(true)}
-              className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
-            >
-              Adicionar
-              <Plus size={18} className="" />
-            </Button>
-          </div>
-          {/* <div className={`grid mt-4 grid-cols-1 `}>
-            {Array.from({ length: 6 }, (_, index) => (
-              <ServerComponent
-                key={index}
-                index={index + 1}
-                lastIndex={6}
-                nameServer={`SR ${index + 1}`}
-                status={index % 2 === 0 ? "online" : "offline"}
-              />
-            ))}
-          </div> */}
+          ) : (
+            servers
+              .slice(0, 4)
+              .map((server, index) => (
+                <ServerComponent
+                  key={index}
+                  index={index + 1}
+                  lastIndex={6}
+                  server={server}
+                  setSelectedItem={setSelectedItem}
+                />
+              ))
+          )}
         </div>
       </div>
       <div className="mt-10">

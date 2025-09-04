@@ -43,7 +43,6 @@ const EditUser: React.FC<EditUserProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-
   const {
     register,
     handleSubmit,
@@ -67,8 +66,6 @@ const EditUser: React.FC<EditUserProps> = ({
       });
     }
   }, [dataUser, reset]);
-
-
 
   const editProfile = async (data: EditUserState) => {
     if (!data.name || !data.email || !data.username) {
@@ -117,7 +114,11 @@ const EditUser: React.FC<EditUserProps> = ({
     } catch (error) {
       setLoading(false);
       toast.dismiss("editProfile");
-      GenericAxiosActions({ error, message: "Erro ao editar perfil" });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao editar perfil",
+        setErrorMessage: () => {},
+      });
     }
   };
 
@@ -265,7 +266,6 @@ const EditUser: React.FC<EditUserProps> = ({
           </div>
         </DialogHeader>
       </DialogContent>
-      
     </Dialog>
   );
 };
