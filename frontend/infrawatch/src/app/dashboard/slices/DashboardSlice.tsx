@@ -9,7 +9,7 @@ import {
   Server,
   ZapIcon,
 } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import CreateServer from "../components/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
-
 
 interface IDashboardSlice {
   showSideBar: boolean;
@@ -29,7 +28,6 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({ setErrorMessage }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
-
 
   return (
     <section>

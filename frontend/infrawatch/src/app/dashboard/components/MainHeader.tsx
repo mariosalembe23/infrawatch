@@ -15,7 +15,7 @@ import InfoCard from "./InfoCard";
 import { LogOut } from "@/components/AppComponents/decodeToken";
 import { Tabs } from "../[id]/page";
 import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
-import Notifications from "./Notifications";
+import Notifications, { NotificationsProps } from "./Notifications";
 
 interface IMainHeader {
   showSideBar: boolean;
@@ -26,6 +26,7 @@ interface IMainHeader {
     loadingWork: boolean;
   };
   setMessageError: React.Dispatch<React.SetStateAction<string>>;
+  notification: NotificationsProps | null;
 }
 
 const MainHeader: React.FC<IMainHeader> = ({
@@ -34,6 +35,7 @@ const MainHeader: React.FC<IMainHeader> = ({
   setTabs,
   workspacesData,
   setMessageError,
+  notification,
 }) => {
   const [open, setOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -218,6 +220,7 @@ const MainHeader: React.FC<IMainHeader> = ({
         setOpen={setOpenNotifications}
         setMessageError={setMessageError}
         workspace_id={workSpaceInfo?.id || ""}
+        notification={notification}
       />
     </header>
   );

@@ -22,6 +22,8 @@ import ServiceNotFound from "@/components/AppComponents/ServiceNotFound";
 import { io } from "socket.io-client";
 import type { Socket } from "socket.io-client";
 import type { DefaultEventsMap } from "@socket.io/component-emitter";
+import { NotificationsProps } from "../components/Notifications";
+import { toast } from "sonner";
 
 export type Tabs =
   | "server"
@@ -59,42 +61,39 @@ export default function Dashboard() {
   const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap> | null>(
     null
   );
-  const [isConnected, setIsConnected] = React.useState(false);
-  const [messages, setMessages] = React.useState<string[]>([]);
+  const [notification, setNotification] = React.useState<NotificationsProps>({
+    title: "",
+    content: "",
+    workspaceId: "",
+    created_at: "",
+  });
 
   useEffect(() => {
-    // 1. Inicialize a conexão Socket.IO
     socketRef.current = io("https://infrawatch-in5r.onrender.com/");
 
-    // 2. Escute os eventos de conexão/desconexão
     socketRef.current.on("connect", () => {
-      setIsConnected(true);
       console.log("Conectado ao servidor Socket.IO!");
     });
 
     socketRef.current.on("disconnect", () => {
-      setIsConnected(false);
       console.log("Desconectado do servidor Socket.IO!");
     });
 
-    // 3. Escute o evento de mensagem do servidor
     socketRef.current.on("notification", (message) => {
-      console.log("Mensagem recebida do servidor:", message);
-      setMessages((prevMessages) => [...prevMessages, message]);
+      toast.success(`Nova notificação: ${message.title}`, {
+        description: message.content,
+        duration: 5000,
+        position: "top-center",
+      });
+      setNotification(message);
     });
 
-    socketRef.current.onAny((event, ...args) => {
-      console.log(`Evento recebido: ${event}`, args);
-      setMessages((prevMessages) => [...prevMessages, `${event}: ${args}`]);
-    });
-
-    // 4. Limpeza (cleanup) quando o componente é desmontado
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
       }
     };
-  }, []); // Array de dependências vazio para rodar apenas uma vez
+  }, []);
 
   useEffect(() => {
     const getWorkSpaceInfo = async () => {
@@ -208,6 +207,7 @@ export default function Dashboard() {
               loadingWork,
             }}
             setMessageError={setMessageError}
+            notification={notification}
           />
           {/*  */}
           <section className="ret:py-14 lal:px-20 ret:px-10 px-5 py-10">

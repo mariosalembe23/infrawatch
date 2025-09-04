@@ -10,17 +10,17 @@ import {
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Megaphone } from "lucide-react";
-import React, { useEffect, useRef } from "react";
-
+import React, { useEffect } from "react";
 
 interface INotifications {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setMessageError: React.Dispatch<React.SetStateAction<string>>;
   workspace_id: string;
+  notification: NotificationsProps | null;
 }
 
-interface NotificationsProps {
+export interface NotificationsProps {
   title: string;
   content: string;
   workspaceId: string;
@@ -32,11 +32,11 @@ const Notifications: React.FC<INotifications> = ({
   setOpen,
   setMessageError,
   workspace_id,
+  notification,
 }) => {
   const [notifications, setNotifications] = React.useState<
     NotificationsProps[]
   >([]);
-
 
   useEffect(() => {
     if (!workspace_id) {
@@ -65,6 +65,15 @@ const Notifications: React.FC<INotifications> = ({
 
     fetchNotifications();
   }, [setMessageError, workspace_id]);
+
+  useEffect(() => {
+    if (notification) {
+      setNotifications((prevNotifications) => [
+        notification,
+        ...prevNotifications,
+      ]);
+    }
+  }, [notification]);
 
   const verifyIfPasteOneHour = (dateString: string) => {
     const date = new Date(dateString);
