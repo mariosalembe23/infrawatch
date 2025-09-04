@@ -5,6 +5,7 @@ import ServerMetricConfig from "../components/Metrics/ServerMetricsConfig";
 import Graph from "./ServerComponents/Graph";
 import { ServerProps } from "./Types/Server";
 import ServerComponent from "../components/ServerComponent";
+import CreateServer from "./ServerComponents/CreateServer";
 
 interface IServerSlice {
   showSideBar: boolean;
@@ -14,10 +15,16 @@ interface IServerSlice {
   setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
 }
 
-const ServerSlice: React.FC<IServerSlice> = ({ servers }) => {
+const ServerSlice: React.FC<IServerSlice> = ({
+  servers,
+  workspace_id,
+  setErrorMessage,
+  setServers,
+}) => {
   const [selectedItem, setSelectedItem] = React.useState<string>("");
   const [showMetricConfig, setShowMetricConfig] =
     React.useState<boolean>(false);
+  const [createServer, setCreateServer] = React.useState<boolean>(false);
 
   return selectedItem ? (
     <Graph setSelectedItem={setSelectedItem} />
@@ -37,7 +44,10 @@ const ServerSlice: React.FC<IServerSlice> = ({ servers }) => {
             </div>
           </div>
           <div className="w-full flex items-center flex-wrap gap-2">
-            <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-900/50 shadow-none">
+            <Button
+              onClick={() => setCreateServer(true)}
+              className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-900/50 shadow-none"
+            >
               <Server size={14} className="text-white size-4" />
               Adicionar Servidor
             </Button>
@@ -77,6 +87,14 @@ const ServerSlice: React.FC<IServerSlice> = ({ servers }) => {
         setOpen={setShowMetricConfig}
         setWorkspaces={() => {}}
         workspace_id={""}
+      />
+
+      <CreateServer
+        open={createServer}
+        setOpen={setCreateServer}
+        setErrorMessage={setErrorMessage}
+        setServers={setServers}
+        workspace_id={workspace_id}
       />
     </section>
   );
