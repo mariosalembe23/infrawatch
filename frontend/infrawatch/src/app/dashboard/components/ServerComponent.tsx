@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface IServerComponent {
   server: ServerProps;
@@ -71,7 +72,6 @@ const ServerComponent: React.FC<IServerComponent> = ({
 
   return (
     <div
-      onClick={() => setSelectedItem && setSelectedItem(server.servername)}
       className={` dark:border-zinc-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-950/20 px-5 py-3 dark:bg-zinc-950 ${
         index === 1
           ? "rounded-t-lg border"
@@ -161,7 +161,9 @@ const ServerComponent: React.FC<IServerComponent> = ({
             </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => setOpenDetails(true)}
+              onClick={() =>
+                setSelectedItem && setSelectedItem(server.servername)
+              }
             >
               <ChartArea size={16} className="opacity-60" aria-hidden="true" />
               Gráficos de desempenho
@@ -189,10 +191,10 @@ const ServerComponent: React.FC<IServerComponent> = ({
             <DialogTitle className="border-b font-medium border-zinc-900 text-white px-6 py-4 text-base">
               Detalhes - Servidor {server.servername}
             </DialogTitle>
-            <div
+            <ScrollArea
               ref={contentRef}
               onScroll={handleScroll}
-              className="overflow-y-auto"
+              className="overflow-y-auto scrollDiv"
             >
               <DialogDescription asChild>
                 <DialogDescription asChild>
@@ -207,10 +209,10 @@ const ServerComponent: React.FC<IServerComponent> = ({
                     </ColDiv>
                     <BetweenDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
-                        Versão
+                        Indetificador
                       </p>
                       <p className="text-base text-white text-[15px]">
-                        Beta #kde 1.0.0
+                        {server.server_idenfier}
                       </p>
                     </BetweenDiv>
                     <BetweenDiv>
@@ -218,33 +220,39 @@ const ServerComponent: React.FC<IServerComponent> = ({
                         Uptime
                       </p>
                       <p className="text-base text-white text-[15px]">
-                        Há 2:30 min
+                        {server.last_metrics.last_boot}
                       </p>
                     </BetweenDiv>
                     <BetweenDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
                         Núcleos Físicos
                       </p>
-                      <p className="text-base text-white text-[15px]">10</p>
+                      <p className="text-base text-white text-[15px]">
+                        {server.last_metrics.fisical_nucleos}
+                      </p>
                     </BetweenDiv>
                     <BetweenDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
                         Núcleos Lógicos
                       </p>
-                      <p className="text-base text-white text-[15px]">15</p>
+                      <p className="text-base text-white text-[15px]">
+                        {server.last_metrics.logical_nucleos || "N/A"}
+                      </p>
                     </BetweenDiv>
                     <ColDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
                         Uso de CPU
                       </p>
-                      <p className="text-base text-[15px] text-white">20%</p>
+                      <p className="text-base text-[15px] text-white">
+                        {server.last_metrics.cpu_usage}%
+                      </p>
                     </ColDiv>
                     <BetweenDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
                         Frequência do CPU
                       </p>
                       <p className="text-base text-[15px] text-white">
-                        2.5 GHz
+                        {server.last_metrics.cpu_frequency}
                       </p>
                     </BetweenDiv>
                     <ColDiv>
@@ -252,7 +260,9 @@ const ServerComponent: React.FC<IServerComponent> = ({
                         RAM
                       </p>
                       <p className="text-base  text-[15px]  text-white">
-                        Total: 16GB/Usada: 4GB/Livre: 12GB
+                        Total: {server.last_metrics.ram_usage_total}/Usada:{" "}
+                        {server.last_metrics.ram_usage_available}/Livre:{" "}
+                        {server.last_metrics.ram_usage_free}
                       </p>
                     </ColDiv>
                     <ColDiv>
@@ -260,7 +270,9 @@ const ServerComponent: React.FC<IServerComponent> = ({
                         SWAP
                       </p>
                       <p className="text-base  text-[15px]  text-white">
-                        Total: 16GB/Usada: 4GB/Livre: 12GB
+                        Total: {server.last_metrics.swap_usage_total}/Usada:{" "}
+                        {server.last_metrics.swap_usage_available}/Livre:{" "}
+                        {server.last_metrics.swap_usage_free}
                       </p>
                     </ColDiv>
                     <BetweenDiv>
@@ -268,7 +280,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
                         Dados Enviados
                       </p>
                       <p className="text-base text-[15px] text-white">
-                        1.2 GB/s
+                        {server.last_metrics.sendData}
                       </p>
                     </BetweenDiv>
                     <BetweenDiv>
@@ -276,37 +288,51 @@ const ServerComponent: React.FC<IServerComponent> = ({
                         Dados Recebidos
                       </p>
                       <p className="text-base text-[15px] text-white">
-                        800 MB/s
+                        {server.last_metrics.receiveData}
                       </p>
                     </BetweenDiv>
                     <ColDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
                         Interfaces Activadas
                       </p>
-                      <p className="text-base  text-[15px]  text-white">12</p>
+                      <p className="text-base  text-[15px]  text-white">
+                        {server.last_metrics.activated_interfaces || "N/A"}
+                      </p>
                     </ColDiv>
                     <BetweenDiv>
                       <p className="text-cyan-500  font-[450] text-[14px]">
                         Temperatura da CPU
                       </p>
-                      <p className="text-base text-[15px] text-white">45°C</p>
-                    </BetweenDiv>
-                    <ColDiv>
-                      <p className="text-cyan-500  font-[450] text-[14px]">
-                        Bateria
-                      </p>
-                      <p className="text-base  text-[15px]  text-white">
-                        Conectado à fonte de alimentação{" "}
-                        <span className="inline-flex w-2 h-2 rounded-full bg-red-500"></span>
-                      </p>
                       <p className="text-base text-[15px] text-white">
-                        Porcentagem: 50%
+                        {server.last_metrics.cpu_temperature || "N/A"}
                       </p>
-                    </ColDiv>
+                    </BetweenDiv>
+                    {server.last_metrics.battery_level !== "unknown" && (
+                      <ColDiv>
+                        <p className="text-cyan-500  font-[450] text-[14px]">
+                          Bateria
+                        </p>
+                        <p className="text-base text-[15px]  text-white">
+                          {server.last_metrics.battery_plugged === "false"
+                            ? "Desconectado da fonte de alimentação"
+                            : "Conectado à fonte de alimentação "}
+                          <span
+                            className={`inline-flex w-2 h-2 rounded-full ms-2 ${
+                              server.last_metrics.battery_plugged === "false"
+                                ? "bg-red-500"
+                                : "bg-green-500"
+                            } `}
+                          ></span>
+                        </p>
+                        <p className="text-base text-[15px] text-white">
+                          Porcentagem: {server.last_metrics.battery_level}
+                        </p>
+                      </ColDiv>
+                    )}
                   </div>
                 </DialogDescription>
               </DialogDescription>
-            </div>
+            </ScrollArea>
           </DialogHeader>
           <DialogFooter className="border-t border-zinc-900 px-6 py-4 sm:items-center">
             <DialogClose asChild>

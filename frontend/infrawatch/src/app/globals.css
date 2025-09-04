@@ -214,3 +214,17 @@ button {
   cursor: pointer;
   outline: none !important;
 }
+
+.scrollDiv::-webkit-scrollbar-thumb {
+  background: #292828;
+  border: none;
+  border-radius: 40px;
+  width: 2px !important;
+}
+
+.scrollDiv::-webkit-scrollbar {
+  background: #060607;
+  border: none;
+  border-radius: 0;
+  width: 6px !important;
+}

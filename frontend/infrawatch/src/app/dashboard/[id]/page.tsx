@@ -241,6 +241,7 @@ export default function Dashboard() {
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
                 servers={servers}
+                setServers={setServers}
               />
             )}
             {tabs === "server" && (

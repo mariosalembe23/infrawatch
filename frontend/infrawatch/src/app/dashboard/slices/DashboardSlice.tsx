@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import CreateServer from "../components/CreateServer";
+import CreateServer from "./ServerComponents/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
 import { ServerProps } from "./Types/Server";
 import ServerComponent from "../components/ServerComponent";
@@ -26,11 +26,13 @@ interface IDashboardSlice {
   showSideBar: boolean;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   servers: ServerProps[];
+  setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({
   setErrorMessage,
   servers,
+  setServers,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -70,7 +72,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => setCreateServerOpen(true)}
+              >
                 <Server size={16} className="opacity-60" aria-hidden="true" />
                 Servidor
               </DropdownMenuItem>
@@ -227,7 +232,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
       <CreateServer
         open={createServerOpen}
         setOpen={setCreateServerOpen}
-        setWorkspaces={() => {}}
+        setServers={setServers}
         workspace_id={workSpaceInfo?.id || ""}
         setErrorMessage={setErrorMessage}
       />

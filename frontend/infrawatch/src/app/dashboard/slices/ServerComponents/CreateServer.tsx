@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
 import { toast } from "sonner";
-import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
 import {
   Select,
   SelectContent,
@@ -28,6 +27,7 @@ import {
 import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ServerProps } from "../Types/Server";
 
 const optionsTime = [
   { label: "1 minuto", value: "60000" },
@@ -43,7 +43,7 @@ const optionsTime = [
 interface CreateServerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setWorkspaces: React.Dispatch<React.SetStateAction<WorkSpaceProps[]>>;
+  setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
   workspace_id: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -56,7 +56,7 @@ type CreateServerState = {
 const CreateServer: React.FC<CreateServerProps> = ({
   open,
   setOpen,
-  setWorkspaces,
+  setServers,
   workspace_id,
   setErrorMessage,
 }) => {
@@ -105,9 +105,10 @@ const CreateServer: React.FC<CreateServerProps> = ({
           },
         }
       );
-      setWorkspaces((prev) => [...prev, response.data]);
+      console.log(response.data);
+      setServers((prev) => [...prev, response.data]);
       if (response.status === 201) {
-        toast.success("Workspace criado com sucesso!", {
+        toast.success("Servidor criado com sucesso!", {
           position: "top-center",
           id: "createServer",
         });
