@@ -72,8 +72,8 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
     <Graph setSelectedItem={setSelectedItem} server={selectedServer} />
   ) : (
     <section className="max-w-7xl w-full mx-auto">
-      <header className="mb-10 flex items-center justify-between flex-wrap gap-5">
-        <div className="flex items-start gap-5 flex-wrap justify-between mb-10">
+      <header className="mb-10 flex items-center justify-between flex-wrap">
+        <div className="flex items-start gap-5 flex-wrap justify-between mb-5 pot:mb-10">
           <div>
             <h2 className="dark:text-white ret:text-4xl text-2xl font-medium pot:font-semibold">
               Serviços
@@ -169,9 +169,9 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
                         key={svcIndex}
                         className={`py-4  ${
                           svcIndex === 0 ? "border-y" : "border-b"
-                        } flex items-center justify-between dark:border-zinc-800`}
+                        } flex items-center flex-wrap gap-4 justify-between dark:border-zinc-800`}
                       >
-                        <div>
+                        <div className="flex items-center gap-2">
                           <p className="capitalize">
                             <HardDrive
                               size={18}
@@ -179,12 +179,12 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
                             />
                             {svc[0] || "N/A"}
                           </p>
-                        </div>
-
-                        <div className="flex items-center gap-2 justify-end">
                           <Badge className="rounded bg-green-400/20 border-green-700 border text-green-800 dark:text-green-50">
                             Rodando
                           </Badge>
+                        </div>
+
+                        <div className="flex items-center gap-2 justify-end">
                           <p className="dark:text-zinc-300 font-medium text-[14px]">
                             {svc[1] || "0MB"} MB
                           </p>

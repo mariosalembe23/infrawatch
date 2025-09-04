@@ -86,7 +86,10 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
               >
                 <Link2 size={18} className="dark:text-white" />
               </ButtonCustom>
-              <ButtonCustom title="Serviços">
+              <ButtonCustom
+                onClick={() => execAndClose("services")}
+                title="Serviços"
+              >
                 <DatabaseZap size={18} className="dark:text-white" />
               </ButtonCustom>
             </div>
