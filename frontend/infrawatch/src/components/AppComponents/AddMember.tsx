@@ -55,6 +55,7 @@ interface AddMemberProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setUsers: React.Dispatch<React.SetStateAction<IMember[]>>;
   workspaceId: string;
+  setMessageError: React.Dispatch<React.SetStateAction<string>>;
 }
 type AddMemberState = {
   username: string;
@@ -66,6 +67,7 @@ const AddMember: React.FC<AddMemberProps> = ({
   setOpen,
   setUsers,
   workspaceId,
+  setMessageError,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -116,7 +118,11 @@ const AddMember: React.FC<AddMemberProps> = ({
     } catch (error) {
       setLoading(false);
       toast.dismiss("addMember");
-      GenericAxiosActions({ error, message: "Erro ao inserir membro." });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao inserir membro.",
+        setErrorMessage: setMessageError,
+      });
     }
   };
 

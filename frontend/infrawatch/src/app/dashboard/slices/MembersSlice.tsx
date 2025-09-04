@@ -251,6 +251,7 @@ const MembersSlice: React.FC<IMembersSlice> = ({ setErrorMessage }) => {
         setOpen={setOpenAddMember}
         setUsers={setUsers}
         workspaceId={workSpaceInfo?.id ?? ""}
+        setMessageError={setErrorMessage}
       />
     </section>
   );
