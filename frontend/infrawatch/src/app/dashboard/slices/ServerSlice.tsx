@@ -4,8 +4,8 @@ import { Cog, Plus, Server } from "lucide-react";
 import ServerMetricConfig from "../components/Metrics/ServerMetricsConfig";
 import Graph from "./ServerComponents/Graph";
 import { ServerProps } from "./Types/Server";
-import ServerComponent from "../components/ServerComponent";
 import CreateServer from "./ServerComponents/CreateServer";
+import ServerComponent from "./ServerComponents/ServerComponent";
 
 interface IServerSlice {
   showSideBar: boolean;

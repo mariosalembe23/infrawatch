@@ -26,6 +26,7 @@ const DataItem: React.FC<{
 const HeaderInfo: React.FC<{
   server: ServerProps | null;
 }> = ({ server }) => {
+  console.log(server);
   return (
     <div className="dark:bg-zinc-950 bg-[#f5f5f5] p-1 grid gap-1 pot:grid-cols-4 ret:grid-cols-3 grid-cols-1 lal:grid-cols-8 border dark:border-zinc-900/40 rounded-2xl">
       <DataItem
@@ -111,9 +112,12 @@ const HeaderInfo: React.FC<{
             <p className="dark:text-zinc-500 text-zinc-600 uppercase text-[14px]">
               Interfaces de Rede
             </p>
-            <p className="text-xl font-medium">20</p>
+            <p className="text-xl font-medium">
+              {server?.last_metrics.interfaces_total}
+            </p>
             <p className="dark:text-cyan-500 text-cyan-600 text-[14px]">
-              {server?.last_metrics.activated_interfaces}
+              {server?.last_metrics.interfaces_active} Ativa(s) /{" "}
+              {server?.last_metrics.interfaces_inactive} Inactiva(s)
             </p>
           </div>
         }

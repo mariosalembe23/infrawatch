@@ -19,9 +19,9 @@ import {
 import CreateServer from "./ServerComponents/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
 import { ServerProps } from "./Types/Server";
-import ServerComponent from "../components/ServerComponent";
 import Graph from "./ServerComponents/Graph";
 import { Tabs } from "../[id]/page";
+import ServerComponent from "./ServerComponents/ServerComponent";
 
 interface IDashboardSlice {
   showSideBar: boolean;

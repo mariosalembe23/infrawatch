@@ -108,7 +108,7 @@ const LateralBar: React.FC<ILateralBar> = ({
           <ButtonCustom onClick={() => setTabs("endpoint")} title="Endpoints">
             <Link2 size={18} className="dark:text-white" />
           </ButtonCustom>
-          <ButtonCustom title="Serviços">
+          <ButtonCustom onClick={() => setTabs("services")} title="Serviços">
             <DatabaseZap size={18} className="dark:text-white" />
           </ButtonCustom>
         </div>

@@ -24,7 +24,8 @@ export const APIS = {
     "https://infra-watch-zeta.vercel.app/api/v1/workspace/update/",
   DELETE_WORKSPACE:
     "https://infra-watch-zeta.vercel.app/api/v1/workspace/delete/",
-  GET_NOTIFICATIONS: "https://infra-watch-zeta.vercel.app/api/v1/notifications/get/",
+  GET_NOTIFICATIONS:
+    "https://infra-watch-zeta.vercel.app/api/v1/notifications/get/",
   GET_SERVERS: "https://infra-watch-zeta.vercel.app/api/v1/server/get/",
 };
 
@@ -75,4 +76,17 @@ export const GenericAxiosActions = ({
     }
     console.error("Axios error:", error);
   }
+};
+
+export const removeDoubleSlashes = (input: string): string => {
+  return input.replace(/\\/g, "");
+};
+
+export const removeSlashes = (input: string): string => {
+  return input.replace(/\/\//g, "/");
+};
+
+export const removeUnity = (input: string): number => {
+  const number = parseFloat(input.replace(/[^\d.-]/g, ""));
+  return isNaN(number) ? 0 : number;
 };

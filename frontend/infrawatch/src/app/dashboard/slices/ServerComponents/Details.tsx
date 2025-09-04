@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useRef } from "react";
 import { ServerProps } from "../Types/Server";
+import { removeDoubleSlashes } from "@/components/AppComponents/API";
 
 const BetweenDiv = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -77,7 +78,9 @@ const DetailsServer: React.FC<{
                       Uptime
                     </p>
                     <p className="text-base dark:text-white text-zinc-700 text-[15px]">
-                      {server.last_metrics.last_boot}
+                      {removeDoubleSlashes(
+                        server?.last_metrics.last_boot || ""
+                      )}
                     </p>
                   </BetweenDiv>
                   <BetweenDiv>
@@ -114,12 +117,22 @@ const DetailsServer: React.FC<{
                   </BetweenDiv>
                   <ColDiv>
                     <p className="dark:text-cyan-500 text-black  font-[450] text-[14px]">
+                      Armazenamento (DISCO)
+                    </p>
+                    <p className="text-base  text-[15px]  dark:text-white text-zinc-700">
+                      Total: {server.last_metrics.disk_space_size}/Usada:{" "}
+                      {server.last_metrics.disk_space_used}/Livre:{" "}
+                      {server.last_metrics.disk_space_available}
+                    </p>
+                  </ColDiv>
+                  <ColDiv>
+                    <p className="dark:text-cyan-500 text-black  font-[450] text-[14px]">
                       RAM
                     </p>
                     <p className="text-base  text-[15px]  dark:text-white text-zinc-700">
                       Total: {server.last_metrics.ram_usage_total}/Usada:{" "}
-                      {server.last_metrics.ram_usage_available}/Livre:{" "}
-                      {server.last_metrics.ram_usage_free}
+                      {server.last_metrics.ram_usage_used}/Livre:{" "}
+                      {server.last_metrics.ram_usage_available}
                     </p>
                   </ColDiv>
                   <ColDiv>
@@ -128,8 +141,8 @@ const DetailsServer: React.FC<{
                     </p>
                     <p className="text-base  text-[15px]  dark:text-white text-zinc-700">
                       Total: {server.last_metrics.swap_usage_total}/Usada:{" "}
-                      {server.last_metrics.swap_usage_available}/Livre:{" "}
-                      {server.last_metrics.swap_usage_free}
+                      {server.last_metrics.swap_usage_used}/Livre:{" "}
+                      {server.last_metrics.swap_usage_available}
                     </p>
                   </ColDiv>
                   <BetweenDiv>
@@ -150,10 +163,14 @@ const DetailsServer: React.FC<{
                   </BetweenDiv>
                   <ColDiv>
                     <p className="dark:text-cyan-500 text-black  font-[450] text-[14px]">
-                      Interfaces Activadas
+                      Interfaces
                     </p>
                     <p className="text-base  text-[15px]  dark:text-white text-zinc-700">
-                      {server.last_metrics.activated_interfaces || "N/A"}
+                      Activa(s):{" "}
+                      {server.last_metrics.interfaces_active || "N/A"} /
+                      Inactiva(s):{" "}
+                      {server.last_metrics.interfaces_inactive || "N/A"} /
+                      Total: {server.last_metrics.interfaces_total || "N/A"}
                     </p>
                   </ColDiv>
                   <BetweenDiv>

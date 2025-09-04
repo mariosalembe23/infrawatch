@@ -25,6 +25,7 @@ import type { DefaultEventsMap } from "@socket.io/component-emitter";
 import { NotificationsProps } from "../components/Notifications";
 import { toast } from "sonner";
 import { ServerProps } from "../slices/Types/Server";
+import ServicesSlice from "../slices/ServicesSlice";
 
 export type Tabs =
   | "server"
@@ -32,7 +33,8 @@ export type Tabs =
   | "endpoint"
   | "dashboard"
   | "settings"
-  | "members";
+  | "members"
+  | "services";
 
 export default function Dashboard() {
   const [showSideBar, setShowSidebar] = React.useState(true);
@@ -96,6 +98,8 @@ export default function Dashboard() {
       }
     };
   }, []);
+
+  console.log(servers)
 
   useEffect(() => {
     const getServers = async () => {
@@ -277,6 +281,15 @@ export default function Dashboard() {
               <MembersSlice
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
+              />
+            )}
+            {tabs === "services" && (
+              <ServicesSlice
+                showSideBar={showSideBar}
+                setErrorMessage={setMessageError}
+                servers={servers}
+                setServers={setServers}
+                setTabs={setTabs}
               />
             )}
           </section>

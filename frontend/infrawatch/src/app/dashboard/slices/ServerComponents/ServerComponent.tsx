@@ -11,18 +11,18 @@ import {
   ToggleLeft,
   ZapIcon,
 } from "lucide-react";
-import LogSheet from "./LogSheet";
 
 import { Badge } from "@/components/ui/badge";
-import { ServerProps } from "../slices/Types/Server";
-import { DataMode } from "../slices/Types/DataMod";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DetailsServer from "../slices/ServerComponents/Details";
+import { ServerProps } from "../Types/Server";
+import { DataMode } from "../Types/DataMod";
+import LogSheet from "../../components/LogSheet";
+import DetailsServer from "./Details";
 
 interface IServerComponent {
   server: ServerProps;
@@ -31,7 +31,7 @@ interface IServerComponent {
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function isEmpty(obj: object) {
+export function isEmpty(obj: object) {
   return Object.keys(obj).length === 0;
 }
 
@@ -60,7 +60,9 @@ const ServerComponent: React.FC<IServerComponent> = ({
           {server.servername}{" "}
         </p>
         <div className="flex items-center gap-2">
-          <p className="dark:text-zinc-500 text-zinc-600 text-[15px]">{server.id.slice(0, 8)}+</p>
+          <p className="dark:text-zinc-500 text-zinc-600 text-[15px]">
+            {server.id.slice(0, 8)}+
+          </p>
           <button
             onClick={() => {
               navigator.clipboard.writeText(server.id);
@@ -72,10 +74,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
             {!copied ? (
               <Copy size={16} className="dark:text-zinc-100 text-zinc-900" />
             ) : (
-              <Check
-                size={16}
-                className="dark:text-zinc-100 text-zinc-900"
-              />
+              <Check size={16} className="dark:text-zinc-100 text-zinc-900" />
             )}
           </button>
         </div>
@@ -119,8 +118,11 @@ const ServerComponent: React.FC<IServerComponent> = ({
       </div>
       <div className="flex pot:order-4 order-2 items-center justify-end">
         <div className="flex items-center gap-3">
+          {/* {
+            server.is_busy ? () : ()
+          } */}
           <p className="dark:text-zinc-400 text-zinc-700 text-[15px]">
-            há {DataMode(server.created_at)} por msalembe
+            há {DataMode(server.created_at)} por {server.username}
           </p>
         </div>
         <DropdownMenu>
@@ -155,11 +157,8 @@ const ServerComponent: React.FC<IServerComponent> = ({
               Conf. de métricas
             </DropdownMenuItem>
             <DropdownMenuItem
-              disabled={isEmpty(server.last_metrics)}
               className="cursor-pointer"
-              onClick={() =>
-                setSelectedItem && setSelectedItem(server.id)
-              }
+              onClick={() => setSelectedItem && setSelectedItem(server.id)}
             >
               <ChartArea size={16} className="opacity-60" aria-hidden="true" />
               Gráficos de desempenho
