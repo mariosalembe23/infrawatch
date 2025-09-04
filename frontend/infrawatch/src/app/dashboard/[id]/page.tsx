@@ -242,6 +242,7 @@ export default function Dashboard() {
                 setErrorMessage={setMessageError}
                 servers={servers}
                 setServers={setServers}
+                setTabs={setTabs}
               />
             )}
             {tabs === "server" && (
@@ -249,6 +250,8 @@ export default function Dashboard() {
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
                 workspace_id={workSpaceInfo?.id || ""}
+                servers={servers}
+                setServers={setServers}
               />
             )}
             {tabs === "network" && <NetworkSlice />}

@@ -21,18 +21,21 @@ import { DashboardContext } from "../[id]/ContextProvider";
 import { ServerProps } from "./Types/Server";
 import ServerComponent from "../components/ServerComponent";
 import Graph from "./ServerComponents/Graph";
+import { Tabs } from "../[id]/page";
 
 interface IDashboardSlice {
   showSideBar: boolean;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   servers: ServerProps[];
   setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
+  setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({
   setErrorMessage,
   servers,
   setServers,
+  setTabs,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -105,7 +108,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                 Servidores - {servers.length}
               </Badge>
             </h3>
-            <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
+            <Button
+              onClick={() => setTabs("server")}
+              className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none"
+            >
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
@@ -126,12 +132,12 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
             </div>
           ) : (
             servers
-              .slice(0, 4)
+              .slice(0, 6)
               .map((server, index) => (
                 <ServerComponent
                   key={index}
                   index={index + 1}
-                  lastIndex={6}
+                  lastIndex={servers.slice(0, 6).length}
                   server={server}
                   setSelectedItem={setSelectedItem}
                 />
@@ -153,7 +159,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                 Redes - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
+            <Button
+              onClick={() => setTabs("network")}
+              className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none"
+            >
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
@@ -197,7 +206,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                 Endpoints - 14
               </Badge>
             </h3>
-            <Button className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none">
+            <Button
+              onClick={() => setTabs("endpoint")}
+              className="cursor-pointer bg-white dark:bg-transparent hover:bg-gray-100 border dark:text-white text-black dark:hover:bg-zinc-950 shadow-none"
+            >
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>

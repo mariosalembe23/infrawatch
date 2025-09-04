@@ -3,14 +3,18 @@ import React from "react";
 import { Cog, Plus, Server } from "lucide-react";
 import ServerMetricConfig from "../components/Metrics/ServerMetricsConfig";
 import Graph from "./ServerComponents/Graph";
+import { ServerProps } from "./Types/Server";
+import ServerComponent from "../components/ServerComponent";
 
 interface IServerSlice {
   showSideBar: boolean;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   workspace_id: string;
+  servers: ServerProps[];
+  setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
 }
 
-const ServerSlice: React.FC<IServerSlice> = ({}) => {
+const ServerSlice: React.FC<IServerSlice> = ({ servers }) => {
   const [selectedItem, setSelectedItem] = React.useState<string>("");
   const [showMetricConfig, setShowMetricConfig] =
     React.useState<boolean>(false);
@@ -47,14 +51,24 @@ const ServerSlice: React.FC<IServerSlice> = ({}) => {
           </div>
         </div>
       </header>
-      <div className="grid grid-cols-1 pot:grid-cols-2 gap-4"></div>
+      <div className="grid grid-cols-1">
+        {servers.map((server, index) => (
+          <ServerComponent
+            key={index}
+            index={index + 1}
+            lastIndex={servers.length}
+            server={server}
+            setSelectedItem={setSelectedItem}
+          />
+        ))}
+      </div>
 
       <div className="fixed bottom-5 pot:bottom-10 end-7 pot:end-12">
         <Button
           size={"icon"}
-          className="rounded-full cursor-pointer size-9 hover:bg-white hover:opacity-80 bg-white text-black"
+          className="rounded-full cursor-pointer size-9 hover:bg-white hover:opacity-80 dark:bg-white dark:text-black text-white"
         >
-          <Plus size={18} className="text-black size-5" />
+          <Plus size={18} className="dark:text-black text-white size-5" />
         </Button>
       </div>
 

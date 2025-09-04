@@ -85,8 +85,6 @@ const CreateServer: React.FC<CreateServerProps> = ({
       return;
     }
 
-console.log(data, selectedTime);
-
     try {
       setLoading(true);
       toast.loading("Criando Servidor...", {
@@ -107,7 +105,7 @@ console.log(data, selectedTime);
           },
         }
       );
-      console.log(response.data);
+      console.log("Response: ", response.data);
       setServers((prev) => [...prev, response.data]);
       if (response.status === 201) {
         toast.success("Servidor criado com sucesso!", {
