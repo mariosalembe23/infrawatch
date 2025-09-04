@@ -366,6 +366,7 @@ const SettingsSlice: React.FC<ISettingsSlice> = ({
         dataWorkspace={workspaceInfo as WorkSpaceProps}
         setWorkspaces={setWorkspaces}
         workspaceId={workspaceInfo?.id as string}
+        setErrorMessage={setErrorMessage}
       />
 
       <AlertDialog

@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 interface LoginSliceProps {
   setSlice: React.Dispatch<React.SetStateAction<"login" | "register">>;
   isDarkMode: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 type LoginFormFields = {
@@ -24,7 +25,11 @@ type LoginFormFields = {
   password: string;
 };
 
-const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
+const LoginSlice: React.FC<LoginSliceProps> = ({
+  setSlice,
+  isDarkMode,
+  setErrorMessage,
+}) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
   const [openOTP, setOpenOTP] = useState<boolean>(false);
@@ -60,7 +65,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
         setOpenOTP(true);
       }
     } catch (error) {
-      GenericAxiosActions({ error });
+      GenericAxiosActions({ error, setErrorMessage });
     }
   };
 
@@ -99,7 +104,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      GenericAxiosActions({ error, isOnPage: true });
+      GenericAxiosActions({ error, isOnPage: true, setErrorMessage });
     }
   };
 
@@ -145,9 +150,10 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
             href={"https://infra-watch-zeta.vercel.app/api/v1/auth/google"}
             className="w-full"
           >
-            <button 
-            type="button"
-            className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg dark:text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center">
+            <button
+              type="button"
+              className="flex w-full px-5 disabled:opacity-65 grotesk items-center gap-2 rounded-lg dark:text-white transition-all hover:border-cyan-500 cursor-pointer font-[450] border dark:border-zinc-800 py-2 justify-center"
+            >
               <Image
                 src={"/icons/google.svg"}
                 alt="Google Logo"
@@ -252,6 +258,7 @@ const LoginSlice: React.FC<LoginSliceProps> = ({ setSlice, isDarkMode }) => {
         openOTP={openOTP}
         setOpenOTP={setOpenOTP}
         email={watch("email")}
+        setErrorMessage={setErrorMessage}
       />
     </form>
   );

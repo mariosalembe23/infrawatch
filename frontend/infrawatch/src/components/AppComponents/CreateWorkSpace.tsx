@@ -31,6 +31,7 @@ interface CreateWorkspaceProps {
   mode: "CREATE" | "EDIT";
   dataWorkspace: WorkSpaceProps;
   workspaceId: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 type CreateWorkSpaceState = {
   name: string;
@@ -45,6 +46,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
   dataWorkspace,
   workspaceId,
   setWorkspaces,
+  setErrorMessage,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -117,7 +119,11 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
     } catch (error) {
       setLoading(false);
       setLoading(false);
-      GenericAxiosActions({ error, message: "Erro ao editar workspace." });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao editar workspace.",
+        setErrorMessage,
+      });
     }
   };
 
@@ -154,7 +160,11 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({
     } catch (error) {
       setLoading(false);
       toast.dismiss("createWorkspace");
-      GenericAxiosActions({ error, message: "Erro ao criar workspace." });
+      GenericAxiosActions({
+        error,
+        message: "Erro ao criar workspace.",
+        setErrorMessage,
+      });
     }
   };
 

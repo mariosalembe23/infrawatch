@@ -428,6 +428,7 @@ export default function ChooseWorkspace() {
         dataWorkspace={{} as WorkSpaceProps}
         workspaceId={""}
         setWorkspaceInfo={() => {}}
+        setErrorMessage={setErrorMessage}
       />
     </div>
   );

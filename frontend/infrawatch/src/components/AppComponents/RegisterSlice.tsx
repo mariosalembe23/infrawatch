@@ -12,6 +12,7 @@ import { toast } from "sonner";
 interface RegisterSliceProps {
   setSlice: React.Dispatch<React.SetStateAction<"login" | "register">>;
   isDarkMode: boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 type RegisterFormFields = {
@@ -23,6 +24,7 @@ type RegisterFormFields = {
 const RegisterSlice: React.FC<RegisterSliceProps> = ({
   setSlice,
   isDarkMode,
+  setErrorMessage,
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
@@ -62,7 +64,7 @@ const RegisterSlice: React.FC<RegisterSliceProps> = ({
       toast.error("Erro ao criar conta.", {
         position: "top-right",
       });
-      GenericAxiosActions({ error, isOnPage: true });
+      GenericAxiosActions({ error, isOnPage: true, setErrorMessage });
     } finally {
       setLoading(false);
     }

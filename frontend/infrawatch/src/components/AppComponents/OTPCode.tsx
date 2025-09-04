@@ -24,9 +24,15 @@ interface OTPCardProps {
   openOTP: boolean;
   setOpenOTP: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const OTPCard: React.FC<OTPCardProps> = ({ openOTP, setOpenOTP, email }) => {
+const OTPCard: React.FC<OTPCardProps> = ({
+  openOTP,
+  setOpenOTP,
+  email,
+  setErrorMessage,
+}) => {
   const [value, setValue] = useState("");
   const [hasGuessed, setHasGuessed] = useState<undefined | boolean>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -78,6 +84,7 @@ const OTPCard: React.FC<OTPCardProps> = ({ openOTP, setOpenOTP, email }) => {
       GenericAxiosActions({
         error,
         message: "Erro ao verificar o código. Tente novamente.",
+        setErrorMessage,
       });
     }
   }
