@@ -99,8 +99,6 @@ export default function Dashboard() {
     };
   }, []);
 
-  console.log(servers)
-
   useEffect(() => {
     const getServers = async () => {
       if (!workSpaceInfo?.id) return;

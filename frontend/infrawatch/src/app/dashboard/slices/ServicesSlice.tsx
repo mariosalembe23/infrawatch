@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { ArrowUp, ChevronDownIcon, HardDrive, Server } from "lucide-react";
 import React, { useEffect } from "react";
-import CreateServer from "./ServerComponents/CreateServer";
 import { DashboardContext } from "../[id]/ContextProvider";
 import { ServerProps } from "./Types/Server";
 import Graph from "./ServerComponents/Graph";
@@ -40,7 +39,6 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
   setServers,
   setTabs,
 }) => {
-  const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
   const [selectedItem, setSelectedItem] = React.useState<string>("");
@@ -69,7 +67,13 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
   };
 
   return selectedItem ? (
-    <Graph setSelectedItem={setSelectedItem} server={selectedServer} />
+    <Graph
+      setSelectedItem={setSelectedItem}
+      server={selectedServer}
+      setErrorMessage={setErrorMessage}
+      workspace_id={workSpaceInfo?.id || ""}
+      setServers={setServers}
+    />
   ) : (
     <section className="max-w-7xl w-full mx-auto">
       <header className="mb-10 flex items-center justify-between flex-wrap">
@@ -209,15 +213,6 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
             ))}
         </div>
       )}
-
-      <section></section>
-      <CreateServer
-        open={createServerOpen}
-        setOpen={setCreateServerOpen}
-        setServers={setServers}
-        workspace_id={workSpaceInfo?.id || ""}
-        setErrorMessage={setErrorMessage}
-      />
     </section>
   );
 };

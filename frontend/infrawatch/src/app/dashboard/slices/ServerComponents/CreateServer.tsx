@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { ServerProps } from "../Types/Server";
 
 const optionsTime = [
-  { label: "1 minuto", value: "60000" },
+  { label: "2 minuto", value: "120000" },
   {
     label: "5 minutos",
     value: "300000",
@@ -46,6 +46,8 @@ interface CreateServerProps {
   setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
   workspace_id: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  mode: "CREATE" | "EDIT";
+  serverToEdit?: ServerProps | null;
 }
 type CreateServerState = {
   servername: string;
@@ -59,6 +61,8 @@ const CreateServer: React.FC<CreateServerProps> = ({
   setServers,
   workspace_id,
   setErrorMessage,
+  mode,
+  serverToEdit,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -71,6 +75,7 @@ const CreateServer: React.FC<CreateServerProps> = ({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateServerState>({
     mode: "onChange",
     defaultValues: {
@@ -78,6 +83,22 @@ const CreateServer: React.FC<CreateServerProps> = ({
       identifier: "",
     },
   });
+
+  useEffect(() => {
+    if (mode === "EDIT" && serverToEdit) {
+      reset({
+        servername: serverToEdit.servername,
+        identifier: serverToEdit.server_idenfier,
+      });
+
+      const timeOption = optionsTime.find(
+        (option) => option.value === String(serverToEdit.time_ms)
+      );
+      if (timeOption) {
+        setSelectedTime(timeOption);
+      }
+    }
+  }, [mode, serverToEdit, reset]);
 
   const createWorkspace = async (data: CreateServerState) => {
     if (!selectedTime.value) {
@@ -126,18 +147,64 @@ const CreateServer: React.FC<CreateServerProps> = ({
     }
   };
 
+  const updateWorkspace = async (data: CreateServerState) => {
+    if (!serverToEdit) return;
+    if (!selectedTime.value) {
+      toast.error("Por favor, selecione um intervalo de verificação.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        APIS.EDIT_SERVER + serverToEdit.id,
+        {
+          servername: data.servername,
+          identifier: data.identifier,
+          time_ms: parseInt(selectedTime.value, 10),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        }
+      );
+
+      setServers((prev) =>
+        prev.map((srv) => (srv.id === serverToEdit.id ? response.data : srv))
+      );
+      if (response.status === 200) {
+        toast.success("Servidor editado com sucesso!", {
+          position: "top-right",
+        });
+        setLoading(false);
+        setOpen(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      GenericAxiosActions({
+        error,
+        message: "Erro ao editar Servidor",
+        setErrorMessage,
+      });
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5">
         <DialogHeader className="contents space-y-0 text-left">
           <DialogTitle className="border-b flex items-center gap-2 font-medium px-6 py-4 text-base">
             <Server size={17} />
-            Cadastrar Servidor
+            {mode === "CREATE" ? "Adicionar Servidor" : "Editar Servidor"}
           </DialogTitle>
           <div ref={contentRef} className="overflow-y-auto">
             <DialogDescription asChild>
               <form
-                onSubmit={handleSubmit(createWorkspace)}
+                onSubmit={handleSubmit(
+                  mode === "CREATE" ? createWorkspace : updateWorkspace
+                )}
                 className="px-6 grid grid-cols-1 gap-5 py-6"
               >
                 <div className="*:not-first:mt-3">
@@ -205,7 +272,11 @@ const CreateServer: React.FC<CreateServerProps> = ({
                 <div className="*:not-first:mt-2">
                   <Label htmlFor={"time_sm"}>Intervalo de verificação</Label>
                   <Select
-                    defaultValue={optionsTime[0].value}
+                    defaultValue={
+                      mode === "CREATE"
+                        ? optionsTime[0].value
+                        : selectedTime.value
+                    }
                     onValueChange={(value) => {
                       const time = optionsTime.find(
                         (option) => option.value === value
@@ -219,7 +290,10 @@ const CreateServer: React.FC<CreateServerProps> = ({
                       id="time_sm"
                       className="border-zinc-800 text-base py-5 cursor-pointer"
                     >
-                      <SelectValue placeholder="Defina um tempo" />
+                      <SelectValue
+                        placeholder="Defina um tempo"
+                        defaultValue={selectedTime.value}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {optionsTime.map((time, index) => (
@@ -239,6 +313,9 @@ const CreateServer: React.FC<CreateServerProps> = ({
                     <Button
                       type="button"
                       disabled={loading}
+                      onClick={() => {
+                        if (mode === "CREATE") reset();
+                      }}
                       variant="outline"
                       className="py-5"
                     >

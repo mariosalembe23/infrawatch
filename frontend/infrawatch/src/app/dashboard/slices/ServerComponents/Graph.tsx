@@ -17,18 +17,72 @@ import { ServerProps } from "../Types/Server";
 import HeaderInfo from "./HeaderInfo";
 import ServerMetricConfig from "../../components/Metrics/ServerMetricsConfig";
 import { isEmpty } from "./ServerComponent";
+import { getCookie } from "cookies-next";
+import axios from "axios";
+import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import LoadingComponent from "@/components/AppComponents/LoadComponent";
+import CreateServer from "./CreateServer";
 
 interface GraphProps {
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
   server: ServerProps | null;
+  workspace_id: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
 }
 
-const Graph: React.FC<GraphProps> = ({ setSelectedItem, server }) => {
+const Graph: React.FC<GraphProps> = ({
+  setSelectedItem,
+  server,
+  workspace_id,
+  setErrorMessage,
+  setServers,
+}) => {
   const [showMetricConfig, setShowMetricConfig] =
     React.useState<boolean>(false);
 
+  const [loadingDelete, setLoadingDelete] = React.useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [createServerOpen, setCreateServerOpen] = React.useState(false);
+
+  const deleteServer = async (serverId: string) => {
+    try {
+      setLoadingDelete(true);
+      await axios.delete(APIS.DELETE_SERVER + serverId, {
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      });
+      toast.success("Servidor deletado com sucesso!", {
+        position: "top-right",
+      });
+      setServers((prev) => prev.filter((srv) => srv.id !== serverId));
+      setSelectedItem("");
+      setLoadingDelete(false);
+    } catch (error) {
+      setLoadingDelete(false);
+      console.error("Error deleting server:", error);
+      GenericAxiosActions({
+        error,
+        message: "Erro ao deletar o servidor. Tente novamente.",
+        setErrorMessage: () => {},
+      });
+    }
+  };
+
   return (
     <section className="relative h-full">
+      {loadingDelete && <LoadingComponent />}
       <header>
         <div className="flex items-center gap-5 flex-wrap justify-between mb-12">
           <div className="relative flex flex-col items-start">
@@ -60,6 +114,7 @@ const Graph: React.FC<GraphProps> = ({ setSelectedItem, server }) => {
           </div>
           <div className="flex items-center gap-2">
             <Button
+              onClick={() => setCreateServerOpen(true)}
               variant={"outline"}
               className="dark:border-zinc-900 dark:hover:bg-zinc-800/20"
             >
@@ -81,8 +136,9 @@ const Graph: React.FC<GraphProps> = ({ setSelectedItem, server }) => {
             <Cog size={16} className="dark:text-zinc-400 text-zinc-600" />
           </Button>
           <Button
+            onClick={() => setOpenAlert(true)}
             variant={"outline"}
-            className="dark:border-zinc-900 dark:text-white text-red-800 dark:hover:bg-red-800/20 bg-red-800/50 !border-red-700"
+            className="py-4 bg-red-600/40 hover:text-red-800 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
           >
             Deletar
             <Trash size={16} className="" />
@@ -303,6 +359,49 @@ const Graph: React.FC<GraphProps> = ({ setSelectedItem, server }) => {
         setOpen={setShowMetricConfig}
         setWorkspaces={() => {}}
         workspace_id={""}
+      />
+
+      <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-medium text-base">
+              Tens certeza que desejas eliminar este servidor?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação é irreversível. Todos os dados associados a este
+              servidor serão permanentemente eliminados.{" "}
+              <span className="font-medium">
+                Esta ação não pode ser desfeita.
+              </span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel disabled={loadingDelete}>
+              Cancelar
+            </AlertDialogCancel>
+            <Button
+              disabled={loadingDelete}
+              onClick={() => deleteServer(server?.id || "")}
+              className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
+              <Trash size={18} className="" />
+              Eliminar
+              {loadingDelete && (
+                <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-white/40"></span>
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <CreateServer
+        open={createServerOpen}
+        setOpen={setCreateServerOpen}
+        mode="EDIT"
+        setServers={setServers}
+        workspace_id={workspace_id || ""}
+        setErrorMessage={setErrorMessage}
+        serverToEdit={server}
       />
     </section>
   );

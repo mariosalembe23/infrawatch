@@ -45,6 +45,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
   const [openDetails, setOpenDetails] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
+
   return (
     <div
       className={` dark:border-zinc-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-950/20 px-5 py-3 dark:bg-zinc-950 ${
@@ -55,6 +56,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
           : "border-b border-x"
       }  grid grid-cols-2 gap-y-5 pot:grid-cols-4 items-center`}
     >
+      
       <div>
         <p className="dark:text-white text-base font-[450]">
           {server.servername}{" "}
@@ -197,6 +199,8 @@ const ServerComponent: React.FC<IServerComponent> = ({
         setOpenDetails={setOpenDetails}
         server={server}
       />
+
+      
     </div>
   );
 };

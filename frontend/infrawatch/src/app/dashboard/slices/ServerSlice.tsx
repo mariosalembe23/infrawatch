@@ -40,7 +40,13 @@ const ServerSlice: React.FC<IServerSlice> = ({
   }, [selectedItem, servers]);
 
   return selectedItem ? (
-    <Graph setSelectedItem={setSelectedItem} server={selectedServer} />
+    <Graph
+      setSelectedItem={setSelectedItem}
+      server={selectedServer}
+      setErrorMessage={setErrorMessage}
+      workspace_id={workspace_id}
+      setServers={setServers}
+    />
   ) : (
     <section className="relative h-full">
       <header>
@@ -105,6 +111,7 @@ const ServerSlice: React.FC<IServerSlice> = ({
       <CreateServer
         open={createServer}
         setOpen={setCreateServer}
+        mode="CREATE"
         setErrorMessage={setErrorMessage}
         setServers={setServers}
         workspace_id={workspace_id}

@@ -27,6 +27,8 @@ export const APIS = {
   GET_NOTIFICATIONS:
     "https://infra-watch-zeta.vercel.app/api/v1/notifications/get/",
   GET_SERVERS: "https://infra-watch-zeta.vercel.app/api/v1/server/get/",
+  DELETE_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/delete/",
+  EDIT_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/put/"
 };
 
 export const GenericAxiosActions = ({

@@ -56,7 +56,13 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   }, [selectedItem, servers]);
 
   return selectedItem ? (
-    <Graph setSelectedItem={setSelectedItem} server={selectedServer} />
+    <Graph
+      setSelectedItem={setSelectedItem}
+      server={selectedServer}
+      setErrorMessage={setErrorMessage}
+      workspace_id={workSpaceInfo?.id || ""}
+      setServers={setServers}
+    />
   ) : (
     <section>
       <header>
@@ -257,6 +263,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
       <CreateServer
         open={createServerOpen}
         setOpen={setCreateServerOpen}
+        mode="CREATE"
         setServers={setServers}
         workspace_id={workSpaceInfo?.id || ""}
         setErrorMessage={setErrorMessage}
