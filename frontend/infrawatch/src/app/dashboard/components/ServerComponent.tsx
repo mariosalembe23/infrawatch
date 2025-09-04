@@ -158,7 +158,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
               disabled={isEmpty(server.last_metrics)}
               className="cursor-pointer"
               onClick={() =>
-                setSelectedItem && setSelectedItem(server.servername)
+                setSelectedItem && setSelectedItem(server.id)
               }
             >
               <ChartArea size={16} className="opacity-60" aria-hidden="true" />

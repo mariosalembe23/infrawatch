@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import { Cog, Plus, Server } from "lucide-react";
 import ServerMetricConfig from "../components/Metrics/ServerMetricsConfig";
 import Graph from "./ServerComponents/Graph";
@@ -25,9 +25,22 @@ const ServerSlice: React.FC<IServerSlice> = ({
   const [showMetricConfig, setShowMetricConfig] =
     React.useState<boolean>(false);
   const [createServer, setCreateServer] = React.useState<boolean>(false);
+  const [selectedServer, setSelectedServer] =
+    React.useState<ServerProps | null>(null);
+
+  useEffect(() => {
+    if (selectedItem) {
+      const server = servers.find((srv) => srv.id === selectedItem);
+      if (server) {
+        setSelectedServer(server);
+      }
+    } else {
+      setSelectedServer(null);
+    }
+  }, [selectedItem, servers]);
 
   return selectedItem ? (
-    <Graph setSelectedItem={setSelectedItem} />
+    <Graph setSelectedItem={setSelectedItem} server={selectedServer} />
   ) : (
     <section className="relative h-full">
       <header>

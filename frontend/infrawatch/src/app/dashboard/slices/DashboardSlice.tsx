@@ -9,7 +9,7 @@ import {
   Server,
   ZapIcon,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,9 +41,22 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   const dashboardContext = React.useContext(DashboardContext);
   const workSpaceInfo = dashboardContext?.workSpaceInfo;
   const [selectedItem, setSelectedItem] = React.useState<string>("");
+  const [selectedServer, setSelectedServer] =
+    React.useState<ServerProps | null>(null);
+
+  useEffect(() => {
+    if (selectedItem) {
+      const server = servers.find((srv) => srv.id === selectedItem);
+      if (server) {
+        setSelectedServer(server);
+      }
+    } else {
+      setSelectedServer(null);
+    }
+  }, [selectedItem, servers]);
 
   return selectedItem ? (
-    <Graph setSelectedItem={setSelectedItem} />
+    <Graph setSelectedItem={setSelectedItem} server={selectedServer} />
   ) : (
     <section>
       <header>
