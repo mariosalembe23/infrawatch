@@ -110,6 +110,7 @@ body {
   --sidebar-ring: oklch(0.708 0 0);
   --autofill-bg: #ffffff; /* light */
   --autofill-text: #060607;
+  --scrollbar: #292828;
 }
 
 .dark {
@@ -146,6 +147,7 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
   --autofill-bg: #060607; /* dark */
   --autofill-text: #ffffff;
+   --scrollbar: #2b2b2b;
 }
 
 @layer base {
@@ -216,14 +218,14 @@ button {
 }
 
 .scrollDiv::-webkit-scrollbar-thumb {
-  background: #292828;
+  background: var(--scrollbar);
   border: none;
   border-radius: 40px;
   width: 2px !important;
 }
 
 .scrollDiv::-webkit-scrollbar {
-  background: #060607;
+  background: transparent;
   border: none;
   border-radius: 0;
   width: 6px !important;

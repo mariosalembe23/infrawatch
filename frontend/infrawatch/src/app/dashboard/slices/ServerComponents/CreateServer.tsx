@@ -85,6 +85,8 @@ const CreateServer: React.FC<CreateServerProps> = ({
       return;
     }
 
+console.log(data, selectedTime);
+
     try {
       setLoading(true);
       toast.loading("Criando Servidor...", {
@@ -95,8 +97,8 @@ const CreateServer: React.FC<CreateServerProps> = ({
         APIS.CREATE_SERVER + workspace_id,
         {
           servername: data.servername,
-          indentifier: data.identifier,
-          time_ms: data.time_ms,
+          identifier: data.identifier,
+          time_ms: parseInt(selectedTime.value, 10),
         },
         {
           headers: {
