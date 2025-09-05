@@ -1,9 +1,11 @@
 import {
+  Bolt,
   Braces,
   ChevronDownIcon,
   Ellipsis,
   Info,
   OctagonAlert,
+  ToggleLeft,
 } from "lucide-react";
 import { EndpointProps } from "../slices/Types/Endpoint";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +27,7 @@ import Graph1 from "../slices/EndpointComponents/Graph1";
 import { Button } from "@/components/ui/button";
 import StatusGraph from "../slices/EndpointComponents/Graph2";
 import React from "react";
+import { isEmpty } from "../slices/ServerComponents/ServerComponent";
 
 interface IEndpointComponent {
   endpoint: EndpointProps;
@@ -99,45 +102,60 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2 pot:justify-end">
-        <div className="pot:inline-flex hidden">
-          <p className="text-zinc-500 text-[15px] font-[480]">há 3min</p>
-        </div>
-        <div className="flex items-center pe-3 gap-2 justify-start pot:justify-end">
-          <p className="dark:text-white text-[15px]">Status</p>
-          <span className="relative flex size-2">
-            <span
-              className={`absolute inline-flex h-full w-full animate-ping rounded-full ${
-                endpoint.last_log.status === "UP" ? "bg-sky-400" : "bg-red-500"
-              }  opacity-75`}
-            ></span>
-            <span
-              className={`relative inline-flex size-2 rounded-full ${
-                endpoint.last_log.status === "UP" ? "bg-sky-400" : "bg-red-500"
-              } `}
-            ></span>
-          </span>
-        </div>
-        <div>
-          <p
-            className={`px-2 text-white text-[13px] ${
-              parseInt(endpoint.last_log.statusResponse) === 200
-                ? "bg-green-600 border border-green-500"
-                : parseInt(endpoint.last_log.statusResponse) === 401
-                ? "bg-yellow-600 border border-yellow-500"
-                : "bg-red-600/20 border border-red-500"
-            }  font-medium rounded leading-none py-1`}
-          >
-            HTTPS <span>{endpoint.last_log.statusResponse}</span>
+        {isEmpty(endpoint.last_log) ? (
+          <p className="flex items-center gap-2">
+            <span className="inline-flex w-2 h-2 rounded-full me-1 bg-zinc-600 animate-pulse"></span>
+            Conectando-se
+            <span className="loader !w-3 !h-3 !border-2 !border-zinc-800 !border-b-zinc-100"></span>
           </p>
-        </div>
-        <div className="flex items-center  gap-1 flex-wrap">
-          <p className="px-2 text-white text-[14px] bg-zinc-900  font-medium rounded leading-none py-1">
-            Tempo de resposta{" "}
-            <span className="text-cyan-500">
-              {endpoint.last_log.time_response}s
-            </span>
-          </p>
-        </div>
+        ) : (
+          <>
+            <div className="pot:inline-flex hidden">
+              <p className="text-zinc-500 text-[15px] font-[480]">há 3min</p>
+            </div>
+            <div className="flex items-center pe-3 gap-2 justify-start pot:justify-end">
+              <p className="dark:text-white text-[15px]">Status</p>
+              <span className="relative flex size-2">
+                <span
+                  className={`absolute inline-flex h-full w-full animate-ping rounded-full ${
+                    endpoint.last_log.status === "UP"
+                      ? "bg-sky-400"
+                      : "bg-red-500"
+                  }  opacity-75`}
+                ></span>
+                <span
+                  className={`relative inline-flex size-2 rounded-full ${
+                    endpoint.last_log.status === "UP"
+                      ? "bg-sky-400"
+                      : "bg-red-500"
+                  } `}
+                ></span>
+              </span>
+            </div>
+            <div>
+              <p
+                className={`px-2 text-white text-[13px] ${
+                  parseInt(endpoint.last_log.statusResponse) === 200
+                    ? "bg-green-600 border border-green-500"
+                    : parseInt(endpoint.last_log.statusResponse) === 401
+                    ? "bg-yellow-600 border border-yellow-500"
+                    : "bg-red-600/20 border border-red-500"
+                }  font-medium rounded leading-none py-1`}
+              >
+                HTTPS <span>{endpoint.last_log.statusResponse}</span>
+              </p>
+            </div>
+            <div className="flex items-center  gap-1 flex-wrap">
+              <p className="px-2 text-white text-[14px] bg-zinc-900  font-medium rounded leading-none py-1">
+                Tempo de resposta{" "}
+                <span className="text-cyan-500">
+                  {endpoint.last_log.time_response}s
+                </span>
+              </p>
+            </div>
+          </>
+        )}
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="dark:text-zinc-400 pot:inline-flex hidden text-zinc-500 hover:text-black transition-all dark:hover:text-white cursor-pointer">
@@ -156,10 +174,25 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
             <DropdownMenuItem
               // disabled={isEmpty(server.last_metrics)}
               className="cursor-pointer"
+              onClick={() => setOpenDetails(true)}
+            >
+              <Bolt size={16} className="opacity-60" aria-hidden="true" />
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              // disabled={isEmpty(server.last_metrics)}
+              className="cursor-pointer"
               // onClick={() => setOpenDetails(true)}
             >
               <Braces size={16} className="opacity-60" aria-hidden="true" />
               Todas as métricas
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              // onClick={() => setOpenDetails(true)}
+            >
+              <ToggleLeft size={16} className="opacity-60" aria-hidden="true" />
+              Desativar monitoramento
             </DropdownMenuItem>
 
             <DropdownMenuItem

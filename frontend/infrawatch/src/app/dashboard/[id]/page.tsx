@@ -295,6 +295,9 @@ export default function Dashboard() {
               <EndpointSlice
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
+                workspace_id={workSpaceInfo?.id || ""}
+                endpoints={endpoints}
+                setEndpoints={setEndpoints}
               />
             )}
             {tabs === "settings" && (

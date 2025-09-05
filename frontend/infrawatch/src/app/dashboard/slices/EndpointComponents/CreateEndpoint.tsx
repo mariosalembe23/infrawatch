@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,39 +12,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Server } from "lucide-react";
+import { Link2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
 import { toast } from "sonner";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ServerProps } from "../Types/Server";
 import { Textarea } from "@/components/ui/textarea";
-
-const optionsTime = [
-  { label: "2 minuto", value: "120000" },
-  {
-    label: "5 minutos",
-    value: "300000",
-  },
-  { label: "10 minutos", value: "600000" },
-  { label: "30 minutos", value: "1800000" },
-  { label: "1 hora", value: "3600000" },
-];
+import { EndpointProps } from "../Types/Endpoint";
 
 interface CreateEndpointProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
+  setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
   workspace_id: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   mode: "CREATE" | "EDIT";
@@ -59,18 +42,13 @@ type CreateEndpointState = {
 const CreateEndpoint: React.FC<CreateEndpointProps> = ({
   open,
   setOpen,
-  setServers,
   workspace_id,
   setErrorMessage,
   mode,
-  serverToEdit,
+  setEndpoints,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedTime, setSelectedTime] = useState<{
-    label: string;
-    value: string;
-  }>(optionsTime[0]);
 
   const {
     register,
@@ -101,95 +79,51 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
   //   }
   // }, [mode, serverToEdit, reset]);
 
-  const createWorkspace = async (data: CreateEndpointState) => {
-    if (!selectedTime.value) {
-      toast.error("Por favor, selecione um intervalo de verificação.");
+  const createEndpoint = async (data: CreateEndpointState) => {
+    if (!data.url || !data.identifier || !data.description) {
+      toast.error("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
-    // try {
-    //   setLoading(true);
-    //   toast.loading("Criando Servidor...", {
-    //     position: "top-center",
-    //     id: "createServer",
-    //   });
-    //   const response = await axios.post(
-    //     APIS.CREATE_SERVER + workspace_id,
-    //     {
-    //       servername: data.servername,
-    //       identifier: data.identifier,
-    //       time_ms: parseInt(selectedTime.value, 10),
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${getCookie("token")}`,
-    //       },
-    //     }
-    //   );
-    //   console.log("Response: ", response.data);
-    //   setServers((prev) => [...prev, response.data]);
-    //   if (response.status === 201) {
-    //     toast.success("Servidor criado com sucesso!", {
-    //       position: "top-center",
-    //       id: "createServer",
-    //     });
-    //     setLoading(false);
-    //     setOpen(false);
-    //   }
-    // } catch (error) {
-    //   setLoading(false);
-    //   toast.dismiss("createServer");
-    //   GenericAxiosActions({
-    //     error,
-    //     message: "Erro ao criar Servidor",
-    //     setErrorMessage,
-    //   });
-    // }
-  };
-
-  const updateWorkspace = async (data: CreateEndpointState) => {
-    if (!serverToEdit) return;
-    if (!selectedTime.value) {
-      toast.error("Por favor, selecione um intervalo de verificação.");
-      return;
+    try {
+      setLoading(true);
+      toast.loading("Cadastrando Endpoint...", {
+        position: "top-center",
+        id: "createEndpoint",
+      });
+      const response = await axios.post(
+        APIS.CREATE_ENDPOINT + workspace_id,
+        {
+          url: data.url,
+          identifier: data.identifier,
+          description: data.description,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        }
+      );
+      console.log("Response: ", response.data);
+      setEndpoints((prev) => [...prev, response.data]);
+      if (response.status === 201) {
+        toast.success("Servidor criado com sucesso!", {
+          position: "top-center",
+          id: "createEndpoint",
+        });
+        setLoading(false);
+        setOpen(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.dismiss("createEndpoint");
+      GenericAxiosActions({
+        error,
+        message: "Erro ao criar Servidor",
+        setErrorMessage,
+      });
     }
-
-    // try {
-    //   setLoading(true);
-    //   const response = await axios.put(
-    //     APIS.EDIT_SERVER + serverToEdit.id,
-    //     {
-    //       servername: data.servername,
-    //       identifier: data.identifier,
-    //       time_ms: parseInt(selectedTime.value, 10),
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${getCookie("token")}`,
-    //       },
-    //     }
-    //   );
-
-    //   setServers((prev) =>
-    //     prev.map((srv) => (srv.id === serverToEdit.id ? response.data : srv))
-    //   );
-    //   if (response.status === 200) {
-    //     toast.success("Servidor editado com sucesso!", {
-    //       position: "top-right",
-    //     });
-    //     setLoading(false);
-    //     setOpen(false);
-    //   }
-    // } catch (error) {
-    //   setLoading(false);
-    //   GenericAxiosActions({
-    //     error,
-    //     message: "Erro ao editar Servidor",
-    //     setErrorMessage,
-    //   });
-    // }
   };
 
   return (
@@ -197,15 +131,13 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
       <DialogContent className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5">
         <DialogHeader className="contents space-y-0 text-left">
           <DialogTitle className="border-b flex items-center gap-2 font-medium px-6 py-4 text-base">
-            <Server size={17} />
+            <Link2 size={17} />
             {mode === "CREATE" ? "Adicionar Endpoint" : "Editar Endpoint"}
           </DialogTitle>
           <div ref={contentRef} className="overflow-y-auto">
             <DialogDescription asChild>
               <form
-                onSubmit={handleSubmit(
-                  mode === "CREATE" ? createWorkspace : updateWorkspace
-                )}
+                onSubmit={handleSubmit(createEndpoint)}
                 className="px-6 grid grid-cols-1 gap-5 py-6"
               >
                 <div className="*:not-first:mt-3">
@@ -217,7 +149,7 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
                     {...register("identifier", {
                       required: "O identificador é obrigatório",
                       minLength: { value: 3, message: "Mínimo 3 caracteres" },
-                      maxLength: { value: 50, message: "Máximo 50 caracteres" },
+                      maxLength: { value: 25, message: "Máximo 25 caracteres" },
                       pattern: {
                         value: /^[a-zA-ZÀ-ÿ\s0-9 _-]+$/,
                         message:

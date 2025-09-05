@@ -2,13 +2,25 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Plus, Server } from "lucide-react";
 import EndpointComponent from "../components/EndpointComponent";
+import { EndpointProps } from "./Types/Endpoint";
+import CreateEndpoint from "./EndpointComponents/CreateEndpoint";
 
 interface IEndpointSlice {
   showSideBar: boolean;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  workspace_id: string;
+  endpoints: EndpointProps[];
+  setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
 }
 
-const EndpointSlice: React.FC<IEndpointSlice> = ({ showSideBar }) => {
+const EndpointSlice: React.FC<IEndpointSlice> = ({
+  endpoints,
+  workspace_id,
+  setErrorMessage,
+  setEndpoints,
+}) => {
+  const [createEndpoint, setCreateEndpoint] = React.useState<boolean>(false);
+
   return (
     <section className="relative h-full">
       <header>
@@ -25,66 +37,41 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({ showSideBar }) => {
             </div>
           </div>
           <div>
-            <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button
+              onClick={() => setCreateEndpoint(true)}
+              variant={"outline"}
+              className="cursor-pointer ret:w-auto w-full py-5 dark:hover:bg-zinc-900/30 dark:text-white dark:border-zinc-900/80 shadow-none"
+            >
               <Server size={14} className="text-white size-4" />
               Adicionar Endpoint
             </Button>
           </div>
         </div>
       </header>
-      <div
-        className={`grid mt-7 gap-1 ${
-          showSideBar
-            ? "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
-            : "lal:grid-cols-4 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
-        }`}
-      >
-        <EndpointComponent
-          url="https://api.infrawatch.com/endpoint/1"
-          responseTime="0.234"
-          httpStatus={200}
-          status="recheable"
-        />
-        <EndpointComponent
-          url="https://api.infrawatch.com/endpoint/2"
-          responseTime="0.456"
-          httpStatus={401}
-          status="unreachable"
-        />
-        <EndpointComponent
-          url="https://api.infrawatch.com/endpoint/3"
-          responseTime="0.789"
-          httpStatus={500}
-          status="unreachable"
-        />
-        <EndpointComponent
-          url="https://api.infrawatch.com/endpoint/4"
-          responseTime="0.123"
-          httpStatus={200}
-          status="recheable"
-        />
-        <EndpointComponent
-          url="https://api.infrawatch.com/endpoint/5"
-          responseTime="0.345"
-          httpStatus={200}
-          status="recheable"
-        />
-        <EndpointComponent
-          url="https://api.infrawatch.com/endpoint/6"
-          responseTime="0.567"
-          httpStatus={200}
-          status="recheable"
-        />
+      <div className={`grid mt-7 gap-1 grid-cols-1`}>
+        {endpoints.map((endpoint, index) => (
+          <EndpointComponent key={index} endpoint={endpoint} index={index} />
+        ))}
       </div>
 
       <div className="fixed bottom-5 pot:bottom-10 end-7 pot:end-12">
         <Button
+          onClick={() => setCreateEndpoint(true)}
           size={"icon"}
           className="rounded-full cursor-pointer size-9 hover:bg-white hover:opacity-80 bg-white text-black"
         >
           <Plus size={18} className="text-black size-5" />
         </Button>
       </div>
+
+      <CreateEndpoint
+        open={createEndpoint}
+        setOpen={setCreateEndpoint}
+        mode="CREATE"
+        setEndpoints={setEndpoints}
+        workspace_id={workspace_id || ""}
+        setErrorMessage={setErrorMessage}
+      />
     </section>
   );
 };

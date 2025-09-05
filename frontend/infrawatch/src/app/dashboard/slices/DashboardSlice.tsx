@@ -42,6 +42,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   setServers,
   setTabs,
   endpoints,
+  setEndpoints,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -283,7 +284,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
         open={createEndpoint}
         setOpen={setCreateEndpoint}
         mode="CREATE"
-        setServers={setServers}
+        setEndpoints={setEndpoints}
         workspace_id={workSpaceInfo?.id || ""}
         setErrorMessage={setErrorMessage}
       />
