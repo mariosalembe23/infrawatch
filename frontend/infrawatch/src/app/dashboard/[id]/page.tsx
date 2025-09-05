@@ -26,6 +26,7 @@ import { NotificationsProps } from "../components/Notifications";
 import { toast } from "sonner";
 import { ServerProps } from "../slices/Types/Server";
 import ServicesSlice from "../slices/ServicesSlice";
+import { EndpointProps } from "../slices/Types/Endpoint";
 
 export type Tabs =
   | "server"
@@ -71,6 +72,8 @@ export default function Dashboard() {
   });
   const [servers, setServers] = React.useState<ServerProps[]>([]);
   const [serversLoading, setServersLoading] = React.useState<boolean>(true);
+  const [endpoints, setEndpoints] = React.useState<EndpointProps[]>([]);
+  const [loadingEndpoints, setLoadingEndpoints] = React.useState<boolean>(true);
 
   useEffect(() => {
     socketRef.current = io("https://infrawatch-in5r.onrender.com/");
@@ -108,7 +111,6 @@ export default function Dashboard() {
             Authorization: `Bearer ${getCookie("token")}`,
           },
         });
-        console.log(response.data);
         setServers(response.data || []);
         setServersLoading(false);
       } catch (error) {
@@ -121,7 +123,35 @@ export default function Dashboard() {
         });
       }
     };
+
+    const getEndpoints = async () => {
+      if (!workSpaceInfo?.id) return;
+      try {
+        const response = await axios.get(
+          APIS.GET_ENDPOINTS + workSpaceInfo?.id,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("token")}`,
+            },
+          }
+        );
+        // Handle endpoints if needed
+        console.log("Fetched endpoints:", response.data);
+        setEndpoints(response.data || []);
+        setLoadingEndpoints(false);
+      } catch (error) {
+        setLoadingEndpoints(false);
+        console.error("Error fetching endpoints:", error);
+        GenericAxiosActions({
+          error,
+          message: "Erro ao buscar endpoints",
+          setErrorMessage: setMessageError,
+        });
+      }
+    };
+
     getServers();
+    getEndpoints();
   }, [workSpaceInfo?.id, setMessageError]);
 
   useEffect(() => {
@@ -212,7 +242,9 @@ export default function Dashboard() {
       {messageError.length > 0 && (
         <ServiceNotFound messageError={messageError} />
       )}
-      {(loading || userLoading || serversLoading) && <LoadingComponent />}
+      {(loading || userLoading || serversLoading || loadingEndpoints) && (
+        <LoadingComponent />
+      )}
       <DashboardContext.Provider value={contextValue}>
         <LateralBar
           showSideBar={showSideBar}
@@ -245,6 +277,8 @@ export default function Dashboard() {
                 servers={servers}
                 setServers={setServers}
                 setTabs={setTabs}
+                endpoints={endpoints}
+                setEndpoints={setEndpoints}
               />
             )}
             {tabs === "server" && (

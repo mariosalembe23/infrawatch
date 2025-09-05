@@ -75,7 +75,7 @@ const Graph: React.FC<GraphProps> = ({
       GenericAxiosActions({
         error,
         message: "Erro ao deletar o servidor. Tente novamente.",
-        setErrorMessage: () => {},
+        setErrorMessage: setErrorMessage,
       });
     }
   };
@@ -168,7 +168,7 @@ const Graph: React.FC<GraphProps> = ({
               <div className="dark:bg-zinc-950 flex lal:order-1 order-1 flex-col pot:h-96 h-[28rem] justify-between p-5  border dark:border-zinc-900/40 rounded-2xl">
                 <header className="border-b dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                   <div>
-                    <h2 className="text-lg dark:text-cyan-500 uppercase font-medium">
+                    <h2 className="text-lg dark:text-cyan-500 ">
                       Armazenamento
                     </h2>
                     <p className="dark:text-zinc-300 text-zinc-600 text-[15px]">
@@ -206,9 +206,7 @@ const Graph: React.FC<GraphProps> = ({
               <div className="dark:bg-zinc-950 lal:order-2 order-2  bg-[#fff] lal:col-span-2 flex flex-col justify-between px-5 pt-5 pot:h-96 h-[28rem] border dark:border-zinc-900/40 rounded-2xl">
                 <header className="border-b dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                   <div>
-                    <h2 className="text-lg dark:text-cyan-500 uppercase font-medium">
-                      USO de CPU
-                    </h2>
+                    <h2 className="text-lg dark:text-cyan-500 ">USO de CPU</h2>
                     <p className="dark:text-zinc-300 text-zinc-600 text-[15px]">
                       Estatísticas & Gráficos
                     </p>
@@ -236,7 +234,7 @@ const Graph: React.FC<GraphProps> = ({
               <div className="dark:bg-zinc-950 lal:order-3 order-4 flex flex-col  justify-between p-5  border dark:border-zinc-900/40 rounded-2xl">
                 <header className="border-b mb-5 dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                   <div>
-                    <h2 className="text-lg dark:text-cyan-500 uppercase font-medium">
+                    <h2 className="text-lg dark:text-cyan-500 ">
                       Temper. da CPU
                     </h2>
                     <p className="dark:text-zinc-300 text-zinc-600 text-[15px]">
@@ -277,9 +275,7 @@ const Graph: React.FC<GraphProps> = ({
                 <div className="dark:bg-zinc-950 flex flex-col  justify-between p-5  border dark:border-zinc-900/40 rounded-2xl">
                   <header className="border-b mb-5 dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                     <div>
-                      <h2 className="text-lg dark:text-cyan-500 uppercase font-medium">
-                        Dados
-                      </h2>
+                      <h2 className="text-lg dark:text-cyan-500 ">Dados</h2>
                       <p className="dark:text-zinc-300 text-zinc-600 text-[15px]">
                         Estatísticas & Gráficos
                       </p>
@@ -312,9 +308,7 @@ const Graph: React.FC<GraphProps> = ({
                 <div className="dark:bg-zinc-950 pot:h-auto h-[28rem] flex flex-col  justify-between p-5  border dark:border-zinc-900/40 rounded-2xl">
                   <header className="border-b mb-5 dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">
                     <div>
-                      <h2 className="text-lg dark:text-cyan-500 uppercase font-medium">
-                        Espaço
-                      </h2>
+                      <h2 className="text-lg dark:text-cyan-500 ">Espaço</h2>
                       <p className="dark:text-zinc-300 text-zinc-600 text-[15px]">
                         Estatísticas & Gráficos
                       </p>

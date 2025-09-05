@@ -22,6 +22,9 @@ import { ServerProps } from "./Types/Server";
 import Graph from "./ServerComponents/Graph";
 import { Tabs } from "../[id]/page";
 import ServerComponent from "./ServerComponents/ServerComponent";
+import CreateEndpoint from "./EndpointComponents/CreateEndpoint";
+import { EndpointProps } from "./Types/Endpoint";
+import EndpointComponent from "../components/EndpointComponent";
 
 interface IDashboardSlice {
   showSideBar: boolean;
@@ -29,6 +32,8 @@ interface IDashboardSlice {
   servers: ServerProps[];
   setServers: React.Dispatch<React.SetStateAction<ServerProps[]>>;
   setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
+  endpoints: EndpointProps[];
+  setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({
@@ -36,6 +41,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   servers,
   setServers,
   setTabs,
+  endpoints,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -43,6 +49,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   const [selectedItem, setSelectedItem] = React.useState<string>("");
   const [selectedServer, setSelectedServer] =
     React.useState<ServerProps | null>(null);
+  const [createEndpoint, setCreateEndpoint] = React.useState<boolean>(false);
 
   useEffect(() => {
     if (selectedItem) {
@@ -105,7 +112,10 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                 <Network size={16} className="opacity-60" aria-hidden="true" />
                 Aparelh. de Rede
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                onClick={() => setCreateEndpoint(true)}
+                className="cursor-pointer"
+              >
                 <Link2 size={16} className="opacity-60" aria-hidden="true" />
                 Endpoint
               </DropdownMenuItem>
@@ -185,6 +195,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
+
           <div className="flex flex-wrap mt-5 items-center gap-2">
             <div className="items-center  ret:w-auto w-full gap-3 border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
               <Network size={16} className="dark:text-white text-zinc-900" />
@@ -222,7 +233,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                   size={12}
                   aria-hidden="true"
                 />
-                Endpoints - 14
+                Endpoints - {endpoints.length}
               </Badge>
             </h3>
             <Button
@@ -232,37 +243,45 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-          <div className="flex mt-5 items-center flex-wrap gap-2">
-            <div className="items-center ret:w-auto w-full gap-2  border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
-              <Link2 size={16} className="dark:text-white text-zinc-900" />
-              Sem endpoints registrados
+
+          {endpoints.length === 0 ? (
+            <div className="flex mt-5 items-center flex-wrap gap-2">
+              <div className="items-center ret:w-auto w-full gap-2  border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+                <Link2 size={16} className="dark:text-white text-zinc-900" />
+                Sem endpoints registrados
+              </div>
+              <Button
+                onClick={() => setCreateEndpoint(true)}
+                className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
+              >
+                Adicionar
+                <Plus size={18} className="" />
+              </Button>
             </div>
-            <Button className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white">
-              Adicionar
-              <Plus size={18} className="" />
-            </Button>
-          </div>
-          {/* <div
-            className={`grid mt-7 gap-1 ${
-              showSideBar
-                ? "pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
-                : "lal:grid-cols-4 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1"
-            }`}
-          >
-            <EndpointComponent
-              url="https://api.infrawatch.com/endpoint/1"
-              responseTime="0.234"
-              httpStatus={200}
-              status="recheable"
-            />
-            
-           
-          </div> */}
+          ) : (
+            <div className={`grid mt-7 gap-1 grid-cols-1`}>
+              {endpoints.slice(0, 4).map((endpoint, index) => (
+                <EndpointComponent
+                  key={index}
+                  endpoint={endpoint}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <CreateServer
         open={createServerOpen}
         setOpen={setCreateServerOpen}
+        mode="CREATE"
+        setServers={setServers}
+        workspace_id={workSpaceInfo?.id || ""}
+        setErrorMessage={setErrorMessage}
+      />
+      <CreateEndpoint
+        open={createEndpoint}
+        setOpen={setCreateEndpoint}
         mode="CREATE"
         setServers={setServers}
         workspace_id={workSpaceInfo?.id || ""}

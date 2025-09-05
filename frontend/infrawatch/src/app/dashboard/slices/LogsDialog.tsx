@@ -1,7 +1,6 @@
 "use client"
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/app/dashboard/components/dialog"
-import { Button } from "@/components/ui/button"
 import { ClipboardClock } from "lucide-react"
 
 interface LogsDialogProps {
@@ -10,7 +9,7 @@ interface LogsDialogProps {
   triggerText?: string
 }
 
-export default function LogsDialog({ title, children, triggerText = "Logs" }: LogsDialogProps) {
+export default function LogsDialog({ title, children}: LogsDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
