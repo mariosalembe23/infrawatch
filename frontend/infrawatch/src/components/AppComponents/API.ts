@@ -63,7 +63,6 @@ export const GenericAxiosActions = ({
           position: "top-right",
         });
         if (setErrorMessage) {
-          console.log("setou");
           setErrorMessage(
             "Recurso não encontrado em " + axios.getUri(error.config)
           );

@@ -135,8 +135,6 @@ export default function Dashboard() {
             },
           }
         );
-        // Handle endpoints if needed
-        console.log("Fetched endpoints:", response.data);
         setEndpoints(response.data || []);
         setLoadingEndpoints(false);
       } catch (error) {

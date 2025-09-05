@@ -6,6 +6,7 @@ import {
   Info,
   OctagonAlert,
   ToggleLeft,
+  Trash,
 } from "lucide-react";
 import { EndpointProps } from "../slices/Types/Endpoint";
 import { Badge } from "@/components/ui/badge";
@@ -274,6 +275,33 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                 </p>
               </div>
             </header>
+
+            <div className="flex pot:px-0 px-8 flex-wrap max-w-7xl mx-auto w-full mt-10 items-center justify-between">
+              <Button
+                variant={"outline"}
+                className="dark:border-zinc-900/50 dark:hover:bg-zinc-900/30"
+              >
+                <Bolt size={16} className="opacity-60" aria-hidden="true" />
+                Editar
+              </Button>
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  variant={"outline"}
+                  className="dark:border-zinc-900/50 dark:hover:bg-zinc-900/30"
+                >
+                  <ToggleLeft
+                    size={16}
+                    className="opacity-60"
+                    aria-hidden="true"
+                  />
+                  Desativar monitoramento
+                </Button>
+                <Button className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+                  <Trash size={18} className="" />
+                  Deletar
+                </Button>
+              </div>
+            </div>
             <div className="mt-16 max-w-7xl w-full mx-auto pot:px-0 px-5 pb-10 grid grid-cols-1 pot:grid-cols-2 gap-2">
               <div className="h-[28rem] p-5 bg-[#f5f5f5] dark:bg-zinc-950/50 dark:border-zinc-900/50 border rounded-2xl flex flex-col items-center justify-between">
                 <header className="border-b mb-10 w-full mx-auto dark:border-b-zinc-900/40 pb-2 flex items-center justify-between">

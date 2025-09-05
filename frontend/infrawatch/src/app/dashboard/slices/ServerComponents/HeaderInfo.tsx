@@ -26,7 +26,6 @@ const DataItem: React.FC<{
 const HeaderInfo: React.FC<{
   server: ServerProps | null;
 }> = ({ server }) => {
-  console.log(server);
   return (
     <div className="dark:bg-zinc-950 bg-[#f5f5f5] p-1 grid gap-1 pot:grid-cols-4 ret:grid-cols-3 grid-cols-1 lal:grid-cols-8 border dark:border-zinc-900/40 rounded-2xl">
       <DataItem

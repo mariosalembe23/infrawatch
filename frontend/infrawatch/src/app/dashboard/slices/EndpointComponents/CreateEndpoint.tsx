@@ -105,7 +105,6 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
           },
         }
       );
-      console.log("Response: ", response.data);
       setEndpoints((prev) => [...prev, response.data]);
       if (response.status === 201) {
         toast.success("Servidor criado com sucesso!", {
