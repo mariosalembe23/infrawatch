@@ -84,9 +84,9 @@ export default function Dashboard() {
     timestamp: "",
     time_response: "",
   });
-  // 192.168.1 - 6 => roteadoares
+  // 192.168.2 - 6 => roteadoares
   // 192.168.7 - 11 => switches
-  // 192.168.12 - 17 => firewalls
+  // 10.0.0.1 - 5 => firewalls
   // 192.168.20 - 25 => impressoras
   const [devices, setDevices] = React.useState<Device[]>([]);
   const [devicesLoading, setDevicesLoading] = React.useState<boolean>(true);
@@ -282,9 +282,11 @@ export default function Dashboard() {
       {messageError.length > 0 && (
         <ServiceNotFound messageError={messageError} />
       )}
-      {(loading || userLoading || serversLoading || loadingEndpoints || devicesLoading) && (
-        <LoadingComponent />
-      )}
+      {(loading ||
+        userLoading ||
+        serversLoading ||
+        loadingEndpoints ||
+        devicesLoading) && <LoadingComponent />}
       <DashboardContext.Provider value={contextValue}>
         <LateralBar
           showSideBar={showSideBar}
@@ -333,7 +335,15 @@ export default function Dashboard() {
                 setServers={setServers}
               />
             )}
-            {tabs === "network" && <NetworkSlice devices={devices} />}
+            {tabs === "network" && (
+              <NetworkSlice
+                servers={servers}
+                setErrorMessage={setMessageError}
+                workspace_id={workSpaceInfo?.id || ""}
+                devices={devices}
+                setDevices={setDevices}
+              />
+            )}
             {tabs === "endpoint" && (
               <EndpointSlice
                 showSideBar={showSideBar}

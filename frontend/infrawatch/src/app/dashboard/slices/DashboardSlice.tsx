@@ -207,7 +207,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                   size={12}
                   aria-hidden="true"
                 />
-                Redes - 14
+                Redes - {devices.length}
               </Badge>
             </h3>
             <Button

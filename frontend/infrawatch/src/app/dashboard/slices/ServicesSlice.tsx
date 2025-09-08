@@ -139,7 +139,7 @@ const ServicesSlice: React.FC<IServicesSlice> = ({
             variant={"outline"}
             className="mt-4 dark:border-zinc-900 dark:hover:bg-zinc-900/30"
           >
-            <Server size={14} className="text-white size-4" />
+            <Server size={14} className="dark:text-white size-4" />
             Servidores
           </Button>
         </div>

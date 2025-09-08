@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
-import { Plus, Server } from "lucide-react";
+import { Link2, Plus, Server } from "lucide-react";
 import { EndpointProps } from "./Types/Endpoint";
 import CreateEndpoint from "./EndpointComponents/CreateEndpoint";
 import EndpointComponent from "./EndpointComponents/EndpointComponent";
@@ -58,7 +58,7 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({
               variant={"outline"}
               className="cursor-pointer ret:w-auto w-full py-5 dark:hover:bg-zinc-900/30 dark:text-white dark:border-zinc-900/80 shadow-none"
             >
-              <Server size={14} className="text-white size-4" />
+              <Link2 size={14} className="dark:text-white size-4" />
               Adicionar Endpoint
             </Button>
           </div>

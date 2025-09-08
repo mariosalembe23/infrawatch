@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -155,16 +154,16 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
                           "Apenas letras, números, espaços, hífens e underscores são permitidos.",
                       },
                     })}
-                    className={`text-white py-5 text-base ${
+                    className={`dark:text-white text-black py-5 text-base ${
                       errors.identifier
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Indetificador do Endpoint"
                     type="text"
                   />
                   {errors.identifier && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] text-zinc-700 dark:text-white/60 mt-1">
                       {errors.identifier.message}
                     </p>
                   )}
@@ -189,16 +188,16 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
                         message: "Por favor, insira uma URL válida.",
                       },
                     })}
-                    className={`text-white py-5 text-base ${
+                    className={`dark:text-white text-black py-5 text-base ${
                       errors.url
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="http://api.meusite.com/health"
                     type="text"
                   />
                   {errors.url && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] text-zinc-700 dark:text-white/60 mt-1">
                       {errors.url.message}
                     </p>
                   )}
@@ -217,15 +216,15 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
                       },
                     })}
                     maxLength={150}
-                    className={`text-white [resize:none]  text-base ${
+                    className={`dark:text-white shadow-none text-black [resize:none]  text-base ${
                       errors.description
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Descrição do Espaço de Trabalho"
                   />
                   {errors.description && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] text-zinc-700 dark:text-white/60 mt-1">
                       {errors.description.message}
                     </p>
                   )}
@@ -239,7 +238,7 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
                         if (mode === "CREATE") reset();
                       }}
                       variant="outline"
-                      className="py-5"
+                      className="py-5 dark:text-white text-black"
                     >
                       Cancelar
                     </Button>

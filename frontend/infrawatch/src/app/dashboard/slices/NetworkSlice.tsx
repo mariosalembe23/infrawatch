@@ -3,10 +3,18 @@ import React from "react";
 import { Network, Plus } from "lucide-react";
 import { Device } from "./Types/Network";
 import NetworkComponent from "./NetworkComponents/NetWorkComponent";
+import CreateDevice from "./NetworkComponents/CreateDevice";
+import { ServerProps } from "./Types/Server";
 
 const NetworkSlice: React.FC<{
   devices: Device[];
-}> = ({ devices }) => {
+  servers: ServerProps[];
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  workspace_id: string;
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+}> = ({ devices, servers, workspace_id, setErrorMessage, setDevices }) => {
+  const [openCreate, setOpenCreate] = React.useState<boolean>(false);
+
   return (
     <section className="relative h-full">
       <header>
@@ -23,7 +31,10 @@ const NetworkSlice: React.FC<{
             </div>
           </div>
           <div className="w-full">
-            <Button className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none">
+            <Button
+              onClick={() => setOpenCreate(true)}
+              className="cursor-pointer ret:w-auto w-full py-5 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-950 shadow-none"
+            >
               <Network size={14} className="text-white size-4" />
               Adicionar aparelho
             </Button>
@@ -64,6 +75,15 @@ const NetworkSlice: React.FC<{
           <Plus size={18} className="text-black size-5" />
         </Button>
       </div>
+      <CreateDevice
+        open={openCreate}
+        setOpen={setOpenCreate}
+        servers={servers}
+        setErrorMessage={setErrorMessage}
+        mode="CREATE"
+        workspace_id={workspace_id}
+        setDevices={setDevices}
+      />
     </section>
   );
 };

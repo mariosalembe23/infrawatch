@@ -85,7 +85,7 @@ const Notifications: React.FC<INotifications> = ({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent side="right">
+      <SheetContent side="right" className="pot:w-auto w-[90%]">
         <SheetHeader className="border-b">
           <SheetTitle className="text-xl font-medium">
             <Megaphone className="inline mb-1 size-5 me-2" />

@@ -31,7 +31,8 @@ export const APIS = {
   EDIT_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/put/",
   GET_ENDPOINTS: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/list/",
   CREATE_ENDPOINT: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/add/",
-  GET_DEVICES: "https://infra-watch-zeta.vercel.app/api/v1/device/list/"
+  GET_DEVICES: "https://infra-watch-zeta.vercel.app/api/v1/device/list/",
+  CREATE_DEVICE: "https://infra-watch-zeta.vercel.app/api/v1/device/add/"
 };
 
 export const GenericAxiosActions = ({
@@ -87,6 +88,7 @@ export const removeDoubleSlashes = (input: string): string => {
 };
 
 export const removeSlashes = (input: string): string => {
+  if (!input) return "";
   return input.replace(/\/\//g, "/");
 };
 

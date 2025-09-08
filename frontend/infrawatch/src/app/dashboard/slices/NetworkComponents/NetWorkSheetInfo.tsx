@@ -14,6 +14,7 @@ import React from "react";
 import Graph1 from "../EndpointComponents/Graph1";
 import { Device } from "../Types/Network";
 import SpaceGraph from "../EndpointComponents/Graph2";
+import { isEmpty } from "../ServerComponents/ServerComponent";
 
 interface INetWorkSheetInfo {
   device: Device;
@@ -153,7 +154,7 @@ const NetWorkSheet: React.FC<INetWorkSheetInfo> = ({
                     Uptime
                   </p>
                   <p className="dark:text-white text-[15px] text-black">
-                    {removeDoubleSlashes(device.last_device.uptime) || "Down"}
+                    {!isEmpty(device.last_device) && removeDoubleSlashes(device.last_device.uptime) || "Down"}
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
