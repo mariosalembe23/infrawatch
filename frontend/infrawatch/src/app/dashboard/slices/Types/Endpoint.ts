@@ -4,6 +4,7 @@ interface LastLogs {
   url: string;
   status: "UP" | "DOWN";
   statusResponse: string;
+  timestamp: string;
   time_response: string;
 }
 

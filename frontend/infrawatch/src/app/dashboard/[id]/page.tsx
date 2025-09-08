@@ -74,6 +74,15 @@ export default function Dashboard() {
   const [serversLoading, setServersLoading] = React.useState<boolean>(true);
   const [endpoints, setEndpoints] = React.useState<EndpointProps[]>([]);
   const [loadingEndpoints, setLoadingEndpoints] = React.useState<boolean>(true);
+  const [lastLog, setLastLog] = React.useState<EndpointProps["last_log"]>({
+    endpointId: "",
+    workspaceId: "",
+    url: "",
+    status: "DOWN",
+    statusResponse: "",
+    timestamp: "",
+    time_response: "",
+  });
 
   useEffect(() => {
     socketRef.current = io("https://infrawatch-in5r.onrender.com/");
@@ -95,12 +104,19 @@ export default function Dashboard() {
       setNotification(message);
     });
 
+    socketRef.current.on("logEndpoint", (message) => {
+      console.log("Nova notificação recebida:", message);
+      setLastLog(message);
+    });
+
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
       }
     };
   }, []);
+
+
 
   useEffect(() => {
     const getServers = async () => {
@@ -229,6 +245,7 @@ export default function Dashboard() {
     ThemeFunc({ setIsDarkMode });
   }, []);
 
+
   return (
     <div
       className={`h-dvh w-full grid ${
@@ -277,6 +294,7 @@ export default function Dashboard() {
                 setTabs={setTabs}
                 endpoints={endpoints}
                 setEndpoints={setEndpoints}
+                lastLog={lastLog}
               />
             )}
             {tabs === "server" && (
@@ -286,6 +304,7 @@ export default function Dashboard() {
                 workspace_id={workSpaceInfo?.id || ""}
                 servers={servers}
                 setServers={setServers}
+                
               />
             )}
             {tabs === "network" && <NetworkSlice />}
@@ -296,6 +315,7 @@ export default function Dashboard() {
                 workspace_id={workSpaceInfo?.id || ""}
                 endpoints={endpoints}
                 setEndpoints={setEndpoints}
+                lastLog={lastLog} 
               />
             )}
             {tabs === "settings" && (

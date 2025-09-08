@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import { Plus, Server } from "lucide-react";
 import EndpointComponent from "../components/EndpointComponent";
 import { EndpointProps } from "./Types/Endpoint";
@@ -11,6 +11,7 @@ interface IEndpointSlice {
   workspace_id: string;
   endpoints: EndpointProps[];
   setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
+  lastLog: EndpointProps["last_log"] | null;
 }
 
 const EndpointSlice: React.FC<IEndpointSlice> = ({
@@ -18,8 +19,25 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({
   workspace_id,
   setErrorMessage,
   setEndpoints,
+  lastLog,
 }) => {
   const [createEndpoint, setCreateEndpoint] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (lastLog && endpoints.length > 0) {
+      // Verificar se há alguma alteração real nos endpoints
+      const updatedEndpoints = endpoints.map((endpoint) =>
+        endpoint.id === lastLog.endpointId
+          ? { ...endpoint, last_log: lastLog }
+          : endpoint
+      );
+
+      // Atualizar o estado apenas se houver uma diferença
+      if (JSON.stringify(updatedEndpoints) !== JSON.stringify(endpoints)) {
+        setEndpoints(updatedEndpoints);
+      }
+    }
+  }, [lastLog, endpoints, setEndpoints]);
 
   return (
     <section className="relative h-full">

@@ -34,6 +34,7 @@ interface IDashboardSlice {
   setTabs: React.Dispatch<React.SetStateAction<Tabs>>;
   endpoints: EndpointProps[];
   setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
+  lastLog: EndpointProps["last_log"] | null;
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({
@@ -43,6 +44,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   setTabs,
   endpoints,
   setEndpoints,
+  lastLog,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -62,6 +64,21 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
       setSelectedServer(null);
     }
   }, [selectedItem, servers]);
+
+  useEffect(() => {
+    if (lastLog && endpoints.length > 0) {
+      const updatedEndpoints = endpoints.map((endpoint) =>
+        endpoint.id === lastLog.endpointId
+          ? { ...endpoint, last_log: lastLog }
+          : endpoint
+      );
+
+      // Atualizar o estado apenas se houver uma diferença
+      if (JSON.stringify(updatedEndpoints) !== JSON.stringify(endpoints)) {
+        setEndpoints(updatedEndpoints);
+      }
+    }
+  }, [lastLog, endpoints, setEndpoints]);
 
   return selectedItem ? (
     <Graph

@@ -29,6 +29,8 @@ import { Button } from "@/components/ui/button";
 import StatusGraph from "../slices/EndpointComponents/Graph2";
 import React from "react";
 import { isEmpty } from "../slices/ServerComponents/ServerComponent";
+import { DataMode } from "../slices/Types/DataMod";
+import { removeDoubleSlashes } from "@/components/AppComponents/API";
 
 interface IEndpointComponent {
   endpoint: EndpointProps;
@@ -112,7 +114,11 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
         ) : (
           <>
             <div className="pot:inline-flex hidden">
-              <p className="text-zinc-500 text-[15px] font-[480]">há 3min</p>
+              <p className="text-zinc-500 text-[15px] font-[480]">
+                {DataMode(
+                  new Date(removeDoubleSlashes(endpoint.last_log.timestamp))
+                )}
+              </p>
             </div>
             <div className="flex items-center pe-3 gap-2 justify-start pot:justify-end">
               <p className="dark:text-white text-[15px]">Status</p>
@@ -137,9 +143,9 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
               <p
                 className={`px-2 text-white text-[13px] ${
                   parseInt(endpoint.last_log.statusResponse) === 200
-                    ? "bg-green-600 border border-green-500"
+                    ? "bg-green-600/20 border border-green-500"
                     : parseInt(endpoint.last_log.statusResponse) === 401
-                    ? "bg-yellow-600 border border-yellow-500"
+                    ? "bg-yellow-600/20 border border-yellow-500"
                     : "bg-red-600/20 border border-red-500"
                 }  font-medium rounded leading-none py-1`}
               >
@@ -150,7 +156,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
               <p className="px-2 text-white text-[14px] bg-zinc-900  font-medium rounded leading-none py-1">
                 Tempo de resposta{" "}
                 <span className="text-cyan-500">
-                  {endpoint.last_log.time_response}s
+                  {endpoint.last_log.time_response}ms
                 </span>
               </p>
             </div>
@@ -223,7 +229,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
               </SheetDescription>
             </div>
           </SheetHeader>
-          <ScrollArea className="h-full overflow-y-auto">
+          <ScrollArea className="h-full px-5 overflow-y-auto">
             <header className="grid max-w-7xl w-full mx-auto mt-10 ret:grid-cols-2 grid-cols-1 pot:px-0 px-8 pot:grid-cols-4 gap-4">
               <div>
                 <p className="dark:text-zinc-500 text-zinc-600">Endereço</p>
@@ -271,7 +277,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                   Última verificação
                 </p>
                 <p className="dark:text-white break-words text-[14px] font-mono">
-                  há 3 minutos
+                  há {DataMode(new Date(endpoint.last_log.timestamp))}
                 </p>
               </div>
             </header>

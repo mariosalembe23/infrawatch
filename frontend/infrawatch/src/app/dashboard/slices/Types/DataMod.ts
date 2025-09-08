@@ -1,27 +1,49 @@
 function DataMode(data: string | number | Date): string {
   const agora: Date = new Date();
   const dataInformada: Date = new Date(data);
+  dataInformada.setHours(dataInformada.getHours() - 1);
 
-  const diffEmMs: number = agora.getTime() - dataInformada.getTime();
+  // Calcula a diferença em milissegundos (usando Math.abs para evitar negativos)
+  const diffEmMs: number = Math.abs(agora.getTime() - dataInformada.getTime());
 
-  const diffEmDias: number = Math.floor(diffEmMs / (1000 * 60 * 60 * 24));
-
-  if (diffEmDias < 1) {
-    const diffEmHoras: number = Math.floor(diffEmMs / (1000 * 60 * 60));
-    return `${diffEmHoras}h`;
+  // Se a diferença for menor que 1 segundo, retorna "agora"
+  if (diffEmMs < 1000) {
+    return "Agora";
   }
 
+  // Calcula os segundos
+  const diffEmSegundos = Math.floor(diffEmMs / 1000);
+  if (diffEmSegundos < 60) {
+    return `há ${diffEmSegundos}s`;
+  }
+
+  // Calcula os minutos
+  const diffEmMinutos = Math.floor(diffEmSegundos / 60);
+  if (diffEmMinutos < 60) {
+    return `há ${diffEmMinutos}min`;
+  } 
+
+  // Calcula as horas
+  const diffEmHoras = Math.floor(diffEmMinutos / 60);
+  if (diffEmHoras < 24) {
+    return `há ${diffEmHoras}h`;
+  }
+
+  // Calcula os dias
+  const diffEmDias = Math.floor(diffEmHoras / 24);
   if (diffEmDias < 30) {
-    return `${diffEmDias}d`;
+    return `há ${diffEmDias}d`;
   }
 
-  const diffEmMeses: number = Math.floor(diffEmDias / 30);
+  // Calcula os meses
+  const diffEmMeses = Math.floor(diffEmDias / 30);
   if (diffEmMeses < 12) {
-    return `${diffEmMeses}m`;
+    return `há ${diffEmMeses}me`;
   }
 
-  const diffEmAnos: number = Math.floor(diffEmMeses / 12);
-  return `${diffEmAnos}y`;
+  // Calcula os anos
+  const diffEmAnos = Math.floor(diffEmMeses / 12);
+  return `há ${diffEmAnos}y`;
 }
 
 export { DataMode };
