@@ -222,16 +222,16 @@ const CreateServer: React.FC<CreateServerProps> = ({
                           "Apenas letras, números, espaços, hífens e underscores são permitidos.",
                       },
                     })}
-                    className={`text-white py-5 text-base ${
+                    className={`dark:text-white text-black py-5 text-base ${
                       errors.servername
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Nome do Servidor"
                     type="text"
                   />
                   {errors.servername && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] dark:text-white/60 mt-1">
                       {errors.servername.message}
                     </p>
                   )}
@@ -253,16 +253,16 @@ const CreateServer: React.FC<CreateServerProps> = ({
                           "Apenas letras, números, espaços, hífens e underscores são permitidos.",
                       },
                     })}
-                    className={`text-white py-5 text-base ${
+                    className={`dark:text-white text-black py-5 text-base ${
                       errors.servername
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Identificador do Servidor"
                     type="text"
                   />
                   {errors.servername && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] dark:text-white/60 mt-1">
                       {errors.servername.message}
                     </p>
                   )}
@@ -287,7 +287,7 @@ const CreateServer: React.FC<CreateServerProps> = ({
                   >
                     <SelectTrigger
                       id="time_sm"
-                      className="border-zinc-800 text-base py-5 cursor-pointer"
+                      className="dark:border-zinc-800 text-base py-5 cursor-pointer"
                     >
                       <SelectValue
                         placeholder="Defina um tempo"
@@ -316,7 +316,7 @@ const CreateServer: React.FC<CreateServerProps> = ({
                         if (mode === "CREATE") reset();
                       }}
                       variant="outline"
-                      className="py-5"
+                      className="py-5 dark:text-white text-black"
                     >
                       Cancelar
                     </Button>
@@ -324,7 +324,7 @@ const CreateServer: React.FC<CreateServerProps> = ({
 
                   <Button
                     type="submit"
-                    className="py-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+                    className="py-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
                   >
                     {loading && (
                       <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>

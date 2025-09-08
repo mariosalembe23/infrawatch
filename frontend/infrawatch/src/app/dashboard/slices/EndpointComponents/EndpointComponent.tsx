@@ -204,10 +204,10 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
               <p
                 className={`px-2 text-white text-[13px] ${
                   parseInt(endpoint.last_log.statusResponse) === 200
-                    ? "bg-green-600/20 border border-green-500"
+                    ? "dark:bg-green-600/20 bg-green-800 border border-green-500"
                     : parseInt(endpoint.last_log.statusResponse) === 401
-                    ? "bg-yellow-600/20 border border-yellow-500"
-                    : "bg-red-600/20 border border-red-500"
+                    ? "dark:bg-yellow-600/20 bg-yellow-800 border border-yellow-500"
+                    : "dark:bg-red-600/20 bg-red-800 border border-red-500"
                 }  font-medium rounded leading-none py-1`}
               >
                 HTTPS <span>{endpoint.last_log.statusResponse}</span>

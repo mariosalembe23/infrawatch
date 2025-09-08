@@ -1,4 +1,8 @@
-import { removeDoubleSlashes } from "@/components/AppComponents/API";
+import {
+  APIS,
+  GenericAxiosActions,
+  removeDoubleSlashes,
+} from "@/components/AppComponents/API";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,38 +13,83 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { ChevronDownIcon, ToggleLeft } from "lucide-react";
+import { ChevronDownIcon, ToggleLeft, Trash } from "lucide-react";
 import React from "react";
 import Graph1 from "../EndpointComponents/Graph1";
 import { Device } from "../Types/Network";
 import SpaceGraph from "../EndpointComponents/Graph2";
 import { isEmpty } from "../ServerComponents/ServerComponent";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface INetWorkSheetInfo {
   device: Device;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
 }
 
 const NetWorkSheet: React.FC<INetWorkSheetInfo> = ({
   device,
   open,
   setOpen,
+  setDevices,
 }) => {
+  const [loading, setLoading] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const deleteDevice = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.delete(APIS.DELETE_DEVICE + device.id, {
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      });
+      if (response.status === 200) {
+        toast.success("Dispositivo deletado com sucesso!", {
+          position: "top-center",
+        });
+        setDevices((prev) => prev.filter((d) => d.id !== device.id));
+        setOpen(false);
+      }
+      setLoading(false);
+      setOpenDelete(false);
+    } catch (error) {
+      console.log(error);
+      GenericAxiosActions({
+        error,
+        message: "Erro ao deletar dispositivo",
+        setErrorMessage: () => {},
+      });
+    }
+  };
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent side="bottom" className=" h-[100vh]">
+      <SheetContent side="bottom" className=" h-[100vh] px-5">
         <SheetHeader className="border-b ">
           <div className="max-w-[95rem] w-full mx-auto">
             <SheetTitle className="font-medium">
-              Endpoint - {device.device_name}
+              <span className="capitalize">{device.device_type}</span> -{" "}
+              {device.device_name}
             </SheetTitle>
             <SheetDescription className="-mt-1">
               {device.description || "Descrição"}
             </SheetDescription>
           </div>
         </SheetHeader>
-        <ScrollArea className="h-full px-5 overflow-y-auto">
+        <ScrollArea className="h-full pb-10 px-5 overflow-y-auto">
           <div className="pt-16 max-w-[95rem] gap-16 w-full mx-auto items-start grid grid-cols-1 pot:grid-cols-2">
             <header>
               <div>
@@ -65,7 +114,10 @@ const NetWorkSheet: React.FC<INetWorkSheetInfo> = ({
                     />
                     Desativar monitoramento
                   </Button>
-                  <Button className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+                  <Button
+                    onClick={() => setOpenDelete(true)}
+                    className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+                  >
                     Deletar
                   </Button>
                 </div>
@@ -154,7 +206,9 @@ const NetWorkSheet: React.FC<INetWorkSheetInfo> = ({
                     Uptime
                   </p>
                   <p className="dark:text-white text-[15px] text-black">
-                    {!isEmpty(device.last_device) && removeDoubleSlashes(device.last_device.uptime) || "Down"}
+                    {(!isEmpty(device.last_device) &&
+                      removeDoubleSlashes(device.last_device.uptime)) ||
+                      "Down"}
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
@@ -369,6 +423,34 @@ const NetWorkSheet: React.FC<INetWorkSheetInfo> = ({
           </div>
         </ScrollArea>
       </SheetContent>
+
+      <AlertDialog open={openDelete} onOpenChange={setOpenDelete}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-medium text-base">
+              Tem certeza?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja deletar este dispositivo de rede? Esta ação
+              é irreversível.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel disabled={loading}>Cancelar</AlertDialogCancel>
+            <Button
+              disabled={loading}
+              onClick={deleteDevice}
+              className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
+              <Trash size={18} className="" />
+              Eliminar
+              {loading && (
+                <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-white/40"></span>
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Sheet>
   );
 };

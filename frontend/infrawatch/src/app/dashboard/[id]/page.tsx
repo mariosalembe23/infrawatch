@@ -86,10 +86,6 @@ export default function Dashboard() {
     timestamp: "",
     time_response: "",
   });
-  // 192.168.2 - 6 => roteadoares
-  // 192.168.7 - 11 => switches
-  // 10.0.0.1 - 5 => firewalls
-  // 192.168.20 - 25 => impressoras
   const [devices, setDevices] = React.useState<Device[]>([]);
   const [devicesLoading, setDevicesLoading] = React.useState<boolean>(true);
 
@@ -119,7 +115,7 @@ export default function Dashboard() {
 
     socketRef.current.on("devices", (message) => {
       console.log("Log device recebido via socket:", message);
-      message.map((msg) => {
+      message.map((msg: Device["last_device"]) => {
         setDevices((prevDevices) =>
           prevDevices.map((device) =>
             device.id === msg.deviceId

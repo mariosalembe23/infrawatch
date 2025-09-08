@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Info, Link2 } from "lucide-react";
+import {  Link2, List } from "lucide-react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
@@ -28,9 +28,18 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Device } from "../Types/Network";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface CreateDeviceProps {
   open: boolean;
@@ -74,6 +83,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
   const [selectedTypeDevice, setSelectedTypeDevice] = useState<
     "SWITCH" | "ROUTER" | "FIREWALL" | "PRINTER"
   >(optionsDevice[0].value as "SWITCH" | "ROUTER" | "FIREWALL" | "PRINTER");
+  const [openHostsList, setOpenHostsList] = useState<boolean>(false);
 
   const {
     register,
@@ -104,7 +114,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
   //   }
   // }, [mode, serverToEdit, reset]);
 
-  const createEndpoint = async (data: CreateDeviceState) => {
+  const createDevice = async (data: CreateDeviceState) => {
     if (!selectedTypeDevice) {
       toast.error("Por favor, selecione um tipo de dispositivo.", {
         position: "top-center",
@@ -123,7 +133,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
       setLoading(true);
       toast.loading("Cadastrando Endpoint...", {
         position: "top-center",
-        id: "createEndpoint",
+        id: "createDevice",
       });
       console.log(data, selectedTypeDevice, selectedWorkType);
       const response = await axios.post(
@@ -145,7 +155,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
       if (response.status === 201 || response.status === 200) {
         toast.success("Servidor criado com sucesso!", {
           position: "top-center",
-          id: "createEndpoint",
+          id: "createDevice",
         });
         console.log(response.data);
         setDevices((prev) => [...prev, response.data]);
@@ -154,7 +164,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
       }
     } catch (error) {
       setLoading(false);
-      toast.dismiss("createEndpoint");
+      toast.dismiss("createDevice");
       GenericAxiosActions({
         error,
         message: "Erro ao criar Servidor",
@@ -162,7 +172,6 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
       });
     }
   };
-  console.log(selectedTypeDevice, selectedWorkType);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -177,7 +186,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
           <ScrollArea ref={contentRef} className="scrollDiv overflow-y-auto">
             <DialogDescription asChild>
               <form
-                onSubmit={handleSubmit(createEndpoint)}
+                onSubmit={handleSubmit(createDevice)}
                 className="px-6 grid grid-cols-1 gap-5 py-6"
               >
                 <div className="*:not-first:mt-3">
@@ -196,16 +205,16 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
                           "Apenas letras, números, espaços, hífens e underscores são permitidos.",
                       },
                     })}
-                    className={`text-white py-5 text-base ${
+                    className={`dark:text-white text-black py-5 text-base ${
                       errors.device_name
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Indetificador do Dispositivo"
                     type="text"
                   />
                   {errors.device_name && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] dark:text-white/60 mt-1">
                       {errors.device_name.message}
                     </p>
                   )}
@@ -227,25 +236,27 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
                         message: "Endereço IP inválido.",
                       },
                     })}
-                    className={`text-white py-5 text-base ${
+                    className={`dark:text-white text-black py-5 text-base ${
                       errors.host
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Endereço IP do Dispositivo"
                     type="text"
                   />
                   {errors.host && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] dark:text-white/60 mt-1">
                       {errors.host.message}
                     </p>
                   )}
                   <div className="flex justify-end">
                     <Button
                       variant={"outline"}
-                      className="dark:border-zinc-900/50 flex items-center text-white text-[13px]"
+                      type="button"
+                      onClick={() => setOpenHostsList(true)}
+                      className="dark:border-zinc-900/50 leading-none !m-o flex items-center text-black dark:text-white text-[13px]"
                     >
-                      <Info size={12} className="size-3" /> Lista de hosts de
+                      <List size={12} className="size-3" /> Lista de hosts de
                       teste
                     </Button>
                   </div>
@@ -264,15 +275,15 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
                       },
                     })}
                     maxLength={150}
-                    className={`text-white [resize:none]  text-base ${
+                    className={`dark:text-white text-black shadow-none [resize:none]  text-base ${
                       errors.description
                         ? "!ring-red-500/20 !border-red-700"
-                        : "border-zinc-800"
+                        : "dark:border-zinc-800"
                     }`}
                     placeholder="Descrição do Espaço de Trabalho"
                   />
                   {errors.description && (
-                    <p className="text-[14px] text-white/60 mt-1">
+                    <p className="text-[14px] dark:text-white/60 mt-1">
                       {errors.description.message}
                     </p>
                   )}
@@ -289,7 +300,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
                   >
                     <SelectTrigger
                       id="type_device"
-                      className="border-zinc-800 text-base py-5 cursor-pointer"
+                      className="dark:border-zinc-800 text-base py-5 cursor-pointer"
                     >
                       <SelectValue
                         placeholder="Defina um tempo"
@@ -319,7 +330,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
                   >
                     <SelectTrigger
                       id="serverId"
-                      className="border-zinc-800 text-base py-5 cursor-pointer"
+                      className="dark:border-zinc-800 text-base py-5 cursor-pointer"
                     >
                       <SelectValue
                         placeholder="Defina um tempo"
@@ -356,7 +367,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
 
                   <Button
                     type="submit"
-                    className="py-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-white"
+                    className="py-5 bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white"
                   >
                     {loading && (
                       <span className="loader !w-4 !h-4 !border-2 !border-b-white !border-white/40"></span>
@@ -369,6 +380,50 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
           </ScrollArea>
         </DialogHeader>
       </DialogContent>
+
+      <AlertDialog open={openHostsList} onOpenChange={setOpenHostsList}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-medium">
+              Hosts de Teste
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Estes são alguns hosts permitidos para teste de simulação com o
+              SNMP. Teste-os para ter mais informações sobre o funcionamento de
+              aparelhos de rede.
+            </AlertDialogDescription>
+            <div className="flex mt-3 flex-col gap-3">
+              <div>
+                <p>Roteadores</p>
+                <p className="dark:text-zinc-400 text-zinc-700">
+                  192.168.1.2 - 192.168.1.6
+                </p>
+              </div>
+              <div>
+                <p>Switches</p>
+                <p className="dark:text-zinc-400 text-zinc-700">
+                  192.168.1.7 - 192.168.1.11
+                </p>
+              </div>
+              <div>
+                <p>Firewalls</p>
+                <p className="dark:text-zinc-400 text-zinc-700">
+                  10.0.0.1 - 10.0.0.5
+                </p>
+              </div>
+              <div>
+                <p>Impressoras</p>
+                <p className="dark:text-zinc-400 text-zinc-700">
+                  192.168.1.20 - 192.168.1.25
+                </p>
+              </div>
+            </div>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="!justify-start">
+            <AlertDialogAction>Entendido</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Dialog>
   );
 };

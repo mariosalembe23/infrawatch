@@ -7,7 +7,6 @@ import {
   Info,
   Network,
   OctagonAlert,
-  ToggleLeft,
 } from "lucide-react";
 import { Device } from "../Types/Network";
 import { removeDoubleSlashes } from "@/components/AppComponents/API";
@@ -21,6 +20,7 @@ import { isEmpty } from "../ServerComponents/ServerComponent";
 import NetWorkSheet from "./NetWorkSheetInfo";
 import React from "react";
 
+
 interface INetworkComponent {
   name: string;
   status: string | "UP" | "DOWN";
@@ -32,6 +32,7 @@ interface INetworkComponent {
   cpuUsage: number | string;
   temperature: number | string;
   device: Device;
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
 }
 
 const NetworkComponent: React.FC<INetworkComponent> = ({
@@ -45,6 +46,7 @@ const NetworkComponent: React.FC<INetworkComponent> = ({
   cpuUsage,
   temperature,
   device,
+  setDevices,
 }) => {
   const [openDetails, setOpenDetails] = React.useState(false);
 
@@ -69,7 +71,7 @@ const NetworkComponent: React.FC<INetworkComponent> = ({
       {isEmpty(device.last_device) ? (
         <div className="flex w-full h-full items-center justify-center">
           <div className="text-center">
-            <p className="text-zinc-300 text-xl font-medium">
+            <p className="dark:text-zinc-300 text-xl font-medium">
               {device.device_type}
             </p>
             <p className="text-zinc-600">
@@ -132,17 +134,7 @@ const NetworkComponent: React.FC<INetworkComponent> = ({
                       />
                       Gráficos de desempenho
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      // onClick={() => setOpenDetails(true)}
-                    >
-                      <ToggleLeft
-                        size={16}
-                        className="opacity-60"
-                        aria-hidden="true"
-                      />
-                      Desativar monitoramento
-                    </DropdownMenuItem>
+
                     <DropdownMenuItem
                       disabled={isEmpty(device.last_device)}
                       className="disabled:cursor-not-allowed cursor-pointer !text-red-700 dark:!text-red-300"
@@ -212,10 +204,13 @@ const NetworkComponent: React.FC<INetworkComponent> = ({
         </>
       )}
 
+      
+
       <NetWorkSheet
         device={device}
         open={openDetails}
         setOpen={setOpenDetails}
+        setDevices={setDevices}
       />
     </div>
   );

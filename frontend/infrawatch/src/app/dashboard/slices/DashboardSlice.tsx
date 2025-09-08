@@ -50,6 +50,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   setEndpoints,
   lastLog,
   devices,
+  setDevices
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -233,6 +234,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
               {devices.slice(0, 5).map((device, index) => (
                 <NetworkComponent
                   key={index}
+                  setDevices={setDevices}
                   name={device.device_name}
                   status={device.last_device?.status || "unknown"}
                   firmware={device.sys_name}
