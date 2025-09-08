@@ -117,6 +117,19 @@ export default function Dashboard() {
       setLastLog(message);
     });
 
+    socketRef.current.on("devices", (message) => {
+      console.log("Log device recebido via socket:", message);
+      message.map((msg) => {
+        setDevices((prevDevices) =>
+          prevDevices.map((device) =>
+            device.id === msg.deviceId
+              ? { ...device, last_device: msg }
+              : device
+          )
+        );
+      });
+    });
+
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
@@ -251,7 +264,6 @@ export default function Dashboard() {
         });
         setDevicesLoading(false);
         setDevices(response.data || []);
-        console.log("Devices:", response.data);
       } catch (error) {
         setDevicesLoading(false);
         console.error("Error fetching devices:", error);
