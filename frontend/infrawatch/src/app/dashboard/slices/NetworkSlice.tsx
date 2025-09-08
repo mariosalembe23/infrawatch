@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Network, Plus } from "lucide-react";
 import { Device } from "./Types/Network";
-import NetworkComponent from "../components/NetWorkComponent";
+import NetworkComponent from "./NetworkComponents/NetWorkComponent";
 
 const NetworkSlice: React.FC<{
   devices: Device[];

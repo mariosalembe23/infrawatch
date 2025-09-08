@@ -8,7 +8,6 @@ import {
   ToggleLeft,
   Trash,
 } from "lucide-react";
-import { EndpointProps } from "../slices/Types/Endpoint";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -24,13 +23,14 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Graph1 from "../slices/EndpointComponents/Graph1";
 import { Button } from "@/components/ui/button";
-import StatusGraph from "../slices/EndpointComponents/Graph2";
 import React from "react";
-import { isEmpty } from "../slices/ServerComponents/ServerComponent";
-import { DataMode } from "../slices/Types/DataMod";
 import { removeDoubleSlashes } from "@/components/AppComponents/API";
+import { EndpointProps } from "../Types/Endpoint";
+import { isEmpty } from "../ServerComponents/ServerComponent";
+import { DataMode } from "../Types/DataMod";
+import Graph1 from "./Graph1";
+import SpaceGraph from "./Graph2";
 
 interface IEndpointComponent {
   endpoint: EndpointProps;
@@ -356,7 +356,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                   </div>
                 </header>
                 <div className="h-full w-full">
-                  <StatusGraph />
+                  <SpaceGraph />
                 </div>
                 <footer className="flex py-5 items-center justify-center gap-4 flex-wrap">
                   <p className=" flex text-[14px] items-center gap-2">

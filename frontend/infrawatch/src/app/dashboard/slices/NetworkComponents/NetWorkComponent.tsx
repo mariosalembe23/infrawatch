@@ -9,7 +9,7 @@ import {
   OctagonAlert,
   ToggleLeft,
 } from "lucide-react";
-import { Device } from "../slices/Types/Network";
+import { Device } from "../Types/Network";
 import { removeDoubleSlashes } from "@/components/AppComponents/API";
 import {
   DropdownMenu,
@@ -17,8 +17,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { isEmpty } from "../slices/ServerComponents/ServerComponent";
-import NetWorkSheet from "../slices/NetworkComponents/NetWorkSheetInfo";
+import { isEmpty } from "../ServerComponents/ServerComponent";
+import NetWorkSheet from "./NetWorkSheetInfo";
 import React from "react";
 
 interface INetworkComponent {

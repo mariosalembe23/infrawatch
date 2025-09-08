@@ -101,7 +101,7 @@ const LateralBar: React.FC<ILateralBar> = ({
           </ButtonCustom>
           <ButtonCustom
             onClick={() => setTabs("network")}
-            title="Aparelhos de Rede"
+            title="Disposit. de Rede"
           >
             <Network size={18} className="dark:text-white" />
           </ButtonCustom>

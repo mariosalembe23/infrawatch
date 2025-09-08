@@ -76,7 +76,7 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
               </ButtonCustom>
               <ButtonCustom
                 onClick={() => execAndClose("network")}
-                title="Aparelhos de Rede"
+                title="Disposit. de Rede"
               >
                 <Network size={18} className="dark:text-white" />
               </ButtonCustom>

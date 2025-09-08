@@ -24,9 +24,9 @@ import { Tabs } from "../[id]/page";
 import ServerComponent from "./ServerComponents/ServerComponent";
 import CreateEndpoint from "./EndpointComponents/CreateEndpoint";
 import { EndpointProps } from "./Types/Endpoint";
-import EndpointComponent from "../components/EndpointComponent";
 import { Device } from "./Types/Network";
-import NetworkComponent from "../components/NetWorkComponent";
+import NetworkComponent from "./NetworkComponents/NetWorkComponent";
+import EndpointComponent from "./EndpointComponents/EndpointComponent";
 
 interface IDashboardSlice {
   showSideBar: boolean;
