@@ -1,7 +1,8 @@
-function DataMode(data: string | number | Date): string {
+function DataMode(data: string | number | Date, mode = true): string {
   const agora: Date = new Date();
   const dataInformada: Date = new Date(data);
-  dataInformada.setHours(dataInformada.getHours() - 1);
+  if (mode)
+    dataInformada.setHours(dataInformada.getHours() - 1);
 
   // Calcula a diferença em milissegundos (usando Math.abs para evitar negativos)
   const diffEmMs: number = Math.abs(agora.getTime() - dataInformada.getTime());

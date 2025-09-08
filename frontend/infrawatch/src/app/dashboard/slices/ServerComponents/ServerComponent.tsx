@@ -124,7 +124,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
             server.is_busy ? () : ()
           } */}
           <p className="dark:text-zinc-400 text-zinc-700 text-[15px]">
-            há {DataMode(server.created_at)} por {server.username}
+          {DataMode(server.created_at)} por {server.username}
           </p>
         </div>
         <DropdownMenu>

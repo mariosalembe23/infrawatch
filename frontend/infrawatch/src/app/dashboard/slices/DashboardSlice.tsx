@@ -25,6 +25,8 @@ import ServerComponent from "./ServerComponents/ServerComponent";
 import CreateEndpoint from "./EndpointComponents/CreateEndpoint";
 import { EndpointProps } from "./Types/Endpoint";
 import EndpointComponent from "../components/EndpointComponent";
+import { Device } from "./Types/Network";
+import NetworkComponent from "../components/NetWorkComponent";
 
 interface IDashboardSlice {
   showSideBar: boolean;
@@ -35,6 +37,8 @@ interface IDashboardSlice {
   endpoints: EndpointProps[];
   setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
   lastLog: EndpointProps["last_log"] | null;
+  devices: Device[];
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
 }
 
 const DashboardSlice: React.FC<IDashboardSlice> = ({
@@ -45,6 +49,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   endpoints,
   setEndpoints,
   lastLog,
+  devices,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -73,7 +78,6 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
           : endpoint
       );
 
-      // Atualizar o estado apenas se houver uma diferença
       if (JSON.stringify(updatedEndpoints) !== JSON.stringify(endpoints)) {
         setEndpoints(updatedEndpoints);
       }
@@ -213,31 +217,44 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
               Todos dados <ChevronRight size={16} className="text-zinc-400" />
             </Button>
           </header>
-
-          <div className="flex flex-wrap mt-5 items-center gap-2">
-            <div className="items-center  ret:w-auto w-full gap-3 border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
-              <Network size={16} className="dark:text-white text-zinc-900" />
-              Sem aparelhos de rede registrados
+          {devices.length === 0 ? (
+            <div className="flex flex-wrap mt-5 items-center gap-2">
+              <div className="items-center  ret:w-auto w-full gap-3 border rounded-lg inline-flex px-5 py-2 dark:border-zinc-900 dark:bg-zinc-950">
+                <Network size={16} className="dark:text-white text-zinc-900" />
+                Sem aparelhos de rede registrados
+              </div>
+              <Button className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white">
+                Adicionar
+                <Plus size={18} className="" />
+              </Button>
             </div>
-            <Button className=" ret:w-auto w-full py-[1.2rem]  bg-cyan-600/40 border border-cyan-700 hover:bg-cyan-600/50 cursor-pointer text-cyan-800 dark:text-white">
-              Adicionar
-              <Plus size={18} className="" />
-            </Button>
-          </div>
-          {/* <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
-            
-            <NetworkComponent
-              name="SW-CORE-05"
-              status="operational"
-              firmware="15.2(7)E4"
-              manufacturer="Cisco Systems"
-              totalInterfaces={10}
-              activeInterfaces={5}
-              downInterfaces={5}
-              cpuUsage={20}
-              temperature={38}
-            />
-          </div> */}
+          ) : (
+            <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
+              {devices.slice(0, 5).map((device, index) => (
+                <NetworkComponent
+                  key={index}
+                  name={device.device_name}
+                  status={device.last_device?.status || "unknown"}
+                  firmware={device.sys_name}
+                  manufacturer={device.device_type}
+                  totalInterfaces={device.interfaces.length}
+                  activeInterfaces={
+                    device.interfaces
+                      .map((i) => i.status)
+                      .filter((status) => status === "up").length
+                  }
+                  downInterfaces={
+                    device.interfaces
+                      .map((i) => i.status)
+                      .filter((status) => status === "down").length
+                  }
+                  cpuUsage={device.last_device.cpu}
+                  temperature={device.last_device.memory}
+                  device={device}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-10">

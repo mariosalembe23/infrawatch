@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { ServerProps } from "../slices/Types/Server";
 import ServicesSlice from "../slices/ServicesSlice";
 import { EndpointProps } from "../slices/Types/Endpoint";
+import { Device } from "../slices/Types/Network";
 
 export type Tabs =
   | "server"
@@ -83,6 +84,12 @@ export default function Dashboard() {
     timestamp: "",
     time_response: "",
   });
+  // 192.168.1 - 6 => roteadoares
+  // 192.168.7 - 11 => switches
+  // 192.168.12 - 17 => firewalls
+  // 192.168.20 - 25 => impressoras
+  const [devices, setDevices] = React.useState<Device[]>([]);
+  const [devicesLoading, setDevicesLoading] = React.useState<boolean>(true);
 
   useEffect(() => {
     socketRef.current = io("https://infrawatch-in5r.onrender.com/");
@@ -105,7 +112,6 @@ export default function Dashboard() {
     });
 
     socketRef.current.on("logEndpoint", (message) => {
-      console.log("Nova notificação recebida:", message);
       setLastLog(message);
     });
 
@@ -115,8 +121,6 @@ export default function Dashboard() {
       }
     };
   }, []);
-
-
 
   useEffect(() => {
     const getServers = async () => {
@@ -236,15 +240,36 @@ export default function Dashboard() {
       }
     };
 
+    const fetchDevices = async () => {
+      try {
+        const response = await axios.get(APIS.GET_DEVICES + id, {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+          },
+        });
+        setDevicesLoading(false);
+        setDevices(response.data || []);
+        console.log("Devices:", response.data);
+      } catch (error) {
+        setDevicesLoading(false);
+        console.error("Error fetching devices:", error);
+        GenericAxiosActions({
+          error,
+          message: "Erro ao buscar dispositivos",
+          setErrorMessage: setMessageError,
+        });
+      }
+    };
+
     fecthWorkspaces();
     fetchUserData();
     getWorkSpaceInfo();
+    fetchDevices();
   }, [id]);
 
   useEffect(() => {
     ThemeFunc({ setIsDarkMode });
   }, []);
-
 
   return (
     <div
@@ -257,7 +282,7 @@ export default function Dashboard() {
       {messageError.length > 0 && (
         <ServiceNotFound messageError={messageError} />
       )}
-      {(loading || userLoading || serversLoading || loadingEndpoints) && (
+      {(loading || userLoading || serversLoading || loadingEndpoints || devicesLoading) && (
         <LoadingComponent />
       )}
       <DashboardContext.Provider value={contextValue}>
@@ -295,6 +320,8 @@ export default function Dashboard() {
                 endpoints={endpoints}
                 setEndpoints={setEndpoints}
                 lastLog={lastLog}
+                devices={devices}
+                setDevices={setDevices}
               />
             )}
             {tabs === "server" && (
@@ -304,10 +331,9 @@ export default function Dashboard() {
                 workspace_id={workSpaceInfo?.id || ""}
                 servers={servers}
                 setServers={setServers}
-                
               />
             )}
-            {tabs === "network" && <NetworkSlice />}
+            {tabs === "network" && <NetworkSlice devices={devices} />}
             {tabs === "endpoint" && (
               <EndpointSlice
                 showSideBar={showSideBar}
@@ -315,7 +341,7 @@ export default function Dashboard() {
                 workspace_id={workSpaceInfo?.id || ""}
                 endpoints={endpoints}
                 setEndpoints={setEndpoints}
-                lastLog={lastLog} 
+                lastLog={lastLog}
               />
             )}
             {tabs === "settings" && (

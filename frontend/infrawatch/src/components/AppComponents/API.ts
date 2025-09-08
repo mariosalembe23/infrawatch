@@ -31,6 +31,7 @@ export const APIS = {
   EDIT_SERVER: "https://infra-watch-zeta.vercel.app/api/v1/server/put/",
   GET_ENDPOINTS: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/list/",
   CREATE_ENDPOINT: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/add/",
+  GET_DEVICES: "https://infra-watch-zeta.vercel.app/api/v1/device/list/"
 };
 
 export const GenericAxiosActions = ({
@@ -49,7 +50,7 @@ export const GenericAxiosActions = ({
     if (error.response.status >= 400 && error.response.status < 500) {
       if (
         error.response.status >= 401 &&
-        error.response.status <= 403 &&
+        error.response.status < 403 &&
         !isOnPage
       ) {
         toast.error("Sua sessão expirou. Faça login novamente.", {

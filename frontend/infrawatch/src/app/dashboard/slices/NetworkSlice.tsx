@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { Network, Plus } from "lucide-react";
+import { Device } from "./Types/Network";
 import NetworkComponent from "../components/NetWorkComponent";
 
-const NetworkSlice: React.FC = () => {
+const NetworkSlice: React.FC<{
+  devices: Device[];
+}> = ({ devices }) => {
   return (
     <section className="relative h-full">
       <header>
@@ -28,61 +31,29 @@ const NetworkSlice: React.FC = () => {
         </div>
       </header>
       <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
-        <NetworkComponent
-          name="SW-CORE-01"
-          status="operational"
-          firmware="15.2(7)E4"
-          manufacturer="Cisco Systems"
-          totalInterfaces={10}
-          activeInterfaces={4}
-          downInterfaces={6}
-          cpuUsage={23}
-          temperature={41}
-        />
-        <NetworkComponent
-          name="SW-CORE-02"
-          status="maintenance"
-          firmware="15.2(7)E4"
-          manufacturer="Cisco Systems"
-          totalInterfaces={10}
-          activeInterfaces={6}
-          downInterfaces={4}
-          cpuUsage={18}
-          temperature={39}
-        />
-        <NetworkComponent
-          name="SW-CORE-03"
-          status="operational"
-          firmware="15.2(7)E4"
-          manufacturer="Cisco Systems"
-          totalInterfaces={10}
-          activeInterfaces={8}
-          downInterfaces={2}
-          cpuUsage={12}
-          temperature={36}
-        />
-        <NetworkComponent
-          name="SW-CORE-04"
-          status="offline"
-          firmware="15.2(7)E4"
-          manufacturer="Cisco Systems"
-          totalInterfaces={10}
-          activeInterfaces={0}
-          downInterfaces={10}
-          cpuUsage={0}
-          temperature={0}
-        />
-        <NetworkComponent
-          name="SW-CORE-05"
-          status="operational"
-          firmware="15.2(7)E4"
-          manufacturer="Cisco Systems"
-          totalInterfaces={10}
-          activeInterfaces={5}
-          downInterfaces={5}
-          cpuUsage={20}
-          temperature={38}
-        />
+        {devices.map((device, index) => (
+          <NetworkComponent
+            key={index}
+            name={device.device_name}
+            status={device.last_device?.status || "unknown"}
+            firmware={device.sys_name}
+            manufacturer={device.device_type}
+            totalInterfaces={device.interfaces.length}
+            activeInterfaces={
+              device.interfaces
+                .map((i) => i.status)
+                .filter((status) => status === "up").length
+            }
+            downInterfaces={
+              device.interfaces
+                .map((i) => i.status)
+                .filter((status) => status === "down").length
+            }
+            cpuUsage={device.last_device.cpu}
+            temperature={device.last_device.memory}
+            device={device}
+          />
+        ))}
       </div>
 
       <div className="fixed bottom-5 pot:bottom-10 end-7 pot:end-12">
