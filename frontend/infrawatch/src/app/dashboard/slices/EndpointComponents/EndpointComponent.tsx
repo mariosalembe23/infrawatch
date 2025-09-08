@@ -25,23 +25,73 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { removeDoubleSlashes } from "@/components/AppComponents/API";
+import {
+  APIS,
+  GenericAxiosActions,
+  removeDoubleSlashes,
+} from "@/components/AppComponents/API";
 import { EndpointProps } from "../Types/Endpoint";
 import { isEmpty } from "../ServerComponents/ServerComponent";
 import { DataMode } from "../Types/DataMod";
 import Graph1 from "./Graph1";
 import SpaceGraph from "./Graph2";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface IEndpointComponent {
   endpoint: EndpointProps;
   index: number;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  setEndpoints: React.Dispatch<React.SetStateAction<EndpointProps[]>>;
 }
 
 const EndpointComponent: React.FC<IEndpointComponent> = ({
   endpoint,
   index,
+  setErrorMessage,
+  setEndpoints,
 }) => {
   const [openDetails, setOpenDetails] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
+
+  const deleteEndpoint = async (id: string) => {
+    if (!id) return;
+    try {
+      setDeleteLoading(true);
+      const response = await axios.delete(APIS.DELETE_ENDPOINT + id, {
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      });
+      if (response.status === 200) {
+        toast.success("Endpoint deletado com sucesso!");
+        setEndpoints((prev) => prev.filter((ep) => ep.id !== id));
+        setOpenDelete(false);
+        setOpenDetails(false);
+      }
+
+      setDeleteLoading(false);
+    } catch (error) {
+      setDeleteLoading(false);
+      console.error("Error deleting endpoint:", error);
+      GenericAxiosActions({
+        error,
+        message: "Erro ao deletar endpoint",
+        setErrorMessage,
+      });
+    }
+  };
 
   return (
     <div
@@ -269,7 +319,8 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
-                  (msalembe)
+                  {" "}
+                  ({endpoint.username})
                 </p>
               </div>
               <div>
@@ -277,7 +328,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                   Última verificação
                 </p>
                 <p className="dark:text-white break-words text-[14px] font-mono">
-                  há {DataMode(new Date(endpoint.last_log.timestamp))}
+                  {DataMode(new Date(endpoint.last_log.timestamp))}
                 </p>
               </div>
             </header>
@@ -302,7 +353,10 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                   />
                   Desativar monitoramento
                 </Button>
-                <Button className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white">
+                <Button
+                  onClick={() => setOpenDelete(true)}
+                  className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+                >
                   <Trash size={18} className="" />
                   Deletar
                 </Button>
@@ -377,6 +431,35 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
           </ScrollArea>
         </SheetContent>
       </Sheet>
+      <AlertDialog open={openDelete} onOpenChange={setOpenDelete}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-medium text-base">
+              Confirmar Eliminação
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza de que deseja eliminar este endpoint? Esta ação não
+              pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel disabled={deleteLoading}>
+              Cancelar
+            </AlertDialogCancel>
+            <Button
+              disabled={deleteLoading}
+              onClick={() => deleteEndpoint(endpoint.id)}
+              className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
+            >
+              <Trash size={18} className="" />
+              Eliminar
+              {deleteLoading && (
+                <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-white/40"></span>
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

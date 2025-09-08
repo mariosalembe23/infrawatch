@@ -22,15 +22,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ServerProps } from "../Types/Server";
 import { Textarea } from "@/components/ui/textarea";
-import { EndpointProps } from "../Types/Endpoint";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { WorkSpaceProps } from "@/app/chooseWorkspace/[id]/page";
+} from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Device } from "../Types/Network";
 
@@ -70,10 +68,12 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedWorkType, setSelectedWorkType] = useState<string>("");
+  const [selectedWorkType, setSelectedWorkType] = useState<string>(
+    servers[0]?.id || ""
+  );
   const [selectedTypeDevice, setSelectedTypeDevice] = useState<
     "SWITCH" | "ROUTER" | "FIREWALL" | "PRINTER"
-  >("ROUTER");
+  >(optionsDevice[0].value as "SWITCH" | "ROUTER" | "FIREWALL" | "PRINTER");
 
   const {
     register,
@@ -162,6 +162,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
       });
     }
   };
+  console.log(selectedTypeDevice, selectedWorkType);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -300,7 +301,7 @@ const CreateDevice: React.FC<CreateDeviceProps> = ({
                         <SelectItem
                           key={index}
                           className="text-base"
-                          value={option.value}
+                          value={option.label}
                         >
                           {option.label}
                         </SelectItem>

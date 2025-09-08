@@ -49,7 +49,7 @@ const NetworkComponent: React.FC<INetworkComponent> = ({
   const [openDetails, setOpenDetails] = React.useState(false);
 
   return (
-    <div className="relative border flex-col border-zinc-300 dark:border-zinc-900 px-5 py-5 dark:bg-zinc-950 rounded-lg items-start flex justify-between">
+    <div className="relative border flex-col h-[20rem] border-zinc-300 dark:border-zinc-900 px-5 py-5 dark:bg-zinc-950 rounded-lg items-start flex justify-between">
       {isEmpty(device.last_device) ? (
         <span
           className={`border-background capitalize absolute -end-4 text-[12px] -top-4 font-semibold text-white py-[0.20rem] rounded-full px-2 bg-zinc-900 `}

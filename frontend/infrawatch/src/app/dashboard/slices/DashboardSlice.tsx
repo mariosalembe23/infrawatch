@@ -300,6 +300,8 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
                   key={index}
                   endpoint={endpoint}
                   index={index}
+                  setEndpoints={setEndpoints}
+                  setErrorMessage={setErrorMessage}
                 />
               ))}
             </div>

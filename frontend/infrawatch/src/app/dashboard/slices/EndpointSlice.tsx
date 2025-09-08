@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
-import { Link2, Plus, Server } from "lucide-react";
+import { Link2, Plus } from "lucide-react";
 import { EndpointProps } from "./Types/Endpoint";
 import CreateEndpoint from "./EndpointComponents/CreateEndpoint";
 import EndpointComponent from "./EndpointComponents/EndpointComponent";
@@ -66,7 +66,13 @@ const EndpointSlice: React.FC<IEndpointSlice> = ({
       </header>
       <div className={`grid mt-7 gap-1 grid-cols-1`}>
         {endpoints.map((endpoint, index) => (
-          <EndpointComponent key={index} endpoint={endpoint} index={index} />
+          <EndpointComponent
+            key={index}
+            endpoint={endpoint}
+            index={index}
+            setEndpoints={setEndpoints}
+            setErrorMessage={setErrorMessage}
+          />
         ))}
       </div>
 

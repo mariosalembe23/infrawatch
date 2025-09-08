@@ -18,6 +18,7 @@ export interface EndpointProps {
   access: "PUBLIC" | "PRIVATE";
   toggle: boolean;
   time_ms: number;
+  username: string;
   identifier: string;
   last_log: LastLogs;
 }

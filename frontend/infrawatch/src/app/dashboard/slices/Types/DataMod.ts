@@ -9,7 +9,7 @@ function DataMode(data: string | number | Date, mode = true): string {
 
   // Se a diferença for menor que 1 segundo, retorna "agora"
   if (diffEmMs < 1000) {
-    return "Agora";
+    return "Agora mesmo";
   }
 
   // Calcula os segundos

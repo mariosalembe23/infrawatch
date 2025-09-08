@@ -32,7 +32,8 @@ export const APIS = {
   GET_ENDPOINTS: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/list/",
   CREATE_ENDPOINT: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/add/",
   GET_DEVICES: "https://infra-watch-zeta.vercel.app/api/v1/device/list/",
-  CREATE_DEVICE: "https://infra-watch-zeta.vercel.app/api/v1/device/add/"
+  CREATE_DEVICE: "https://infra-watch-zeta.vercel.app/api/v1/device/add/",
+  DELETE_ENDPOINT: "https://infra-watch-zeta.vercel.app/api/v1/endpoint/delete/"
 };
 
 export const GenericAxiosActions = ({
