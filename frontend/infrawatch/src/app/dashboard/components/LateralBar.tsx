@@ -11,6 +11,7 @@ import {
   OctagonAlert,
   PanelLeft,
   Server,
+  ToggleLeft,
   Users,
 } from "lucide-react";
 import React from "react";
@@ -136,6 +137,12 @@ const LateralBar: React.FC<ILateralBar> = ({
           </ButtonCustom>
           <ButtonCustom onClick={() => setTabs("members")} title="Membros">
             <Users size={18} className="dark:text-white" />
+          </ButtonCustom>
+          <ButtonCustom
+            onClick={() => setTabs("unmonitored")}
+            title="Aplica. desmonitoradas"
+          >
+            <ToggleLeft size={18} className="dark:text-white" />
           </ButtonCustom>
         </div>
       </div>

@@ -32,7 +32,7 @@ import {
 } from "@/components/AppComponents/API";
 import { EndpointProps } from "../Types/Endpoint";
 import { isEmpty } from "../ServerComponents/ServerComponent";
-import { DataMode } from "../Types/DataMod";
+import { DataMode, disableMonitoring } from "../Types/DataMod";
 import Graph1 from "./Graph1";
 import SpaceGraph from "./Graph2";
 import axios from "axios";
@@ -47,6 +47,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import CreateEndpoint from "./CreateEndpoint";
+import { DashboardContext } from "../../[id]/ContextProvider";
 
 interface IEndpointComponent {
   endpoint: EndpointProps;
@@ -62,8 +64,14 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
   setEndpoints,
 }) => {
   const [openDetails, setOpenDetails] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState({
+    type: "",
+    state: false,
+  });
   const [deleteLoading, setDeleteLoading] = React.useState(false);
+  const [editEndoint, setEditEndpoint] = React.useState(false);
+  const dashboardContext = React.useContext(DashboardContext);
+  const workspace_id = dashboardContext?.workSpaceInfo?.id;
 
   const deleteEndpoint = async (id: string) => {
     if (!id) return;
@@ -77,7 +85,10 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
       if (response.status === 200) {
         toast.success("Endpoint deletado com sucesso!");
         setEndpoints((prev) => prev.filter((ep) => ep.id !== id));
-        setOpenDelete(false);
+        setOpenDelete({
+          type: "",
+          state: false,
+        });
         setOpenDetails(false);
       }
 
@@ -221,32 +232,25 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-40 me-5">
             <DropdownMenuItem
-              // disabled={isEmpty(server.last_metrics)}
+              disabled={isEmpty(endpoint.last_log)}
               className="cursor-pointer"
               onClick={() => setOpenDetails(true)}
             >
               <Info size={16} className="opacity-60" aria-hidden="true" />
               Detalhes
             </DropdownMenuItem>
+
             <DropdownMenuItem
-              // disabled={isEmpty(server.last_metrics)}
+              disabled={isEmpty(endpoint.last_log)}
               className="cursor-pointer"
-              onClick={() => setOpenDetails(true)}
-            >
-              <Bolt size={16} className="opacity-60" aria-hidden="true" />
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              // disabled={isEmpty(server.last_metrics)}
-              className="cursor-pointer"
-              // onClick={() => setOpenDetails(true)}
             >
               <Braces size={16} className="opacity-60" aria-hidden="true" />
               Todas as métricas
             </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer"
-              // onClick={() => setOpenDetails(true)}
+              onClick={() => setOpenDelete({ type: "disable", state: true })}
+              // onClick={() => setDisableOpen(true)}
             >
               <ToggleLeft size={16} className="opacity-60" aria-hidden="true" />
               Desativar monitoramento
@@ -318,8 +322,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                     year: "2-digit",
                     hour: "2-digit",
                     minute: "2-digit",
-                  })}
-                  {" "}
+                  })}{" "}
                   ({endpoint.username})
                 </p>
               </div>
@@ -336,6 +339,7 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
             <div className="flex pot:px-0 px-8 flex-wrap max-w-7xl mx-auto w-full mt-10 items-center justify-between">
               <Button
                 variant={"outline"}
+                onClick={() => setEditEndpoint(true)}
                 className="dark:border-zinc-900/50 dark:hover:bg-zinc-900/30"
               >
                 <Bolt size={16} className="opacity-60" aria-hidden="true" />
@@ -344,6 +348,12 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant={"outline"}
+                  onClick={() =>
+                    setOpenDelete({
+                      type: "disable",
+                      state: true,
+                    })
+                  }
                   className="dark:border-zinc-900/50 dark:hover:bg-zinc-900/30"
                 >
                   <ToggleLeft
@@ -354,7 +364,12 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
                   Desativar monitoramento
                 </Button>
                 <Button
-                  onClick={() => setOpenDelete(true)}
+                  onClick={() =>
+                    setOpenDelete({
+                      type: "delete",
+                      state: true,
+                    })
+                  }
                   className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
                 >
                   <Trash size={18} className="" />
@@ -431,15 +446,23 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
           </ScrollArea>
         </SheetContent>
       </Sheet>
-      <AlertDialog open={openDelete} onOpenChange={setOpenDelete}>
+      <AlertDialog
+        open={openDelete.state}
+        onOpenChange={(open) =>
+          setOpenDelete((prev) => ({ ...prev, state: open }))
+        }
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="font-medium text-base">
-              Confirmar Eliminação
+              {openDelete.type === "delete"
+                ? "Confirmar Eliminação"
+                : "Desativar Monitoramento"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza de que deseja eliminar este endpoint? Esta ação não
-              pode ser desfeita.
+              {openDelete.type === "delete"
+                ? "Tem certeza de que deseja eliminar este endpoint? Esta ação não pode ser desfeita."
+                : "Tem certeza de que deseja desativar o monitoramento deste endpoint?"}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2">
@@ -448,11 +471,25 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
             </AlertDialogCancel>
             <Button
               disabled={deleteLoading}
-              onClick={() => deleteEndpoint(endpoint.id)}
+              onClick={async () => {
+                if (openDelete.type === "delete") {
+                  deleteEndpoint(endpoint.id);
+                } else {
+                  await disableMonitoring(
+                    endpoint.id,
+                    setEndpoints,
+                    setErrorMessage,
+                    setDeleteLoading,
+                    false
+                  );
+                  setOpenDelete({ type: "", state: false });
+                }
+              }}
               className="py-4 bg-red-600/40 border border-red-700 hover:bg-red-600/50 cursor-pointer text-red-800 dark:text-white"
             >
               <Trash size={18} className="" />
-              Eliminar
+              {openDelete.type === "disable" ? "Desativar" : "Eliminar"}
+
               {deleteLoading && (
                 <span className="loader !w-3 !h-3 !border-2 !border-b-white !border-white/40"></span>
               )}
@@ -460,6 +497,15 @@ const EndpointComponent: React.FC<IEndpointComponent> = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <CreateEndpoint
+        mode="EDIT"
+        open={editEndoint}
+        setOpen={setEditEndpoint}
+        setEndpoints={setEndpoints}
+        setErrorMessage={setErrorMessage}
+        workspace_id={workspace_id || ""}
+        endpoint={endpoint}
+      />
     </div>
   );
 };

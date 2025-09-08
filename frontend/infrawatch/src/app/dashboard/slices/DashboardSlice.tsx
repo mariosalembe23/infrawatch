@@ -323,6 +323,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
         setEndpoints={setEndpoints}
         workspace_id={workSpaceInfo?.id || ""}
         setErrorMessage={setErrorMessage}
+        
       />
     </section>
   );

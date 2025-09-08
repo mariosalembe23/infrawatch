@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,7 +19,6 @@ import { toast } from "sonner";
 import { APIS, GenericAxiosActions } from "@/components/AppComponents/API";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { ServerProps } from "../Types/Server";
 import { Textarea } from "@/components/ui/textarea";
 import { EndpointProps } from "../Types/Endpoint";
 
@@ -30,7 +29,7 @@ interface CreateEndpointProps {
   workspace_id: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   mode: "CREATE" | "EDIT";
-  serverToEdit?: ServerProps | null;
+  endpoint?: EndpointProps;
 }
 type CreateEndpointState = {
   identifier: string;
@@ -45,6 +44,7 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
   setErrorMessage,
   mode,
   setEndpoints,
+  endpoint,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,20 +63,15 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
     },
   });
 
-  // useEffect(() => {
-  //   if (mode === "EDIT" && serverToEdit) {
-  //     reset({
-
-  //     });
-
-  //     const timeOption = optionsTime.find(
-  //       (option) => option.value === String(serverToEdit.time_ms)
-  //     );
-  //     if (timeOption) {
-  //       setSelectedTime(timeOption);
-  //     }
-  //   }
-  // }, [mode, serverToEdit, reset]);
+  useEffect(() => {
+    if (mode === "EDIT" && endpoint) {
+      reset({
+        url: endpoint.url,
+        description: endpoint.description || "",
+        identifier: endpoint.identifier,
+      });
+    }
+  }, [mode, endpoint, reset]);
 
   const createEndpoint = async (data: CreateEndpointState) => {
     if (!data.url || !data.identifier || !data.description) {
@@ -84,41 +79,89 @@ const CreateEndpoint: React.FC<CreateEndpointProps> = ({
       return;
     }
 
+    if (
+      mode === "EDIT" &&
+      endpoint &&
+      endpoint.url === data.url &&
+      endpoint.identifier === data.identifier &&
+      endpoint.description === data.description
+    ) {
+      setOpen(false);
+      return;
+    }
+
     try {
       setLoading(true);
-      toast.loading("Cadastrando Endpoint...", {
-        position: "top-center",
-        id: "createEndpoint",
-      });
-      const response = await axios.post(
-        APIS.CREATE_ENDPOINT + workspace_id,
-        {
-          url: data.url,
-          identifier: data.identifier,
-          description: data.description,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getCookie("token")}`,
-          },
-        }
-      );
-      setEndpoints((prev) => [...prev, response.data]);
-      if (response.status === 201) {
-        toast.success("Servidor criado com sucesso!", {
+      if (mode === "CREATE")
+        toast.loading("Cadastrando Endpoint...", {
           position: "top-center",
           id: "createEndpoint",
         });
-        setLoading(false);
-        setOpen(false);
+      else
+        toast.loading("Atualizando Endpoint...", {
+          position: "top-center",
+          id: "createEndpoint",
+        });
+      if (mode === "CREATE") {
+        const response = await axios.post(
+          APIS.CREATE_ENDPOINT + workspace_id,
+          {
+            url: data.url,
+            identifier: data.identifier,
+            description: data.description,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getCookie("token")}`,
+            },
+          }
+        );
+        setEndpoints((prev) => [...prev, response.data]);
+        if (response.status === 201) {
+          toast.success("Servidor criado com sucesso!", {
+            position: "top-center",
+            id: "createEndpoint",
+          });
+          setLoading(false);
+          setOpen(false);
+        }
+      } else {
+        const response = await axios.put(
+          APIS.UPDATE_ENDPOINT + endpoint?.id,
+          {
+            url: data.url,
+            identifier: data.identifier,
+            description: data.description,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getCookie("token")}`,
+            },
+          }
+        );
+        setEndpoints((prev) =>
+          prev.map((ep) => (ep.id === endpoint?.id ? response.data : ep))
+        );
+        if (response.status === 200) {
+          toast.success("Endpoint atualizado com sucesso!", {
+            position: "top-center",
+            id: "createEndpoint",
+          });
+          setLoading(false);
+          setOpen(false);
+        }
       }
     } catch (error) {
       setLoading(false);
       toast.dismiss("createEndpoint");
       GenericAxiosActions({
         error,
-        message: "Erro ao criar Servidor",
+        message:
+          mode === "CREATE"
+            ? "Erro ao criar Endpoint"
+            : "Erro ao criar ou E Servidor",
         setErrorMessage,
       });
     }

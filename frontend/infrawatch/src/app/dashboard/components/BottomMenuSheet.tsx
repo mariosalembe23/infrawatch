@@ -10,6 +10,7 @@ import {
   Network,
   OctagonAlert,
   Server,
+  ToggleLeft,
   Users,
 } from "lucide-react";
 import {
@@ -121,6 +122,12 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
                 onClick={() => execAndClose("members")}
               >
                 <Users size={18} className="dark:text-white" />
+              </ButtonCustom>
+              <ButtonCustom
+                onClick={() => execAndClose("unmonitored")}
+                title="Aplica. desmonitoradas"
+              >
+                <ToggleLeft size={18} className="dark:text-white" />
               </ButtonCustom>
             </div>
           </div>

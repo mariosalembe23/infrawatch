@@ -28,6 +28,7 @@ import { ServerProps } from "../slices/Types/Server";
 import ServicesSlice from "../slices/ServicesSlice";
 import { EndpointProps } from "../slices/Types/Endpoint";
 import { Device } from "../slices/Types/Network";
+import UnmonitoredSlice from "../slices/Unmonitored";
 
 export type Tabs =
   | "server"
@@ -36,7 +37,8 @@ export type Tabs =
   | "dashboard"
   | "settings"
   | "members"
-  | "services";
+  | "services"
+  | "unmonitored";
 
 export default function Dashboard() {
   const [showSideBar, setShowSidebar] = React.useState(true);
@@ -319,7 +321,7 @@ export default function Dashboard() {
                 servers={servers}
                 setServers={setServers}
                 setTabs={setTabs}
-                endpoints={endpoints}
+                endpoints={endpoints.filter((ep) => ep.toggle === true)}
                 setEndpoints={setEndpoints}
                 lastLog={lastLog}
                 devices={devices}
@@ -331,7 +333,7 @@ export default function Dashboard() {
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
                 workspace_id={workSpaceInfo?.id || ""}
-                servers={servers}
+                servers={servers.filter((srv) => srv.toggle === true)}
                 setServers={setServers}
               />
             )}
@@ -340,7 +342,7 @@ export default function Dashboard() {
                 servers={servers}
                 setErrorMessage={setMessageError}
                 workspace_id={workSpaceInfo?.id || ""}
-                devices={devices}
+                devices={devices.filter((dev) => dev.toggle === true)}
                 setDevices={setDevices}
               />
             )}
@@ -349,7 +351,7 @@ export default function Dashboard() {
                 showSideBar={showSideBar}
                 setErrorMessage={setMessageError}
                 workspace_id={workSpaceInfo?.id || ""}
-                endpoints={endpoints}
+                endpoints={endpoints.filter((ep) => ep.toggle === true)}
                 setEndpoints={setEndpoints}
                 lastLog={lastLog}
               />
@@ -369,6 +371,17 @@ export default function Dashboard() {
             {tabs === "members" && (
               <MembersSlice
                 showSideBar={showSideBar}
+                setErrorMessage={setMessageError}
+              />
+            )}
+            {tabs === "unmonitored" && (
+              <UnmonitoredSlice
+                servers={servers.filter((srv) => srv.toggle === false)}
+                endpoints={endpoints.filter((ep) => ep.toggle === false)}
+                devices={devices.filter((dev) => dev.toggle === false)}
+                setDevice={setDevices}
+                setEndpoint={setEndpoints}
+                setServer={setServers}
                 setErrorMessage={setMessageError}
               />
             )}
