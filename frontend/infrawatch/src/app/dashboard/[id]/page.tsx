@@ -126,7 +126,6 @@ export default function Dashboard() {
     });
 
     socketRef.current.on("devices", (message) => {
-      console.log("Dados do dispositivo recebidos via WebSocket:", message);
       message.map((msg: Device["last_device"]) => {
         setDevices((prevDevices) =>
           prevDevices.map((device) =>
