@@ -113,8 +113,20 @@ export default function Dashboard() {
       setLastLog(message);
     });
 
+    socketRef.current.on("dataServer", (message) => {
+      const data = JSON.parse(message);
+
+      setServers((prev) =>
+        prev.map((server) =>
+          server.id === data.serverId
+            ? { ...server, last_metrics: data }
+            : server
+        )
+      );
+    });
+
     socketRef.current.on("devices", (message) => {
-      console.log("Log device recebido via socket:", message);
+      console.log("Dados do dispositivo recebidos via WebSocket:", message);
       message.map((msg: Device["last_device"]) => {
         setDevices((prevDevices) =>
           prevDevices.map((device) =>

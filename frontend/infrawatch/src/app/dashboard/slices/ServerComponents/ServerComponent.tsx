@@ -11,8 +11,6 @@ import {
   ToggleLeft,
   ZapIcon,
 } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +21,7 @@ import { ServerProps } from "../Types/Server";
 import { DataMode } from "../Types/DataMod";
 import LogSheet from "../../components/LogSheet";
 import DetailsServer from "./Details";
+import { removeDoubleSlashes } from "@/components/AppComponents/API";
 
 interface IServerComponent {
   server: ServerProps;
@@ -45,7 +44,6 @@ const ServerComponent: React.FC<IServerComponent> = ({
   const [openDetails, setOpenDetails] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
-
   return (
     <div
       className={` dark:border-zinc-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-950/20 px-5 py-3 dark:bg-zinc-950 ${
@@ -56,7 +54,6 @@ const ServerComponent: React.FC<IServerComponent> = ({
           : "border-b border-x"
       }  grid grid-cols-2 gap-y-5 pot:grid-cols-4 items-center`}
     >
-      
       <div>
         <p className="dark:text-white text-base font-[450]">
           {server.servername}{" "}
@@ -98,7 +95,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
           </span>
         </div>
         <p className="text-zinc-500 leading-none  text-[15px]">
-          {server.is_busy ? "Ocioso" : "Desconectado"}
+          {server.is_busy ? "Conectado" : "Desconectado"}
         </p>
       </div>
 
@@ -106,16 +103,33 @@ const ServerComponent: React.FC<IServerComponent> = ({
         <div className="flex flex-col items-end justify-end gap-1">
           <p className="dark:text-zinc-100 flex gap-1 items-center">
             <ZapIcon className=" opacity-60" size={12} aria-hidden="true" />
-            Deploys
+            Uptime
           </p>
-          <Badge className="bg-red-500/20 dark:text-white text-red-800">
+          {isEmpty(server.last_metrics) ? (
+            <p>-------</p>
+          ) : (
+            <p className="text-[15px] dark:text-zinc-400 text-zinc-700">
+              {new Date(
+                removeDoubleSlashes(server.last_metrics.last_boot || "")
+              ).toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}{" "}
+              
+            </p>
+          )}
+
+          {/* <Badge className="bg-red-500/20 dark:text-white text-red-800">
             <OctagonAlert
               className=" opacity-60"
               size={12}
               aria-hidden="true"
             />{" "}
             Alertas 0
-          </Badge>
+          </Badge> */}
         </div>
       </div>
       <div className="flex pot:order-4 order-2 items-center justify-end">
@@ -124,7 +138,7 @@ const ServerComponent: React.FC<IServerComponent> = ({
             server.is_busy ? () : ()
           } */}
           <p className="dark:text-zinc-400 text-zinc-700 text-[15px]">
-          {DataMode(server.created_at)} por {server.username}
+            {DataMode(server.created_at)} por {server.username}
           </p>
         </div>
         <DropdownMenu>
@@ -199,8 +213,6 @@ const ServerComponent: React.FC<IServerComponent> = ({
         setOpenDetails={setOpenDetails}
         server={server}
       />
-
-      
     </div>
   );
 };

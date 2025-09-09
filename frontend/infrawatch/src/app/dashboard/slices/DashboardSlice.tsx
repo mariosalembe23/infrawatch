@@ -50,7 +50,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
   setEndpoints,
   lastLog,
   devices,
-  setDevices
+  setDevices,
 }) => {
   const [createServerOpen, setCreateServerOpen] = React.useState(false);
   const dashboardContext = React.useContext(DashboardContext);
@@ -84,6 +84,7 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
       }
     }
   }, [lastLog, endpoints, setEndpoints]);
+
 
   return selectedItem ? (
     <Graph
@@ -325,7 +326,6 @@ const DashboardSlice: React.FC<IDashboardSlice> = ({
         setEndpoints={setEndpoints}
         workspace_id={workSpaceInfo?.id || ""}
         setErrorMessage={setErrorMessage}
-        
       />
     </section>
   );
