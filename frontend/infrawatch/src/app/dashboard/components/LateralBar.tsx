@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   Link2,
   Network,
-  OctagonAlert,
   PanelLeft,
   Server,
   ToggleLeft,
@@ -122,9 +121,9 @@ const LateralBar: React.FC<ILateralBar> = ({
           >
             <Bolt size={18} className="dark:text-white" />
           </ButtonCustom>
-          <ButtonCustom type="danger" title="Alertas">
+          {/* <ButtonCustom type="danger" title="Alertas">
             <OctagonAlert size={18} className="dark:text-white" />
-          </ButtonCustom>
+          </ButtonCustom> */}
           <ButtonCustom
             disabled={workspacesData.loadingWork}
             onClick={() => setShowCard(true)}

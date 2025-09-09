@@ -44,6 +44,7 @@ const NetworkSlice: React.FC<{
       <div className="grid mt-7 pot:grid-cols-3 ret:grid-cols-2 grid-cols-1 lal:grid-cols-5 gap-3">
         {devices.map((device, index) => (
           <NetworkComponent
+            setDevices={setDevices}
             key={index}
             name={device.device_name}
             status={device.last_device?.status || "unknown"}

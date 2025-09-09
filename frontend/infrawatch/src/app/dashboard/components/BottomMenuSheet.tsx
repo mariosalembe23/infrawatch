@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   Link2,
   Network,
-  OctagonAlert,
   Server,
   ToggleLeft,
   Users,
@@ -104,9 +103,9 @@ const BottomMenuSheet: React.FC<IBottomMenuSheet> = ({
                 <Bolt size={18} className="dark:text-white" />
               </ButtonCustom>
 
-              <ButtonCustom type="danger" title="Alertas">
+              {/* <ButtonCustom type="danger" title="Alertas">
                 <OctagonAlert size={18} className="dark:text-white" />
-              </ButtonCustom>
+              </ButtonCustom> */}
               <ButtonCustom
                 disabled={workspacesData.loadingWork}
                 onClick={() => setShowCard(true)}
